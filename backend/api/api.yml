@@ -1,0 +1,308 @@
+openapi: 3.0.0
+info:
+  description: "Plasma Lab Web API"
+  version: "1.0.0"
+  title: "Plasma Lab Web API"
+servers:
+- url: "{host}{basePath}"
+  variables:
+    host:
+      enum:
+      - ""
+      - "localhost:1724"
+      default: ""
+    basePath:
+      enum:
+      - "/api/v1"
+      default: "/api/v1"
+
+tags:
+- name: "people"
+  description: "people page info"
+- name: "research"
+  description: "research page info"
+- name: "publication"
+  description: "publication page info"
+
+paths:
+  /peoples:
+    get:
+      tags: [people]
+      summary: get all members data
+      operationId: getPeoplesData
+      responses:
+        200:
+          description: success
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PersonDataProp"
+        404:
+          description: not found
+  /people:
+    post:
+      tags: [people]
+      summary: add a new lab member
+      operationId: createPeopleData
+      requestBody:
+        description: create a new member account
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePersonDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
+    patch:
+      tags: [people]
+      summary: update a member account
+      operationId: updatePeopleData
+      requestBody:
+        description: update a member account
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePersonDataProp"
+      responses:
+        201:
+          description: update successfully
+        401:
+          description: BAD
+  /people/{id}:
+    delete:
+      tags: [people]
+      summary: delete an old account
+      operationId: deletePeopleData
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "Deleted successfully"
+        401:
+          description: bad
+  /researchs:
+    get:
+      tags: [research]
+      summary: get all research topics data
+      operationId: getResearchsData
+      responses:
+        200:
+          description: success
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ResearchDataProp"
+        404:
+          description: not found
+  /research:
+    post:
+      tags: [research]
+      summary: add a new research topic
+      operationId: createResearchData
+      requestBody:
+        description: create a new research topic
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateResearchDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
+    patch:
+      tags: [research]
+      summary: update a research topic
+      operationId: updateResearchData
+      requestBody:
+        description: update a research topic
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateResearchDataProp"
+      responses:
+        201:
+          description: update successfully
+        401:
+          description: BAD
+  /research/{id}:
+    delete:
+      tags: [research]
+      summary: delete an old research topic
+      operationId: deleteResearchData
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "Deleted successfully"
+        401:
+          description: bad
+  /publications:
+    get:
+      tags: [publication]
+      summary: get all publication data
+      operationId: getPublicationsData
+      responses:
+        200:
+          description: success
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PublicationDataProp"
+        404:
+          description: not found
+  /publication:
+    post:
+      tags: [publication]
+      summary: add a new publication
+      operationId: createPublicationData
+      requestBody:
+        description: create a new publication
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePublicationDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
+    patch:
+      tags: [publication]
+      summary: update a publication
+      operationId: updatePublicationData
+      requestBody:
+        description: update a publication
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePublicationDataProp"
+      responses:
+        201:
+          description: update successfully
+        401:
+          description: BAD
+  /publication/{id}:
+    delete:
+      tags: [publication]
+      summary: delete an old publication
+      operationId: deletePublicationData
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "Deleted successfully"
+        401:
+          description: bad
+components:
+  schemas:
+    PersonDataProp:
+      type: object
+      required: [id, position, imgPath, name, degree, department, school, yearStart, yearEnd]
+      properties:
+        id: {type: string}
+        position: {type: number, format: int64}
+        imgPath: {type: string}
+        name: {type: string}
+        degree: {type: number, format: int64}
+        department: {type: string}
+        school: {type: string}
+        yearStart: {type: number, format: int64}
+        yearEnd: {type: number, format: int64}
+    CreatePersonDataProp:
+      type: object
+      required: [position, imgPath, name, degree, department, school, yearStart, yearEnd]
+      properties:
+        position: {type: number, format: int64}
+        imgPath: {type: string}
+        name: {type: string}
+        degree: {type: number, format: int64}
+        department: {type: string}
+        school: {type: string}
+        yearStart: {type: number, format: int64}
+        yearEnd: {type: number, format: int64}
+    UpdatePersonDataProp:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+        position: {type: number, format: int64}
+        imgPath: {type: string}
+        name: {type: string}
+        degree: {type: number, format: int64}
+        department: {type: string}
+        school: {type: string}
+        yearStart: {type: number, format: int64}
+        yearEnd: {type: number, format: int64}
+    ResearchDataProp:
+      type: object
+      required: [id, title, imgPath, description, reference]
+      properties:
+        id: {type: string}
+        title: {type: string}
+        imgPath: {type: string}
+        description: {type: string}
+        reference: {type: string}
+    CreateResearchDataProp:
+      type: object
+      required: [title, imgPath, description, reference]
+      properties:
+        title: {type: string}
+        imgPath: {type: string}
+        description: {type: string}
+        reference: {type: string}
+    UpdateResearchDataProp:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+        title: {type: string}
+        imgPath: {type: string}
+        description: {type: string}
+        reference: {type: string}
+    PublicationDataProp:
+      type: object
+      required: [id, year, detail]
+      properties:
+        id: {type: string}
+        year: {type: number, format: int64}
+        detail: {type: string}
+    CreatePublicationDataProp:
+      type: object
+      required: [year, detail]
+      properties:
+        year: {type: number, format: int64}
+        detail: {type: string}
+    UpdatePublicationDataProp:
+      type: object
+      required: [id]
+      properties:
+        id: {type: string}
+        year: {type: number, format: int64}
+        detail: {type: string} 

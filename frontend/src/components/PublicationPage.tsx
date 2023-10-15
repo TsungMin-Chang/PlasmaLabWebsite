@@ -1,7 +1,15 @@
+import { useState } from "react";
+
 import "../index.css";
+import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
+
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
 
 export type PublicationDataProp = {
-    id: string;
+  id: string;
 	year: number;
 	detail: string;
 };
@@ -35,41 +43,74 @@ export default function PublicationPage() {
         }
     ]
 
-    const yearLabel: { [key: string]: PublicationDataProp[] } = {};
-    dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
-    // Get the keys and sort them
-    const sortedKeys = Object.keys(yearLabel).sort((a, b) => parseInt(b) - parseInt(a));
+  const yearLabel: { [key: string]: PublicationDataProp[] } = {};
+  dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
+  // Get the keys and sort them
+  const sortedKeys = Object.keys(yearLabel).sort((a, b) => parseInt(b) - parseInt(a));
+  const [newPublicationDialogOpen, setNewPublicationDialogOpen] = useState(false);
 
-    return (
-        <>
-            <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
-                <p className="navbar-brand"><strong>PUBLICATION</strong></p>
-                <ul className="nav nav-pills">
-                    {sortedKeys.map((key) => (
-                        <li className="nav-item" key={key}>
-                            <a className="nav-link mynav2" href={"#scrollspyHeading_publication"+key}>{key}</a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
-                {sortedKeys.map((key) => (
-                    <>
-                        <h4 id={"scrollspyHeading_publication"+key} className="mynav2" key={key}>{key}</h4>
-                        <ul className="list-group list-group-flush">
-                            {yearLabel[key].map((ele, index) => {
-                                const colorClass = index % 2 === 0 ? "publication-wording list-group-item" : "publication-wording list-group-item list-group-item-secondary";
-                                return (
-                                <li key={ele.id} className={colorClass}>
-                                    {ele.detail}
-                                </li>
-                                );
-                            })}
-                        </ul>
-                        <br />
-                    </>
-                ))}
-            </div>
-        </>
-    )
+  return (
+    <>
+      <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
+        <p className="navbar-brand">
+          <strong>PUBLICATION</strong>
+          <IconButton 
+            color="success" 
+            onClick={() => {setNewPublicationDialogOpen(true)}} 
+          >
+            <AddCircleIcon />
+          </IconButton>
+        </p>
+        <ul className="nav nav-pills">
+          {sortedKeys.map((key) => (
+            <li className="nav-item" key={key}>
+              <a className="nav-link mynav2" href={"#scrollspyHeading_publication"+key}>{key}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
+        {sortedKeys.map((key) => (
+          <>
+            <h4 id={"scrollspyHeading_publication"+key} className="mynav2" key={key}>{key}</h4>
+            <ul className="list-group list-group-flush">
+              {yearLabel[key].map((ele, index) => {
+                const colorClass = index % 2 === 0 ? "publication-wording list-group-item" : "publication-wording list-group-item list-group-item-secondary";
+                return (
+                  <li className={colorClass} key={ele.id}>
+                    <div style={{float: 'inline-end', position: 'initial'}}>
+                      <IconButton 
+                        color="error"
+                        onClick={() => {}}
+                        style={{zIndex: 3}}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                    <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                      <IconButton 
+                        color="success" 
+                        onClick={() => {}} 
+                        style={{zIndex: 2}}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </div>
+                    <div style={{position: 'relative'}}>
+                      {ele.detail}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+            <br />
+          </>
+        ))}
+      </div>
+      <NewPublicationDialog
+        open={newPublicationDialogOpen}
+        onClose={() => setNewPublicationDialogOpen(false)}
+      />
+    </>
+  )
 }
