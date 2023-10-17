@@ -9,14 +9,14 @@ export type IState = {
 
 export default {
   getPeoplesData: async _req => {
-    // const {token} = _req.body;
-    // let ans: string = '';
-    // await axios.post(
-    //   `https://www.google.com/recaptcha/api/siteverify?secret=6Ldy9M8hAAAAADHcRKigTN_KyoaV1ju9u7rk_k3M&response=${token}`,
-    // )
-    //   .then(()=> ans = 'Human')
-    //   .catch(()=> ans = 'Robot');
-    return [404]
+    try {
+      const g = {
+
+      } as PersonDataProp;
+      return [204, g];
+    } catch {
+      return [404];
+    }
   },
   createPeopleData: async _req => {
     return [401];

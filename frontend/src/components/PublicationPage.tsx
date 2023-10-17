@@ -78,7 +78,7 @@ export default function PublicationPage() {
                 const colorClass = index % 2 === 0 ? "publication-wording list-group-item" : "publication-wording list-group-item list-group-item-secondary";
                 return (
                   <li className={colorClass} key={ele.id}>
-                    <div style={{float: 'inline-end', position: 'initial'}}>
+                    <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                       <IconButton 
                         color="error"
                         onClick={() => {}}

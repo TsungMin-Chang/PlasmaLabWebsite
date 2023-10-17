@@ -1,30 +1,35 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import FormControl from '@mui/material/FormControl';
 import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Input from "@mui/material/Input";
 import TextField from '@mui/material/TextField';
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
-type NewPeopleDialogProps = {
+type NewPublicationDialogProps = {
     open: boolean;
     onClose: () => void;
 };
 
-export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps) {
-
+export default function NewPublicationDialog({ open, onClose }: NewPublicationDialogProps) {
+  console.log('hhihihi');
   const [year, setYear] = useState<number | null>(null);
-  const [detail, setDetail] = useState<string>("");
+  const textfieldDetail = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    api.createPublicationData({year,detail}as CreatePublicationDataProp)
+    console.log('hhihihi'); 
+    const detail = textfieldDetail.current?.value ?? "" ;
+
     if (!year) {
       alert("Year cannot be blank!");
       return;
@@ -33,60 +38,49 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       alert("Detail cannot be blank!");
       return;
     }
-    handleClose();
-    
-    // if () {
-    //   alert("Link cannot be blank!");
-    //   return;
-    // }
-    // try {
-    //   const sendId = newListId === listId ? listId : listId + '_' + newListId;
-    //   await createCard({
-    //     title: title,
-    //     singer: textfieldSinger.current!.value,
-    //     link: textfieldLink.current!.value,
-    //     list_id: sendId,
-    //   });
-    //   setTitle("");
-    //   fetchCards();
-    // } catch (error) {
-    //   alert("Error: Failed to save card");
-    // } finally {
-    //   onClose();
-    // }
+
+    try {
+      console.log('hhihihi');
+      await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
+    } catch {
+      alert("Error: Failed to create a new publication!");
+    } finally {
+      handleClose();
+    }
   };
 
   const handleClose = () => {
     setYear(null);
-    setDetail("");
     onClose();
   }
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle className="flex gap-4">
-        <FormControl sx={{ m: 1, minWidth: 510 }}>
-          <ClickAwayListener
-            onClickAway={() => {}}
-          >
-          <Input
-            autoFocus
-            defaultValue={year}
-            onChange={(e) => setYear(parseInt(e.target.value))}
-            className="grow"
-            placeholder="Enter published year..."
-          />
-          </ClickAwayListener>
+        <FormControl sx={{ m: 1 }}> 
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <FormControl sx={{ minWidth: 510 }}>
+                <DatePicker
+                  views={['year']}
+                  label='Enter published year...'
+                  openTo="year" 
+                  onChange={(e: any) => setYear(!e ? null : e['$y'])}
+                />
+              </FormControl>
+            </DemoContainer>
+          </LocalizationProvider>
         </FormControl>
       </DialogTitle>
       <DialogContent className="w-[600px]">
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
-            id="outlined-multiline-static"
+            inputRef={textfieldDetail}
             label="Detail"
+            variant="outlined"
             multiline
             rows={5}
-            defaultValue={detail}
+            autoFocus
           />
         </FormControl>
         <DialogActions>

@@ -28,7 +28,7 @@ export default function HomePage() {
 
   const itemData = [
     {
-      img: 'public/new_home_images/grey_circle_array.jpg',
+      img: '/new_home_images/grey_circle_array-transformed.jpeg',
       title: 'plasma1',
     },
     {
@@ -44,7 +44,7 @@ export default function HomePage() {
       title: 'plasma3',
     },
     {
-      img: '/new_home_images/grey_circle_array.jpg',
+      img: '/new_home_images/grey_circle_array-transformed.jpeg',
       title: 'plasma1',
     },
     {

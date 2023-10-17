@@ -70,7 +70,7 @@ export default function EventPage() {
             <div className="container">
               {yearLabel[key].map((ele) => (
                 <figure className="figure" key={ele.id}>
-                  <div style={{float: 'inline-end', position: 'initial'}}>
+                  <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                     <IconButton 
                       color="error"
                       onClick={() => {}}

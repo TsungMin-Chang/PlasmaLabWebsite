@@ -220,6 +220,9 @@ paths:
           description: "Deleted successfully"
         401:
           description: bad
+security:
+- bearerAuth: []
+
 components:
   schemas:
     PersonDataProp:
@@ -237,16 +240,39 @@ components:
         yearEnd: {type: number, format: int64}
     CreatePersonDataProp:
       type: object
-      required: [position, imgPath, name, degree, department, school, yearStart, yearEnd]
+      required: [id, position, imgPath, ms, bs, phd]
       properties:
+        id: {type: string}
         position: {type: number, format: int64}
         imgPath: {type: string}
         name: {type: string}
-        degree: {type: number, format: int64}
-        department: {type: string}
-        school: {type: string}
-        yearStart: {type: number, format: int64}
-        yearEnd: {type: number, format: int64}
+        bs: 
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
+        ms: 
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
+        phd:
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
     UpdatePersonDataProp:
       type: object
       required: [id]
@@ -306,3 +332,24 @@ components:
         id: {type: string}
         year: {type: number, format: int64}
         detail: {type: string} 
+    StudentInfoProps:
+      type: object
+      required: []
+      properties:
+        bsDegree: {type: number, format: int64, nullable: true}
+        msDegree: {type: number, format: int64, nullable: true}
+        phdDegree: {type: number, format: int64, nullable: true}
+        bsSchool: {type: string, nullable: true}
+        msSchool: {type: string, nullable: true}
+        phdSchool: {type: string, nullable: true}
+        bsDepartment: {type: string, nullable: true}
+        msDepartment: {type: string, nullable: true}
+        phdDepartment: {type: string, nullable: true}
+        bsYearStart: {type: number, format: int64, nullable: true}
+        msYearStart: {type: number, format: int64, nullable: true}
+        phdYearStart: {type: number, format: int64, nullable: true}
+        bsYearEnd: {type: number, format: int64, nullable: true}
+        msYearEnd: {type: number, format: int64, nullable: true}
+        phdYearEnd: {type: number, format: int64, nullable: true}
+        
+        

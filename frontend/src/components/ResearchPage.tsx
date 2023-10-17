@@ -83,7 +83,7 @@ export default function ResearchPage() {
                 <div className="col-sm-12 col-lg-5">
                   <div key={dummy.id}>
                     <div className="card-body">
-                      <div style={{float: 'inline-end', position: 'initial'}}>
+                      <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                         <IconButton 
                           color="error"
                           onClick={() => {}} 

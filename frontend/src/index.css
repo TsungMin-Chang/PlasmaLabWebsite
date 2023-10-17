@@ -72,3 +72,8 @@ hr{
     color: rgb(46, 39, 31);
     font-size: 1rem;
 }
+
+.footertext{
+    font-family: verdana,sans-serif;
+    font-size: medium;
+}

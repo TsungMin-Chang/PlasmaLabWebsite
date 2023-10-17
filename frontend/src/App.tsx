@@ -13,22 +13,22 @@ import PeoplePage from "@/components/PeoplePage"
 import ResearchPage from "@/components/ResearchPage"
 import PublicationPage from "@/components/PublicationPage"
 import EventPage from "@/components/EventPage"
+import ContactCard from "@/components/ContactCard"
 
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
-import useCards from "@/hooks/useCards";
-
 function App() {
-  const { lists, fetchLists, fetchCards } = useCards();
+  // const { lists, fetchLists, fetchCards } = useCards();
   const [detailListDisplay, setDetailListDisplay] = useState({'state':false, 'id':""});
-  const [newListDialogOpen, setNewListDialogOpen] = useState(false);
 
-  useEffect(() => {
-    fetchLists();
-    fetchCards();
-  }, [fetchCards, fetchLists]);
+  const [contactCardOpen, setContactCardOpen] = useState(false);
+
+  // useEffect(() => {
+  //   fetchLists();
+  //   fetchCards();
+  // }, [fetchCards, fetchLists]);
 
   const handleListClick = (listId: string) => {
     setDetailListDisplay({'state':true, 'id':listId});
@@ -42,7 +42,7 @@ function App() {
       <Container style={{ width: '70%' }}>
         <div style={{textAlign: 'right'}}>
           <ButtonGroup size="large" variant="text" aria-label="text button group">
-            <Button onClick={() => setNewListDialogOpen(true)}>
+            <Button onClick={() => setContactCardOpen(true)}>
               <ImportContactsIcon className="mr-2" />
               Contact Info
             </Button>
@@ -100,6 +100,10 @@ function App() {
           </div>
         </footer>
       </Container>
+      <ContactCard
+        open={contactCardOpen}
+        onClose={() => setContactCardOpen(false)}
+      />
     </div>
   )
 }

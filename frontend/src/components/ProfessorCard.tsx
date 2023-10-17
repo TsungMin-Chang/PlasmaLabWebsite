@@ -1,4 +1,4 @@
-import type { PersonDataProp } from "./PeoplePage.tsx";
+import type { PersonDataProp } from "./PeoplePage";
 import "../index.css";
 
 import IconButton from "@mui/material/IconButton";
@@ -26,7 +26,7 @@ export default function ProfessorCard({ data }: dataProp) {
             </div>
             <div className="col-sm-12 col-md-6 col-lg-8 ptext my-auto">
               <div key={key}>
-                <div style={{float: 'inline-end', position: 'initial'}}>
+                <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                   <IconButton 
                     color="error"
                     onClick={() => {}} 

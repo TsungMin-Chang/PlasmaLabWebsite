@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,9 +17,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import useCards from "@/hooks/useCards";
-import { createCard } from "@/utils/client";
+import { StudentInfoProps, CreatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPeopleDialogProps = {
     open: boolean;
@@ -28,27 +33,32 @@ type NewPeopleDialogProps = {
 export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps) {
 
   const [name, setName] = useState<string>("");
-  const [position, setPosition] = useState<null | number>(null);
+  const [position, setPosition] = useState<number | null>(null);
+  const [imageString, setImageString] = useState({imageName: "", image: ""});
+  const [studentInfo, setStudentInfo] = useState<StudentInfoProps>({});
 
-  const [bsDegree, setBSDegree] = useState<null | number>(null);
-  const [bsSchool, setBSSchool] = useState<string>("");
-  const [bsDepartment, setBSDepartment] = useState<string>("");
-  const [bsYearStart, setBSYearStart] = useState<null | number>(null);
-  const [bsYearEnd, setBSYearEnd] = useState<null | number>(null);
-
-  const [msDegree, setMSDegree] = useState<null | number>(null);
-  const [msSchool, setMSSchool] = useState<string>("");
-  const [msDepartment, setMSDepartment] = useState<string>("");
-  const [msYearStart, setMSYearStart] = useState<null | number>(null);
-  const [msYearEnd, setMSYearEnd] = useState<null | number>(null);
-
-  const [phdDegree, setPhDDegree] = useState<null | number>(null);
-  const [phdSchool, setPhDSchool] = useState<string>("");
-  const [phdDepartment, setPhDDepartment] = useState<string>("");
-  const [phdYearStart, setPhDYearStart] = useState<null | number>(null);
-  const [phdYearEnd, setPhDYearEnd] = useState<null | number>(null);
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    // get file name
+    const fileName = e.currentTarget.value.match(/^.*\\(.*?)\..*?$/);
+    if (!fileName) return;
+    
+    // get file in base64 String
+    const fakeFile = e.currentTarget.files;
+    if (!fakeFile) return;
+    const file = fakeFile[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      // save my image data
+      setImageString({imageName: fileName[1], image: base64String});
+    };
+    // Read the file as a data URL, which will be base64-encoded
+    reader.readAsDataURL(file);
+  }
 
   const handleSave = async () => {
+    
     if (!name) {
       alert("Name cannot be blank!");
       return;
@@ -57,41 +67,80 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       alert("Position cannot be blank!");
       return;
     }
-    console.log(name);
-    console.log(position);
-    console.log(msSchool);
-    console.log(msDepartment);
-    console.log(msYearStart);
-    console.log(msYearEnd);
-    handleClose();
-    // if () {
-    //   alert("Link cannot be blank!");
-    //   return;
-    // }
-    // try {
-    //   const sendId = newListId === listId ? listId : listId + '_' + newListId;
-    //   await createCard({
-    //     title: title,
-    //     singer: textfieldSinger.current!.value,
-    //     link: textfieldLink.current!.value,
-    //     list_id: sendId,
-    //   });
-    //   setTitle("");
-    //   fetchCards();
-    // } catch (error) {
-    //   alert("Error: Failed to save card");
-    // } finally {
-    //   onClose();
-    // }
+    if (!imageString.image || !imageString.imageName) {
+      alert("Please upload an image!");
+      return;
+    }
+
+    const updateBSStudentInfo = {} as StudentInfoProps;
+    if (studentInfo.bsSchool && studentInfo.bsDepartment && studentInfo.bsYearStart) {
+      updateBSStudentInfo['bsSchool'] = studentInfo.bsSchool;
+      updateBSStudentInfo['bsDepartment'] = studentInfo.bsDepartment;
+      updateBSStudentInfo['bsYearStart'] = studentInfo.bsYearStart;
+      updateBSStudentInfo['bsDegree'] = 1;
+      if (!studentInfo.bsYearEnd) {
+        updateBSStudentInfo['bsYearEnd'] = -1;
+      } else {
+        updateBSStudentInfo['bsYearEnd'] = studentInfo.bsYearEnd;
+      }
+    }
+
+    const updateMSStudentInfo = {} as StudentInfoProps;
+    if (studentInfo.msSchool && studentInfo.msDepartment && studentInfo.msYearStart) {
+      updateMSStudentInfo['msSchool'] = studentInfo.msSchool;
+      updateMSStudentInfo['msDepartment'] = studentInfo.msDepartment;
+      updateMSStudentInfo['msYearStart'] = studentInfo.msYearStart;
+      updateMSStudentInfo['msDegree'] = 2;
+      if (!studentInfo.msYearEnd) {
+        updateMSStudentInfo['msYearEnd'] = -1;
+      } else {
+        updateMSStudentInfo['msYearEnd'] = studentInfo.msYearEnd;
+      }
+    }
+
+    const updatePHDStudentInfo = {} as StudentInfoProps;
+    if (studentInfo.phdSchool && studentInfo.phdDepartment && studentInfo.phdYearStart) {
+      updatePHDStudentInfo['phdSchool'] = studentInfo.phdSchool;
+      updatePHDStudentInfo['phdDepartment'] = studentInfo.phdDepartment;
+      updatePHDStudentInfo['phdYearStart'] = studentInfo.phdYearStart;
+      updatePHDStudentInfo['phdDegree'] = 3;
+      if (!studentInfo.phdYearEnd) {
+        updatePHDStudentInfo['phdYearEnd'] = -1;
+      } else {
+        updatePHDStudentInfo['phdYearEnd'] = studentInfo.phdYearEnd;
+      }
+    }
+
+    // console.log(name);
+    // console.log(position);
+    // console.log(imageString.imageName);
+    // console.log(updateBSStudentInfo);
+    // console.log(updateMSStudentInfo); 
+    // console.log(updatePHDStudentInfo); 
+
+    try {
+      // POST request sends file name and file
+      axios.post('/image', imageString);
+    } catch {
+      alert("Error: Failed to save uploaded image!");
+      handleClose();
+      return;
+    }
+
+    try {
+      api.createPeopleData( {name, position, imgPath: imageString.imageName, bs: updateBSStudentInfo, ms: updateMSStudentInfo, phd: updatePHDStudentInfo} as CreatePersonDataProp );
+    } catch {
+      alert("Error: Failed to create a new member!");
+    } finally {
+      handleClose();
+    }
   };
 
   const handleClose = () => {
     setName("");
+    setImageString({imageName: "", image: ""});
     setPosition(null);
-    setBSSchool("");
-    setBSDepartment("");
-    setBSYearStart(null);
-    setBSYearEnd(null);
+    setStudentInfo({});
     onClose();
   }
 
@@ -140,8 +189,13 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
             </FormControl>
             <FormControl sx={{ m: 1, minWidth: 510 }}>
               <Form.Group controlId="formFile" className="mb-3">
-                <Form.Label>Upload an illustration of your research</Form.Label>
-                <Form.Control type="file" />
+                <Form.Label>Upload a profile picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  required
+                  name="file"
+                  onChange={handleImage}
+                />
               </Form.Group>
             </FormControl>
           </Tab>
@@ -152,8 +206,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={bsSchool}
-                  onChange={(e) => setBSSchool(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, bsSchool: e.target.value})}
                   className="grow"
                   placeholder="Enter School Name..."
                 />
@@ -165,38 +218,40 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={bsDepartment}
-                  onChange={(e) => setBSDepartment(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, bsDepartment: e.target.value})}
                   className="grow"
                   placeholder="Enter Department Name..."
                 />
               </ClickAwayListener> 
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={bsYearStart}
-                  onChange={(e) => setBSYearStart(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you start..."
-                />
-              </ClickAwayListener>
+
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you start...'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, bsYearStart: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={bsYearEnd}
-                  onChange={(e) => setBSYearEnd(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you finish... (leave blank if currently studying)"
-                />
-              </ClickAwayListener> 
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you finish... (leave blank if studying)'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, bsYearEnd: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
             </FormControl>
           </Tab>
           <Tab eventKey="ms" title="M.S. Degree">
@@ -206,8 +261,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={msSchool}
-                  onChange={(e) => setMSSchool(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, msSchool: e.target.value})}
                   className="grow"
                   placeholder="Enter School Name..."
                 />
@@ -219,38 +273,39 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={msDepartment}
-                  onChange={(e) => setMSDepartment(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, msDepartment: e.target.value})}
                   className="grow"
                   placeholder="Enter Department Name..."
                 />
               </ClickAwayListener> 
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={msYearStart}
-                  onChange={(e) => setMSYearStart(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you start..."
-                />
-              </ClickAwayListener>
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you start...'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, msYearStart: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={msYearEnd}
-                  onChange={(e) => setMSYearEnd(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you finish... (leave blank if currently studying)"
-                />
-              </ClickAwayListener> 
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you finish... (leave blank if studying)'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, msYearEnd: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
             </FormControl>
           </Tab>
           <Tab eventKey="phd" title="Ph.D. Degree">
@@ -260,8 +315,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={phdSchool}
-                  onChange={(e) => setPhDSchool(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, phdSchool: e.target.value})}
                   className="grow"
                   placeholder="Enter School Name..."
                 />
@@ -273,39 +327,40 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
               >
                 <Input
                   autoFocus
-                  defaultValue={phdDepartment}
-                  onChange={(e) => setPhDDepartment(e.target.value)}
+                  onChange={(e) => setStudentInfo({...studentInfo, phdDepartment: e.target.value})}
                   className="grow"
                   placeholder="Enter Department Name..."
                 />
               </ClickAwayListener> 
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={phdYearStart}
-                  onChange={(e) => setPhDYearStart(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you start..."
-                />
-              </ClickAwayListener>
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you start...'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, phdYearStart: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
             </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 450 }}>
-              <ClickAwayListener
-                onClickAway={() => {}}
-              >
-                <Input
-                  autoFocus
-                  defaultValue={phdYearEnd}
-                  onChange={(e) => setPhDYearEnd(!parseInt(e.target.value) ? null : parseInt(e.target.value))}
-                  className="grow"
-                  placeholder="Enter the year you finish... (leave blank if currently studying)"
-                />
-              </ClickAwayListener> 
-            </FormControl>
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 450 }}>
+                    <DatePicker
+                      views={['year']}
+                      label='Enter the year you finish... (leave blank if studying)'
+                      openTo="year" 
+                      onChange={(e: any) => setStudentInfo({...studentInfo, phdYearEnd: !e ? null : e['$y']})}
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
+            </FormControl> 
           </Tab>
         </Tabs>
         <DialogActions>
