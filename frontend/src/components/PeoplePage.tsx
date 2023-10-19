@@ -23,6 +23,14 @@ export type PersonDataProp = {
   yearEnd: number;
 };
 
+export type DegreeDataProp = {
+  degree: number;
+  school: string;
+  department: string;
+  yearStart: number;
+  yearEnd: number;  
+};
+
 export default function PeoplePage() {
     const dummys: PersonDataProp[] = [
         {

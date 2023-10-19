@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import "../index.css";
 import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
+import UpdatePublicationDialog from '@/components/UpdateDialog/UpdatePublicationDialog'; 
 
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -47,7 +48,9 @@ export default function PublicationPage() {
   dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
   // Get the keys and sort them
   const sortedKeys = Object.keys(yearLabel).sort((a, b) => parseInt(b) - parseInt(a));
+  
   const [newPublicationDialogOpen, setNewPublicationDialogOpen] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp});
 
   return (
     <>
@@ -89,8 +92,9 @@ export default function PublicationPage() {
                     </div>
                     <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                       <IconButton 
+                        id={ele.id}
                         color="success" 
-                        onClick={() => {}} 
+                        onClick={() => setOpenUpdateDialog({'state': true, 'data': ele})}
                         style={{zIndex: 2}}
                       >
                         <EditIcon />
@@ -110,6 +114,11 @@ export default function PublicationPage() {
       <NewPublicationDialog
         open={newPublicationDialogOpen}
         onClose={() => setNewPublicationDialogOpen(false)}
+      />
+      <UpdatePublicationDialog
+        {...openUpdateDialog.data}
+        open={openUpdateDialog.state} 
+        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp})}
       />
     </>
   )

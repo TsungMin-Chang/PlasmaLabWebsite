@@ -240,9 +240,8 @@ components:
         yearEnd: {type: number, format: int64}
     CreatePersonDataProp:
       type: object
-      required: [id, position, imgPath, ms, bs, phd]
+      required: [position, imgPath, ms, bs, phd]
       properties:
-        id: {type: string}
         position: {type: number, format: int64}
         imgPath: {type: string}
         name: {type: string}
@@ -281,11 +280,33 @@ components:
         position: {type: number, format: int64}
         imgPath: {type: string}
         name: {type: string}
-        degree: {type: number, format: int64}
-        department: {type: string}
-        school: {type: string}
-        yearStart: {type: number, format: int64}
-        yearEnd: {type: number, format: int64}
+        bs: 
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
+        ms: 
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
+        phd:
+          type: object
+          required: []
+          properties:
+            degree: {type: number, format: int64}
+            department: {type: string}
+            school: {type: string}
+            yearStart: {type: number, format: int64}
+            yearEnd: {type: number, format: int64}
     ResearchDataProp:
       type: object
       required: [id, title, imgPath, description, reference]

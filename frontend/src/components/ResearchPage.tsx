@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import "../index.css";
 import NewResearchDialog from '@/components/NewDialog/NewResearchDialog'; 
+import UpdateResearchDialog from '@/components/UpdateDialog/UpdateResearchDialog'; 
 
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
@@ -49,6 +50,7 @@ export default function ResearchPage() {
     ]
   
   const [newResearchDialogOpen, setNewResearchDialogOpen] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
 
   return (
     <>
@@ -95,7 +97,7 @@ export default function ResearchPage() {
                       <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                         <IconButton 
                           color="success" 
-                          onClick={() => {}}
+                          onClick={() => setOpenUpdateDialog({'state': true, 'data': dummy})}
                           style={{zIndex: 3}}
                         >
                           <EditIcon />
@@ -105,9 +107,19 @@ export default function ResearchPage() {
                         {dummy.title}
                       </div>
                       <ul>
-                        <li className="card-text-content">{dummy.description}</li>
+                        <li 
+                          className="card-text-content"
+                          style={{listStyleType: 'none'}}
+                        >
+                          {dummy.description}
+                        </li>
                         <br />
-                        <li className="card-footer-ref">{'('+dummy.reference+')'}</li>
+                        <li 
+                          className="card-text-content"
+                          style={{listStyleType: 'none'}}
+                        >
+                          {'('+dummy.reference+')'}
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -120,6 +132,11 @@ export default function ResearchPage() {
       <NewResearchDialog
         open={newResearchDialogOpen}
         onClose={() => setNewResearchDialogOpen(false)}
+      />
+      <UpdateResearchDialog
+        {...openUpdateDialog.data}
+        open={openUpdateDialog.state} 
+        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
       />
     </>
   )

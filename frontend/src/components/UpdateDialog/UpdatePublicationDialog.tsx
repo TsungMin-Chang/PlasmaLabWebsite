@@ -12,42 +12,47 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs'
 
-import { CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
-type NewPublicationDialogProps = {
+type UpdatePublicationDialogProps = {
+    id: string;
+    year: number;
+    detail: string;
     open: boolean;
     onClose: () => void;
 };
 
-export default function NewPublicationDialog({ open, onClose }: NewPublicationDialogProps) {
-  const [year, setYear] = useState<number | null>(null);
+export default function UpddatePublicationDialog(props: UpdatePublicationDialogProps) {
+  const { id, year, detail, open, onClose } = props;
+
+  const [newYear, setNewYear] = useState<number>(year);
   const textfieldDetail = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    const detail = textfieldDetail.current?.value ?? "" ;
+    // const detail = textfieldDetail.current?.value ?? "" ;
 
-    if (!year) {
-      alert("Year cannot be blank!");
-      return;
-    }
-    if (!detail) {
-      alert("Detail cannot be blank!");
-      return;
-    }
+    // if (!year) {
+    //   alert("Year cannot be blank!");
+    //   return;
+    // }
+    // if (!detail) {
+    //   alert("Detail cannot be blank!");
+    //   return;
+    // }
 
-    try {
-      await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
-    } catch {
-      alert("Error: Failed to create a new publication!");
-    } finally {
-      handleClose();
-    }
+    // try {
+    //   await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
+    // } catch {
+    //   alert("Error: Failed to create a new publication!");
+    // } finally {
+    //   handleClose();
+    // }
   };
 
   const handleClose = () => {
-    setYear(null);
+    setNewYear(year);
     onClose();
   }
 
@@ -59,10 +64,11 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
             <DemoContainer components={['DatePicker']}>
               <FormControl sx={{ minWidth: 510 }}>
                 <DatePicker
+                  defaultValue={dayjs((year).toString())}
                   views={['year']}
                   label='Enter published year...'
-                  openTo="year" 
-                  onChange={(e: any) => setYear(!e ? null : e['$y'])}
+                  openTo="year"
+                  onChange={(e: any) => setNewYear(!e ? year : e['$y'])}
                 />
               </FormControl>
             </DemoContainer>
@@ -72,6 +78,7 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
       <DialogContent className="w-[600px]">
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
+            defaultValue={detail}
             inputRef={textfieldDetail}
             label="Detail"
             variant="outlined"

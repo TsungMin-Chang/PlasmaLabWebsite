@@ -20,7 +20,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 function App() {
-  // const { lists, fetchLists, fetchCards } = useCards();
   const [detailListDisplay, setDetailListDisplay] = useState({'state':false, 'id':""});
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
@@ -41,7 +40,7 @@ function App() {
       <br/>
       <Container style={{ width: '70%' }}>
         <div style={{textAlign: 'right'}}>
-          <ButtonGroup size="large" variant="text" aria-label="text button group">
+          <ButtonGroup variant="text" aria-label="text button group">
             <Button onClick={() => setContactCardOpen(true)}>
               <ImportContactsIcon className="mr-2" />
               Contact Info
@@ -90,15 +89,14 @@ function App() {
           <div className="p-4">
             <div className="container">
               <div className="row">
-                <div className="col-12">
-                  <div className="grid place-items-center">
-                    <img src="./ntuche_images/NTUCHElogo1.png" alt="..."/>
-                  </div>
+                <div className="col-12 d-flex align-items-center justify-content-center">
+                  <img src="./ntuche_images/NTUCHElogo1.png" alt="..."/>
                 </div>
               </div>
             </div>
           </div>
         </footer>
+        <br/>
       </Container>
       <ContactCard
         open={contactCardOpen}

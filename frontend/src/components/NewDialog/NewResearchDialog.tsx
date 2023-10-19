@@ -14,7 +14,6 @@ import TextField from '@mui/material/TextField';
 
 import { CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
-import * as base64 from 'base64-js';
 
 type NewResearchDialogProps = {
   open: boolean;
@@ -71,24 +70,24 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
     }
 
     try {
-      // POST request sends file name and file
-      await axios.post('/image', imageString)
-                 .then(response => {
-                    console.log(response.data);
-                    const uuidFileName = response.data as string;
-                    try {
-                      api.createResearchData( {title, description, reference, imgPath: uuidFileName} as CreateResearchDataProp );
-                    } catch {
-                      alert("Error: Failed to create a new publication!");
-                    } finally {
-                      handleClose();
-                    }
-                  });
+      // POST request sends imgage file name and image file
+      const response = await axios.post('/image', imageString);
+      console.log('Response Status:', response.status);
+      console.log('Response Data:', response.data);
+      console.log('Request completed successfully.');
     } catch {
       alert("Error: Failed to save uploaded image!");
       handleClose();
       return;
     }
+
+    // try {
+    //   await api.createResearchData( {title, description, reference, imgPath: uuidFileName} as CreateResearchDataProp );
+    // } catch {
+    //   alert("Error: Failed to create a new publication!");
+    // } finally {
+    //   handleClose();
+    // }
   };
 
   const handleClose = () => {
@@ -131,7 +130,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
             inputRef={textfieldDescription}     
             label="Description"
             multiline
-            rows={8}
+            rows={5}
             autoFocus
           />
         </FormControl>
@@ -140,7 +139,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
             inputRef={textfieldReference}
             label="Reference"
             multiline
-            rows={5}
+            rows={3}
           />
         </FormControl>
         <DialogActions>
@@ -149,5 +148,5 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
         </DialogActions>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

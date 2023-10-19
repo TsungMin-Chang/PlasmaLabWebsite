@@ -24,25 +24,31 @@ imageRouter.post('*', bodyParser({
   jsonLimit: '30mb',
   textLimit: '30mb',
 }), async (ctx) => {
-  const {imageName, image} = ctx.request.body;
-  const rimg = image.match(/^data:image\/(.*?);base64,(.*)$/);
-  // Your base64-encoded string
-  const fileType = rimg?.[1] ?? '';
-  const base64String = rimg?.[2] ?? '';
-  const base64Data = base64.toByteArray(base64String);
-  const binaryData = Buffer.from(base64Data); // Convert base64 string to byte
-  const myuuid = uuidv4();
-  const fileName = '../frontend/public/' + myuuid + '.' + fileType;
-  fs.writeFile(fileName, binaryData, (err) => { // Write the binary data to a file using fs.writeFile
-    if (err) {
-      console.error('Error writing to file:', err);
-    } else {
-      console.log(`Binary data has been written to ${fileName}`);
-    }
-  });
-  ctx.res.statusCode = 200;
-  ctx.response.body = myuuid;
-})
+  try {
+    const {imageName, image} = ctx.request.body;
+    const rimg = image.match(/^data:image\/(.*?);base64,(.*)$/);
+    // Your base64-encoded string
+    const fileType = rimg?.[1] ?? '';
+    const base64String = rimg?.[2] ?? '';
+    const base64Data = base64.toByteArray(base64String);
+    const binaryData = Buffer.from(base64Data); // Convert base64 string to byte
+    const myuuid = uuidv4();
+    const fileName = '../frontend/public/' + myuuid + '.' + fileType;
+    fs.writeFile(fileName, binaryData, (err) => { // Write the binary data to a file using fs.writeFile
+      if (err) {
+        console.error('Error writing to file:', err);
+      } else {
+        console.log(`Binary data has been written to ${fileName}`);
+      }
+    });
+    ctx.status = 200;
+    // ctx.body = { uuid: myuuid };
+  } catch (error) {
+    console.error('Error processing request:', error);
+    ctx.status = 500; // Internal Server Error
+    // ctx.body = 'Internal Server Error';
+  }
+});
 
 app.use(imageRouter
   .prefix('/image')
