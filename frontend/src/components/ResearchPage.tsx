@@ -106,7 +106,7 @@ export default function ResearchPage() {
                       <div className="pplname" style={{position: 'relative'}}>
                         {dummy.title}
                       </div>
-                      <ul>
+                      <ul style={{paddingLeft: 'unset'}}>
                         <li 
                           className="card-text-content"
                           style={{listStyleType: 'none'}}
@@ -115,7 +115,7 @@ export default function ResearchPage() {
                         </li>
                         <br />
                         <li 
-                          className="card-text-content"
+                          className="card-footer-ref"
                           style={{listStyleType: 'none'}}
                         >
                           {'('+dummy.reference+')'}

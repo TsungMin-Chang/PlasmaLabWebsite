@@ -10,23 +10,24 @@ import FormControl from '@mui/material/FormControl';
 import Button from "@mui/material/Button";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
+import dayjs from 'dayjs';
 
 import { StudentInfoProps, CreatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import type { DegreeDataProp } from "../PeoplePage";;
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPeopleDialogProps = {
@@ -34,24 +35,15 @@ type NewPeopleDialogProps = {
   onClose: () => void;
 };
 
-type DegreeDataProp = {
-  school: string;
-  department: string;
-  yearStart: number;
-  yearEnd: number | null;
-};
-
-const steps = ['', '', '', ''];
-
 export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps) {
 
-  const [name, setName] = useState<string>("");
+  const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
+  const steps = ['', '', '', '', ''];
+
+  const [name, setName] = useState<string | null >(null);
   const [position, setPosition] = useState<number | null>(null);
   const [imageString, setImageString] = useState({imageName: "", image: ""});
-  const [bsStudentInfo, setbsStudentInfo] = useState<StudentInfoProps>({});
-  const [msStudentInfo, setmsStudentInfo] = useState<StudentInfoProps>({});
-  const [phdStudentInfo, setphdStudentInfo] = useState<StudentInfoProps>({});
-  const [buffer, setBuffer] = useState<DegreeDataProp>({school: "", department: "", yearStart: -1, yearEnd: null});
+  const [buffer, setBuffer] = useState<{[key: string]: DegreeDataProp}>({});
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
@@ -65,107 +57,50 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
     // get file in base64 String
     const fakeFile = e.currentTarget.files;
     if (!fakeFile) return;
+
     const file = fakeFile[0];
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      // save my image data
+      // save data
       setImageString({imageName: fileName[1], image: base64String});
     };
     // Read the file as a data URL, which will be base64-encoded
     reader.readAsDataURL(file);
   }
 
-  const handleSave = async () => {
-  
-    console.log(name);
-    console.log(position);
-    console.log(imageString.imageName);
-    console.log(bsStudentInfo);
-    console.log(msStudentInfo); 
-    console.log(phdStudentInfo); 
-
-    try {
-      // POST request sends file name and file
-      await axios.post('/image', imageString);
-    } catch {
-      alert("Error: Failed to save uploaded image!");
-      handleClose();
-      return;
-    }
-
-    try {
-      await api.createPeopleData( {name, position, imgPath: imageString.imageName, bs: bsStudentInfo, ms: msStudentInfo, phd: phdStudentInfo} as CreatePersonDataProp );
-    } catch {
-      alert("Error: Failed to create a new member!");
-    } finally {
-      handleClose();
-    }
-
-  };
-
-  const handleClose = () => {
-    setName("");
-    setPosition(null);
-    setImageString({imageName: "", image: ""});
-    setbsStudentInfo({});
-    setmsStudentInfo({});
-    setphdStudentInfo({});
-    setBuffer({school: "", department: "", yearStart: -1, yearEnd: null});
-    setActiveStep(0);
-    onClose();
-  }
-
   const handleNext = () => {
 
     if (activeStep === 0) {
+
       if (!name) {
         alert("Name cannot be blank!");
         return;
       }
-      if (!position) {
+
+      if (position === null) {
         alert("Position cannot be blank!");
         return;
       }
+
       if (!imageString.image || !imageString.imageName) {
         alert("Please upload an image!");
         return;
       }
-    } else if (activeStep < steps.length) {
       
-      if (!buffer.school || !buffer.department || !buffer.yearStart) {
+    } else if (activeStep < steps.length - 1) {
+
+      if (!buffer[activeStep] || !buffer[activeStep].school || !buffer[activeStep].department || !buffer[activeStep].yearStart || buffer[activeStep].yearStart === -1) {
         alert('Please fill out the form completely or press "SKIP" to skip!');
         return;
       }
-
-      if (buffer.school && buffer.department && buffer.yearStart) {
-        if (activeStep === 1) {
-          setbsStudentInfo({
-            bsDegree: 1, 
-            bsSchool: buffer.school, 
-            bsDepartment: buffer.department, 
-            bsYearStart: buffer.yearStart,
-            bsYearEnd: !buffer.yearEnd ? -1 : buffer.yearEnd 
-          });
-        } else if (activeStep === 2) {
-          setmsStudentInfo({
-            msDegree: 2,
-            msSchool: buffer.school, 
-            msDepartment: buffer.department, 
-            msYearStart: buffer.yearStart,
-            msYearEnd: !buffer.yearEnd ? -1 : buffer.yearEnd 
-          });
-        } else if (activeStep === 3) {
-          setphdStudentInfo({
-            phdDegree: 3,
-            phdSchool: buffer.school, 
-            phdDepartment: buffer.department, 
-            phdYearStart: buffer.yearStart,
-            phdYearEnd: !buffer.yearEnd ? -1 : buffer.yearEnd 
-          });
-        }
-        setBuffer({school: "", department: "", yearStart: -1, yearEnd: null});
+      
+      if (buffer[activeStep].yearEnd && buffer[activeStep].yearEnd !== -1 && buffer[activeStep].yearEnd < buffer[activeStep].yearStart) {
+        alert("The year you finish should not be earlier than the year you start!");
+        return;
       }
+      
+      setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], degree: activeStep, yearEnd: buffer[activeStep].yearEnd ?? -1 }});
 
     }
 
@@ -178,12 +113,47 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
 
-    if (activeStep === steps.length - 1) handleSave();
+  };
+
+  const handleSave = async () => {
+  
+    console.log(name);
+    console.log(position);
+    console.log(imageString.imageName);
+    console.log(buffer);
+    
+    handleClose();
+
+    // try {
+    //   // POST request sends file name and file
+    //   await axios.post('/image', imageString);
+    // } catch {
+    //   alert("Error: Failed to save uploaded image!");
+    //   handleClose();
+    //   return;
+    // }
+
+    // try {
+    //   await api.createPeopleData( {name, position, imgPath: imageString.imageName, bs: bsStudentInfo, ms: msStudentInfo, phd: phdStudentInfo} as CreatePersonDataProp );
+    // } catch {
+    //   alert("Error: Failed to create a new member!");
+    // } finally {
+    //   handleClose();
+    // }
 
   };
 
+  const handleClose = () => {
+    setName(null);
+    setPosition(null);
+    setImageString({imageName: "", image: ""});
+    setBuffer({});
+    setActiveStep(0);
+    onClose();
+  }
+
   const isStepOptional = (step: number) => {
-    return step !== 0;
+    return step !== 0 && step !== steps.length - 1;
   };
 
   const isStepSkipped = (step: number) => {
@@ -211,41 +181,39 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <Box sx={{ width: '100%' }}>
       <DialogTitle className="flex gap-4">
-        <Stepper activeStep={activeStep} style={{color: 'rgb(46, 39, 31)', backgroundColor: 'rgb(230, 230, 230)'}}>
-          {steps.map((label, index) => {
-            const stepProps: { completed?: boolean } = {};
-            const labelProps: {
-              optional?: React.ReactNode;
-            } = {};
-            if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
+        <Box sx={{ width: '100%' }}>
+          <Stepper activeStep={activeStep} style={{color: 'rgb(46, 39, 31)', backgroundColor: 'rgb(230, 230, 230)'}}>
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: {
+                optional?: React.ReactNode;
+              } = {};
+              if (isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps} style={{fontSize: 30}}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
               );
-            }
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps} style={{fontSize: 30}}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
+            })}
+          </Stepper>
+        </Box>
       </DialogTitle>
-      </Box>
       <DialogContent className="w-[600px]">
-        { activeStep === steps.length ? (
-          <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            Great - you are all set!
-          </Alert>
-        ) : (
+        {activeStep === 0 || activeStep === steps.length - 1? (
           <>
-            { activeStep === 0 ? (
+            {activeStep === 0 && (
               <>
+                <Typography gutterBottom variant="h5" component="div">
+                  Personal Information Page
+                </Typography>
                 <FormControl sx={{ m: 1, minWidth: 510 }}>
                   <ClickAwayListener
                     onClickAway={() => {}}
@@ -278,7 +246,6 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                   <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>Upload a profile picture</Form.Label>
                     <Form.Control
-                      style={{ display: imageString.imageName }}
                       type="file"
                       required
                       name="file"
@@ -287,85 +254,115 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                   </Form.Group>
                 </FormControl>
               </>
-            ) : (
-              <>
-                <FormControl sx={{ m: 1, minWidth: 510 }}>
-                  <ClickAwayListener
-                    onClickAway={() => {}}
-                  >
-                    <Input
-                      autoFocus
-                      value={buffer.school}
-                      onChange={(e) => setBuffer({...buffer, school: e.target.value})}
-                      className="grow"
-                      placeholder="Enter School Name..."
-                    />
-                  </ClickAwayListener>
-                </FormControl>
-                <FormControl sx={{ m: 1, minWidth: 510 }}>
-                  <ClickAwayListener
-                    onClickAway={() => {}}
-                  >
-                    <Input
-                      value={buffer.department}
-                      autoFocus
-                      onChange={(e) => {setBuffer({...buffer, department: e.target.value})}}
-                      className="grow"
-                      placeholder="Enter Department Name..."
-                    />
-                  </ClickAwayListener> 
-                </FormControl>
-                <FormControl sx={{ m: 1 }}> 
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']}>
-                      <FormControl sx={{ minWidth: 510 }}>
-                        <DatePicker
-                          views={['year']}
-                          label='Enter the year you start...'
-                          openTo="year" 
-                          onChange={(e: any) => setBuffer({...buffer, yearStart: !e ? null : e['$y']})}
-                        />
-                      </FormControl>
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </FormControl>
-                <FormControl sx={{ m: 1 }}> 
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']}>
-                      <FormControl sx={{ minWidth: 510 }}>
-                        <DatePicker
-                          views={['year']}
-                          label='Enter the year you finish... (leave blank if studying)'
-                          openTo="year" 
-                          onChange={(e: any) => setBuffer({...buffer, yearEnd: !e ? null : e['$y']})}
-                        />
-                      </FormControl>
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </FormControl>
-              </>
             )}
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
+            {activeStep === steps.length - 1 && (
+              <FormControl sx={{ m: 1, minWidth: 510 }}>
+                <Alert severity="info">
+                  <AlertTitle>Submission</AlertTitle>
+                  Your information will be sent out — <strong>Are you sure?</strong>
+                </Alert>
+              </FormControl>
+            )}
+          </>
+        ) : (
+          <>
+            <FormControl sx={{ m: 1, minWidth: 510 }}>
+              <Typography gutterBottom variant="h5" component="div">
+                {numberToDegree[activeStep] + " Degree Information Page (optional)"}
+              </Typography>
+              <ClickAwayListener
+                onClickAway={() => {}}
               >
-                Back
-              </Button>
-              <Box sx={{ flex: '1 1 auto' }} />
-              {isStepOptional(activeStep) && (
-                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                  Skip
-                </Button>
-              )}
-              <Button onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </Box>
+                <Input
+                  autoFocus
+                  value={buffer[activeStep]?.school ?? ""}
+                  onChange={(e) => setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], school: e.target.value ?? "" }})}
+                  className="grow"
+                  placeholder="Enter School Name..."
+                />
+              </ClickAwayListener>
+            </FormControl>
+            <FormControl sx={{ m: 1, minWidth: 510 }}>
+              <ClickAwayListener
+                onClickAway={() => {}}
+              >
+                <Input
+                  value={buffer[activeStep]?.department ?? ""}
+                  onChange={(e) => setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], department: e.target.value ?? "" }})}
+                  className="grow"
+                  placeholder="Enter Department Name..."
+                />
+              </ClickAwayListener> 
+            </FormControl>
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 510 }}>
+                    <DatePicker
+                      value={buffer[activeStep]?.yearStart ? (buffer[activeStep].yearStart === -1 ? null : dayjs((buffer[activeStep].yearStart).toString())) : null}
+                      onChange={(e: any) => {
+                        setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearStart: !e ? -1 : e['$y']}});
+                      }}
+                      views={['year']}
+                      label='Enter the year you start...'
+                      openTo="year"
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
+            </FormControl>
+            <FormControl sx={{ m: 1 }}> 
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <FormControl sx={{ minWidth: 510 }}>
+                    <DatePicker
+                      value={buffer[activeStep]?.yearEnd ? (buffer[activeStep].yearEnd === -1 ? null : dayjs((buffer[activeStep].yearEnd).toString())) : null}
+                      onChange={(e: any) => {
+                        setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearEnd: !e ? -1 : e['$y'] }})
+                      }}
+                      views={['year']}
+                      label='Enter the year you finish... (leave blank if studying)'
+                      openTo="year"
+                    />
+                  </FormControl>
+                </DemoContainer>
+              </LocalizationProvider>
+            </FormControl>
           </>
         )}
+        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Button
+            color="inherit"
+            onClick={handleClose}
+            sx={{ mr: 1 }}
+          >
+            Close
+          </Button>
+          <Button
+            color="inherit"
+            disabled={activeStep === 0}
+            onClick={handleBack}
+            sx={{ mr: 1 }}
+          >
+            Back
+          </Button>
+          <Box sx={{ flex: '1 1 auto' }} />
+          {isStepOptional(activeStep) && (
+            <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+              Skip
+            </Button>
+          )}
+          {activeStep < steps.length - 1 && (
+            <Button onClick={handleNext}>
+              Next
+            </Button>
+          )}
+          {activeStep === steps.length - 1 && (
+            <Button onClick={handleSave}>
+              Submit
+            </Button>
+          )}
+        </Box>
       </DialogContent>
     </Dialog>
   )

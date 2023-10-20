@@ -34,10 +34,16 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
 
   const [edittingTitle, setEdittingTitle] = useState(false);
 
-    const handleSave = async () => {
+  const handleSave = async () => {
     
-    // const description = textfieldDescription.current?.value ?? "" ;
-    // const reference = textfieldReference.current?.value ?? "" ;
+    const newDescription = textfieldDescription.current?.value ?? description;
+    const newReference = textfieldReference.current?.value ?? reference;
+
+    console.log(!newTitle ? title : newTitle);
+    console.log(newDescription);
+    console.log(newReference);
+
+    handleClose();
 
     // if (!title) {
     //   alert("Title cannot be blank!");
@@ -76,7 +82,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           >
             <Input
               autoFocus
-              defaultValue={title}
+              value={!newTitle ? title : newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               className="grow"
               placeholder="Enter a title..."
@@ -88,7 +94,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
             className="w-full rounded-md p-2 hover:bg-white/10"
             style={{background: 'transparent', borderRightColor: 'transparent'}}
           >
-            <Typography className="text-start">{title}</Typography>
+            <Typography className="text-start">{!newTitle ? title : newTitle}</Typography>
           </button>
         )}
         </FormControl>
@@ -98,7 +104,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           <TextField
             defaultValue={description}
             inputRef={textfieldDescription}
-            label="Description"
+            label="Research Description"
             variant="outlined"
             multiline
             rows={5}
@@ -109,7 +115,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           <TextField
             defaultValue={reference}
             inputRef={textfieldReference}
-            label="Reference"
+            label="Research Reference"
             variant="outlined"
             multiline
             rows={3}

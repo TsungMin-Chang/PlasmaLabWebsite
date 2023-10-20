@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 
 import { StudentInfoProps, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
-import type { PersonDataProp, DegreeDataProp } from "../PeoplePage";;
+import type { DegreeDataProp } from "../PeoplePage";;
 
 type UpdatePeopleDialogProps = {
   id: string;
@@ -47,48 +47,16 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   const [edittingDepartment, setEdittingDepartment] = useState(false);
 
   const handleSave = async () => {
+
+    // if (buffer[activeStep].yearEnd && buffer[activeStep].yearEnd !== -1 && buffer[activeStep].yearEnd < buffer[activeStep].yearStart) {
+    //   alert("The year you finish should not be earlier than the year you start!");
+    //   return;
+    // }
     
-    if (!newName) {
-      alert("Name cannot be blank!");
-      return;
-    }
-    if (!newPosition) {
-      alert("Position cannot be blank!");
-      return;
-    }
-
-    const bsUpdateInfo = {} as StudentInfoProps;
-    if (newDegree['1'].school && newDegree['1'].department && newDegree['1'].yearStart && newDegree['1'].yearEnd) {
-      bsUpdateInfo.bsDegree = 1;
-      bsUpdateInfo.bsSchool = newDegree['1'].school;
-      bsUpdateInfo.bsDepartment = newDegree['1'].department;
-      bsUpdateInfo.bsYearStart = newDegree['1'].yearStart;
-      bsUpdateInfo.bsYearEnd = newDegree['1'].yearEnd;
-    }
-
-    const msUpdateInfo = {} as StudentInfoProps;
-    if (newDegree['2'].school && newDegree['2'].department && newDegree['2'].yearStart && newDegree['2'].yearEnd) {
-      msUpdateInfo.msDegree = 2;
-      msUpdateInfo.msSchool = newDegree['2'].school;
-      msUpdateInfo.msDepartment = newDegree['2'].department;
-      msUpdateInfo.msYearStart = newDegree['2'].yearStart;
-      msUpdateInfo.msYearEnd = newDegree['2'].yearEnd;
-    }
-
-    const phdUpdateInfo = {} as StudentInfoProps;
-    if (newDegree['3'].school && newDegree['3'].department && newDegree['3'].yearStart && newDegree['3'].yearEnd) {
-      phdUpdateInfo.phdDegree = 3;
-      phdUpdateInfo.phdSchool = newDegree['3'].school;
-      phdUpdateInfo.phdDepartment = newDegree['3'].department;
-      phdUpdateInfo.phdYearStart = newDegree['3'].yearStart;
-      phdUpdateInfo.phdYearEnd = newDegree['3'].yearEnd;
-    }
-
-    console.log(newName);
-    console.log(newPosition);
-    console.log(bsUpdateInfo);
-    console.log(msUpdateInfo); 
-    console.log(phdUpdateInfo); 
+    console.log(id);
+    console.log(!newName ? name : newName);
+    console.log(newPosition === -1 ? position : newPosition);
+    console.log(newDegree);
 
     // try {
     //   await api.updatePeopleData( {id, name, position, bs: bsUpdateInfo, ms: msUpdateInfo, phd: phdUpdateInfo} as UpdatePersonDataProp );
@@ -100,9 +68,9 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   };
 
   const handleClose = () => {
-    // useEffect ??
-    // setName("");
-    // setPosition(null);
+    setNewName(name);
+    setNewPosition(position);
+    setNewDegree(data);
     onClose();
   }
 
@@ -122,8 +90,8 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               >
                 <Input
                   autoFocus
-                  defaultValue={name}
-                  onChange={(e) => setNewName(e.target.value)}
+                  value={!newName ? name : newName}
+                  onChange={(e) => setNewName(e.target.value ?? name)}
                   className="grow"
                   placeholder="Enter Passport English Name..."
                 />
@@ -134,7 +102,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 className="w-full rounded-md p-2 hover:bg-white/10"
                 style={{background: 'transparent', borderRightColor: 'transparent'}}
               >
-                <Typography className="text-start">{name}</Typography>
+                <Typography className="text-start">{!newName ? name : newName}</Typography>
               </button>
             )}
             </FormControl>
@@ -143,7 +111,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               <Select
                 labelId="lab-position"
                 label="position"
-                defaultValue={position}
+                value={newPosition === -1 ? position : newPosition}
                 onChange={(e: any) => setNewPosition(e.target.value)}
               >
                 <MenuItem value={4}>Professor</MenuItem>
@@ -163,8 +131,8 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               >
                 <Input
                   autoFocus
-                  defaultValue={data[key].school}
-                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], school: e.target.value }})}
+                  value={!newDegree[key]?.school ? data[key].school : newDegree[key].school}
+                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], school: e.target.value ?? data[key].school }})}
                   className="grow"
                   placeholder="Enter School Name..."
                 />
@@ -175,7 +143,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 className="w-full rounded-md p-2 hover:bg-white/10"
                 style={{background: 'transparent', borderRightColor: 'transparent'}}
               >
-                <Typography className="text-start">{data[key].school}</Typography>
+                <Typography className="text-start">{!newDegree[key]?.school ? data[key].school : newDegree[key].school}</Typography>
               </button>
             )}
             </FormControl>
@@ -186,8 +154,8 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               >
                 <Input
                   autoFocus
-                  defaultValue={data[key].department}
-                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], department: e.target.value }})}
+                  value={!newDegree[key]?.department ? data[key].department : newDegree[key].department}
+                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], department: e.target.value ?? data[key].department }})}
                   className="grow"
                   placeholder="Enter Department Name..."
                 />
@@ -198,7 +166,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 className="w-full rounded-md p-2 hover:bg-white/10"
                 style={{background: 'transparent', borderRightColor: 'transparent', borderLeftColor: 'transparent', borderTopColor: 'transparent'}}
               >
-                <Typography className="text-start">{data[key].department}</Typography>
+                <Typography className="text-start">{!newDegree[key]?.department ? data[key].department : newDegree[key].department}</Typography>
               </button>
             )}
             </FormControl>
@@ -222,11 +190,11 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 <DemoContainer components={['DatePicker']}>
                   <FormControl sx={{ minWidth: 510 }}>
                     <DatePicker
-                      defaultValue={dayjs(data[key].yearEnd === -1 ? null : (data[key].yearEnd).toString())}
+                      defaultValue={data[key].yearEnd === -1 ? null : dayjs((data[key].yearEnd).toString())}
                       views={['year']}
                       label='Enter the year you finish... (leave blank if studying)'
                       openTo="year" 
-                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearEnd: !e ? null : e['$y'] }})}
+                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearEnd: !e ? data[key].yearEnd : e['$y'] }})}
                     />
                   </FormControl>
                 </DemoContainer>

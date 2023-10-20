@@ -12,6 +12,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 import { CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
@@ -22,10 +23,11 @@ type NewPublicationDialogProps = {
 };
 
 export default function NewPublicationDialog({ open, onClose }: NewPublicationDialogProps) {
-  const [year, setYear] = useState<number | null>(null);
+  const [year, setYear] = useState<number>(-1);
   const textfieldDetail = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
+
     const detail = textfieldDetail.current?.value ?? "" ;
 
     if (!year) {
@@ -37,17 +39,22 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
       return;
     }
 
-    try {
-      await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
-    } catch {
-      alert("Error: Failed to create a new publication!");
-    } finally {
-      handleClose();
-    }
+    console.log(year);
+    console.log(detail);
+
+    handleClose();
+
+    // try {
+    //   await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
+    // } catch {
+    //   alert("Error: Failed to create a new publication!");
+    // } finally {
+    //   handleClose();
+    // }
   };
 
   const handleClose = () => {
-    setYear(null);
+    setYear(-1);
     onClose();
   }
 
@@ -61,8 +68,9 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
                 <DatePicker
                   views={['year']}
                   label='Enter published year...'
-                  openTo="year" 
-                  onChange={(e: any) => setYear(!e ? null : e['$y'])}
+                  openTo="year"
+                  value={year === -1 ? null : dayjs(year.toString())}
+                  onChange={(e: any) => setYear(!e ? -1 : e['$y'])}
                 />
               </FormControl>
             </DemoContainer>
@@ -73,7 +81,7 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldDetail}
-            label="Detail"
+            label="Publication Detail"
             variant="outlined"
             multiline
             rows={5}

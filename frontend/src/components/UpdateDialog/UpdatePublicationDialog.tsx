@@ -31,7 +31,13 @@ export default function UpddatePublicationDialog(props: UpdatePublicationDialogP
   const textfieldDetail = useRef<HTMLInputElement>(null);
 
   const handleSave = async () => {
-    // const detail = textfieldDetail.current?.value ?? "" ;
+
+    const newDetail = textfieldDetail.current?.value ?? "" ;
+
+    console.log(newYear === -1 ? year : newYear);
+    console.log(newDetail);
+
+    handleClose();
 
     // if (!year) {
     //   alert("Year cannot be blank!");
@@ -64,7 +70,7 @@ export default function UpddatePublicationDialog(props: UpdatePublicationDialogP
             <DemoContainer components={['DatePicker']}>
               <FormControl sx={{ minWidth: 510 }}>
                 <DatePicker
-                  defaultValue={dayjs((year).toString())}
+                  defaultValue={newYear === -1 ? dayjs(year.toString()) : dayjs(newYear.toString())}
                   views={['year']}
                   label='Enter published year...'
                   openTo="year"

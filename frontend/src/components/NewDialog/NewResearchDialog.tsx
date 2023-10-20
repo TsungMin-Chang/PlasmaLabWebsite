@@ -69,17 +69,24 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
       return;
     }
 
-    try {
-      // POST request sends imgage file name and image file
-      const response = await axios.post('/image', imageString);
-      console.log('Response Status:', response.status);
-      console.log('Response Data:', response.data);
-      console.log('Request completed successfully.');
-    } catch {
-      alert("Error: Failed to save uploaded image!");
-      handleClose();
-      return;
-    }
+    console.log(title);
+    console.log(imageString.imageName);
+    console.log(description);
+    console.log(reference);
+
+    handleClose();
+
+    // try {
+    //   // POST request sends imgage file name and image file
+    //   const response = await axios.post('/image', imageString);
+    //   console.log('Response Status:', response.status);
+    //   console.log('Response Data:', response.data);
+    //   console.log('Request completed successfully.');
+    // } catch {
+    //   alert("Error: Failed to save uploaded image!");
+    //   handleClose();
+    //   return;
+    // }
 
     // try {
     //   await api.createResearchData( {title, description, reference, imgPath: uuidFileName} as CreateResearchDataProp );
@@ -100,18 +107,18 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
     <Dialog open={open} onClose={onClose}>
       <DialogTitle className="flex gap-4">
         <FormControl sx={{ m: 1, minWidth: 510 }}>
-              <ClickAwayListener
-              onClickAway={() => {}}
-              >
-              <Input
-                autoFocus
-                defaultValue={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="grow"
-                placeholder="Enter a title..."
-              />
-              </ClickAwayListener>
-          </FormControl>
+          <ClickAwayListener
+            onClickAway={() => {}}
+          >
+            <Input
+              autoFocus
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="grow"
+              placeholder="Enter a title..."
+            />
+          </ClickAwayListener>
+        </FormControl>
       </DialogTitle>
       <DialogContent className="w-[600px]">
         <FormControl sx={{ m: 1, minWidth: 510 }}>
@@ -128,16 +135,15 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldDescription}     
-            label="Description"
+            label="Research Description"
             multiline
             rows={5}
-            autoFocus
           />
         </FormControl>
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldReference}
-            label="Reference"
+            label="Research Reference"
             multiline
             rows={3}
           />
