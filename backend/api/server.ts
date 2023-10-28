@@ -31,7 +31,7 @@ export default {
     return [404];
   },
   createResearchData: async _req => {
-    return [401];
+    return [201];
   },
   updateResearchData: async _req => {
     return [401];

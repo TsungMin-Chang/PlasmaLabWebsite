@@ -14,7 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-import { CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
+import { PublicationDataProp, CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPublicationDialogProps = {

@@ -12,7 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
 import TextField from '@mui/material/TextField';
 
-import { CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
+import { ResearchDataProp, CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewResearchDialogProps = {
@@ -74,27 +74,25 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
     console.log(description);
     console.log(reference);
 
+    try {
+      // POST request sends imgage file name and image file
+      const response = await axios.post('/image', imageString);
+      try {
+        // POST request sends research data to store in db
+        await api.createResearchData( {title, description, reference, imgPath: response.data} as CreateResearchDataProp );
+      } catch {
+        alert("Error: Failed to create a new research topic!");
+      } finally {
+        handleClose();
+      }
+    } catch {
+      alert("Error: Failed to save uploaded image!");
+      handleClose();
+      return;
+    }
+
     handleClose();
 
-    // try {
-    //   // POST request sends imgage file name and image file
-    //   const response = await axios.post('/image', imageString);
-    //   console.log('Response Status:', response.status);
-    //   console.log('Response Data:', response.data);
-    //   console.log('Request completed successfully.');
-    // } catch {
-    //   alert("Error: Failed to save uploaded image!");
-    //   handleClose();
-    //   return;
-    // }
-
-    // try {
-    //   await api.createResearchData( {title, description, reference, imgPath: uuidFileName} as CreateResearchDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new publication!");
-    // } finally {
-    //   handleClose();
-    // }
   };
 
   const handleClose = () => {

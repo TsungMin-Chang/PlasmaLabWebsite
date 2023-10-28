@@ -19,7 +19,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-import { StudentInfoProps, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import { UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 import type { DegreeDataProp } from "../PeoplePage";;
 

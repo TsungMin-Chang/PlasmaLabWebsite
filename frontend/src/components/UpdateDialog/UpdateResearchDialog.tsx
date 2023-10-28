@@ -13,7 +13,7 @@ import Input from "@mui/material/Input";
 import TextField from '@mui/material/TextField';
 import Typography from "@mui/material/Typography";
 
-import { CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
+import { UpdateResearchDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type UpdateResearchDialogProps = {

@@ -26,7 +26,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
-import { StudentInfoProps, CreatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import { PersonDataProp, CreatePersonDataProp, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import type { DegreeDataProp } from "../PeoplePage";;
 import api from '../../../../backend/api/generated/ClientAPI';
 

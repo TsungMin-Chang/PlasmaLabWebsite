@@ -42,7 +42,8 @@ imageRouter.post('*', bodyParser({
       }
     });
     ctx.status = 200;
-    // ctx.body = { uuid: myuuid };
+    ctx.res.setHeader('Content-Type', 'application/json');
+    ctx.body = { uuid: myuuid };
   } catch (error) {
     console.error('Error processing request:', error);
     ctx.status = 500; // Internal Server Error
