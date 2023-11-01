@@ -1,10 +1,10 @@
 #!/bin/sh
 podman run -d --restart always --replace \
-  --name plasmawebdb \
+  --name plasma-psqldb \
   -e POSTGRES_DB=plasma \
   -e POSTGRES_USER=plasma \
   -e POSTGRES_PASSWORD=harrypotterb09504007 \
   -e PGDATA=/var/lib/postgresql/data \
-  -v plasmalabwebdb:/var/lib/postgresql/data \
-  --net plasmaweb:ip=192.168.7.24 \
+  -v plasma-psqldb:/var/lib/postgresql/data \
+  --pod plasma-pod \
   postgres:16

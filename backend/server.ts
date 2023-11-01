@@ -63,9 +63,9 @@ app.use(apiRouter
 );
 
 // get static files (ex: client looks for index.html)
-app.use(serve('../frontend/dist'))
+app.use(serve('../mnt/dist'))
 
 // get static files (ex: client looks for images)
-app.use(serve('../frontend/public'))
+app.use(serve('../mnt/public'))
 
 app.listen(1724);

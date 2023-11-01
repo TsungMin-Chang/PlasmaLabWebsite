@@ -4,7 +4,6 @@ import {format} from 'node-pg-format';
 const {env} = process;
 export const db = new Pool({
   user: 'plasma',
-  host: '192.168.7.24',
   password: 'harrypotterb09504007',
   port: 5432,
 });

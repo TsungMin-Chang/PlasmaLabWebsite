@@ -6,8 +6,7 @@
     "build": "rm -rf dist/* && mkdir -p dist && webpack",
     "build:dev": "rm -rf dist/* && mkdir -p dist && webpack --watch",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "format": "prettier --write ."
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

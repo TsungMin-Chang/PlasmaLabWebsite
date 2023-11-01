@@ -9,12 +9,9 @@
     "plugins": [],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "#db": ["server/db/index.ts"],
-      "#server/*": ["server/*"],
+      "#db": ["db/index.ts"],
       "#api/*": ["api/generated/*"],
-      "#ServerAPI": ["api/server.ts"],
-      "#data/*": ["server/data/*"]
+      "#ServerAPI": ["api/server.ts"]
     },
     "target": "es2022",
     "jsx": "react-jsx",
@@ -27,7 +24,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "./",
@@ -36,9 +33,6 @@
   "exclude": [
     "dist",
     "node_modules/",
-    "./server-dev.ts",
-    "../api/generated/ClientAPI.ts",
-    "../api/dummy.ts",
-    "../api/dummy/"
+    "../api/generated/ClientAPI.ts"
   ]
 }
