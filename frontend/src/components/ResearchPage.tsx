@@ -9,13 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-export type ResearchDataProp = {
-  id: string;
-	title: string;
-	imgPath: string;
-	description: string;
-	reference: string;
-};
+import { ResearchDataProp } from "../../../backend/api/generated/schemas";
+import api from '../../../backend/api/generated/ClientAPI';
 
 export default function ResearchPage() {
     const dummys: ResearchDataProp[] = [

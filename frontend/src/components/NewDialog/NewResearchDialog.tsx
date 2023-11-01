@@ -12,7 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Input from "@mui/material/Input";
 import TextField from '@mui/material/TextField';
 
-import { ResearchDataProp, CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
+import { CreateResearchDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewResearchDialogProps = {
@@ -74,6 +74,8 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
     console.log(description);
     console.log(reference);
 
+    // handleClose();
+
     try {
       // POST request sends imgage file name and image file
       const response = await axios.post('/image', imageString);
@@ -82,16 +84,14 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
         await api.createResearchData( {title, description, reference, imgPath: response.data} as CreateResearchDataProp );
       } catch {
         alert("Error: Failed to create a new research topic!");
-      } finally {
-        handleClose();
+        return;
       }
     } catch {
       alert("Error: Failed to save uploaded image!");
-      handleClose();
       return;
+    } finally {
+      handleClose();
     }
-
-    handleClose();
 
   };
 

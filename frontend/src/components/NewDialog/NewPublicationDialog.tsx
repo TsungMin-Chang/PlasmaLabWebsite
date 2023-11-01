@@ -14,7 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-import { PublicationDataProp, CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
+import { CreatePublicationDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPublicationDialogProps = {
@@ -42,15 +42,18 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
     console.log(year);
     console.log(detail);
 
-    handleClose();
+    // handleClose();
 
-    // try {
-    //   await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new publication!");
-    // } finally {
-    //   handleClose();
-    // }
+    try {
+      // POST request sends people data to store in db
+      await api.createPublicationData( {year, detail} as CreatePublicationDataProp ); 
+    } catch {
+      alert("Error: Failed to save uploaded image!");
+      return;
+    } finally {
+      handleClose();
+    }
+    
   };
 
   const handleClose = () => {

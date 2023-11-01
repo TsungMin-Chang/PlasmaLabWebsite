@@ -9,11 +9,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 
-export type PublicationDataProp = {
-  id: string;
-	year: number;
-	detail: string;
-};
+import { PublicationDataProp } from "../../../backend/api/generated/schemas";
+import api from '../../../backend/api/generated/ClientAPI';
 
 export default function PublicationPage() {
     const dummys: PublicationDataProp[] = [
