@@ -11,17 +11,8 @@ import NewPeopleDialog from '@/components/NewDialog/NewPeopleDialog';
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-export type PersonDataProp = {
-  id: string;
-  position: number;
-  imgPath: string;
-  name: string;
-  degree: number;
-  department: string;
-  school: string;
-  yearStart: number;
-  yearEnd: number;
-};
+import { PersonDataProp } from "../../../backend/api/generated/schemas";
+import api from '../../../backend/api/generated/ClientAPI';
 
 export type DegreeDataProp = {
   degree: number;

@@ -26,7 +26,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
-import { PersonDataProp, CreatePersonDataProp, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import { CreatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import type { DegreeDataProp } from "../PeoplePage";;
 import api from '../../../../backend/api/generated/ClientAPI';
 
@@ -122,24 +122,24 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
     console.log(imageString.imageName);
     console.log(buffer);
     
-    handleClose();
+    // handleClose();
 
-    // try {
-    //   // POST request sends file name and file
-    //   await axios.post('/image', imageString);
-    // } catch {
-    //   alert("Error: Failed to save uploaded image!");
-    //   handleClose();
-    //   return;
-    // }
-
-    // try {
-    //   await api.createPeopleData( {name, position, imgPath: imageString.imageName, bs: bsStudentInfo, ms: msStudentInfo, phd: phdStudentInfo} as CreatePersonDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new member!");
-    // } finally {
-    //   handleClose();
-    // }
+    try {
+      // POST request sends imgage file name and image file
+      const response = await axios.post('/image', imageString);
+      try {
+        // POST request sends people data to store in db
+        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer.bs, ms: buffer.ms, phd: buffer.phd} as CreatePersonDataProp );
+      } catch {
+        alert("Error: Failed to create a new member!");
+        return;
+      }
+    } catch {
+      alert("Error: Failed to save uploaded image!");
+      return;
+    } finally {
+      handleClose();
+    }
 
   };
 

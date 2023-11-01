@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import type { PersonDataProp, DegreeDataProp } from "./PeoplePage";
+import type { DegreeDataProp } from "./PeoplePage";
+import { PersonDataProp } from "../../../backend/api/generated/schemas";
 import UpdatePeopleDialog from "@/components/UpdateDialog/UpdatePeopleDialog";
 import "../index.css";
 
