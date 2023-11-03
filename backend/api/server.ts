@@ -40,19 +40,19 @@ export default {
         VALUES (%L, %L, %L)
         RETURNING id
       `, name, position, imgPath));
-      if (Object.keys(bs).length === 5) {
+      if (bs && Object.keys(bs).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
         `, id, bs.degree, bs.school, bs.department, bs.yearStart, bs.yearEnd)); 
       }
-      if (Object.keys(ms).length === 5) {
+      if (ms && Object.keys(ms).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
         `, id, ms.degree, ms.school, ms.department, ms.yearStart, ms.yearEnd)); 
       }
-      if (Object.keys(phd).length === 5) {
+      if (phd && Object.keys(phd).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
