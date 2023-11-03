@@ -64,6 +64,7 @@ export default {
     }
   },
   updatePeopleData: async _req => {
+    console.log(_req.body);
     try {
       if (_req.body.bs) {
         const bs = _req.body.bs;
@@ -86,18 +87,16 @@ export default {
         ...keys, ...values));
       }
       if (_req.body.phd) {
-        const phd = _req.body.phd;
-        const keys = Object.keys(phd);
-        const values = Object.values(phd);
-        const count = keys.length;
-        const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-        await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-        ...keys, ...values));
+        const phd: any = _req.body.phd;
+        console.log(phd);
+	const validKeys = Object.keys(phd).filter((key) => phd[key] !== undefined);
+        const result = validKeys.map((key) => '"' + key + '"=\'' + phd[key].toString() + "'");
+        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'3\' AND "peopleId"=\'' + _req.body.id + "'");
       }
       delete(_req.body.bs);
       delete(_req.body.ms);
       delete(_req.body.phd);
+      console.log(_req.body);
       const keys = Object.keys(_req.body);
       const values = Object.values(_req.body);
       const count = keys.length;

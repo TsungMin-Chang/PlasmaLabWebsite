@@ -61,7 +61,7 @@ export default function PeoplePage() {
             'yearEnd': -1
         },
         {
-            'id': '3',
+            'id': '8bb288ca-e303-4633-b29c-b2d081f3dae8',
             'position': 3,
             'imgPath': '/people_images/Min-Hsu2.jpg',
             'name': 'Min-Hsu (Kevin), Tai',
@@ -72,7 +72,7 @@ export default function PeoplePage() {
             'yearEnd': 2019
         },
         {
-            'id': '3',
+            'id': '8bb288ca-e303-4633-b29c-b2d081f3dae8',
             'position': 3,
             'imgPath': '/people_images/Min-Hsu2.jpg',
             'name': 'Min-Hsu (Kevin), Tai',
