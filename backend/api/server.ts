@@ -34,29 +34,29 @@ export default {
   createPeopleData: async _req => {
     try {
       const {name, position, imgPath, bs, ms, phd} = _req.body;
-      console.log('create people data', name, position, imgPath, bs);
-      const id = await db.query(format(`
+      const result = await db.query(format(`
         INSERT INTO peoples ("name", "position", "imgPath")
         VALUES (%L, %L, %L)
         RETURNING id
       `, name, position, imgPath));
+      const [{id: peopleId}] = result.rows;
       if (bs && Object.keys(bs).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
-        `, id, bs.degree, bs.school, bs.department, bs.yearStart, bs.yearEnd)); 
+        `, peopleId, bs.degree, bs.school, bs.department, bs.yearStart, bs.yearEnd)); 
       }
       if (ms && Object.keys(ms).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
-        `, id, ms.degree, ms.school, ms.department, ms.yearStart, ms.yearEnd)); 
+        `, peopleId, ms.degree, ms.school, ms.department, ms.yearStart, ms.yearEnd)); 
       }
       if (phd && Object.keys(phd).length === 5) {
         await db.query(format(`
           INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
           VALUES (%L, %L, %L, %L, %L, %L)
-        `, id, phd.degree, phd.school, phd.department, phd.yearStart, phd.yearEnd)); 
+        `, peopleId, phd.degree, phd.school, phd.department, phd.yearStart, phd.yearEnd)); 
       }
       return [201];
     } catch {

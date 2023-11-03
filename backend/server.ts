@@ -33,7 +33,7 @@ imageRouter.post('*', bodyParser({
     const base64Data = base64.toByteArray(base64String);
     const binaryData = Buffer.from(base64Data); // Convert base64 string to byte
     const myuuid = uuidv4();
-    const fileName = '../frontend/public/' + myuuid + '.' + fileType;
+    const fileName = '../mnt/public/' + myuuid + '.' + fileType;
     fs.writeFile(fileName, binaryData, (err) => { // Write the binary data to a file using fs.writeFile
       if (err) {
         console.error('Error writing to file:', err);
