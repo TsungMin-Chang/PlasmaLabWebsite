@@ -81,7 +81,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
       const response = await axios.post('/image', imageString);
       try {
         // POST request sends research data to store in db
-        await api.createResearchData( {title, description, reference, imgPath: response.data} as CreateResearchDataProp );
+        await api.createResearchData( {title, description, reference, imgPath: response.data.uuid} as CreateResearchDataProp );
       } catch {
         alert("Error: Failed to create a new research topic!");
         return;
