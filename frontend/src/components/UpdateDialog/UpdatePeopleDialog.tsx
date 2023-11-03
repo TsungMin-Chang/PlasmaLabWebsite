@@ -19,9 +19,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-import { UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import { DegreeDataProp, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
-import type { DegreeDataProp } from "../PeoplePage";;
 
 type UpdatePeopleDialogProps = {
   id: string;

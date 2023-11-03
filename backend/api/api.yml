@@ -240,7 +240,7 @@ components:
         yearEnd: {type: number, format: int64}
     DegreeDataProp:
       type: object
-      required: []
+      required: [degree, department, school, yearStart, yearEnd]
       properties:
         degree: {type: number, format: int64}
         department: {type: string}
@@ -249,17 +249,17 @@ components:
         yearEnd: {type: number, format: int64}
     CreatePersonDataProp:
       type: object
-      required: [name, position, imgPath, bs, ms, phd]
+      required: [name, position, imgPath]
       properties:
         name: {type: string}
         position: {type: number, format: int64}
         imgPath: {type: string}
         bs: 
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
         ms: 
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
         phd:
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
     UpdatePersonDataProp:
       type: object
       required: [id]
@@ -268,11 +268,11 @@ components:
         name: {type: string}
         position: {type: number, format: int64}
         bs: 
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
         ms: 
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
         phd:
-          type: {$ref: '#/components/schemas/DegreeDataProp'}
+          $ref: '#/components/schemas/DegreeDataProp'
     ResearchDataProp:
       type: object
       required: [id, title, imgPath, description, reference]

@@ -128,7 +128,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       const response = await axios.post('/image', imageString);
       try {
         // POST request sends people data to store in db
-        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer[1] ?? {}: DegreeDataProp, ms: buffer[2] ?? {}: DegreeDataProp, phd: buffer[3] ?? {}: DegreeDataProp} as CreatePersonDataProp );
+        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer[1] ?? {} as DegreeDataProp, ms: buffer[2] ?? {} as DegreeDataProp, phd: buffer[3] ?? {} as DegreeDataProp} as CreatePersonDataProp );
       } catch {
         alert("Error: Failed to create a new member!");
         return;
@@ -298,7 +298,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                 <DemoContainer components={['DatePicker']}>
                   <FormControl sx={{ minWidth: 510 }}>
                     <DatePicker
-                      value={buffer[activeStep]?.yearStart ? (buffer[activeStep].yearStart === -1 ? null : dayjs((buffer[activeStep].yearStart).toString())) : null}
+                      value={buffer[activeStep]?.yearStart ? ( buffer[activeStep].yearStart === -1 ? null : dayjs((buffer[activeStep].yearStart).toString())) : null}
                       onChange={(e: any) => {
                         setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearStart: !e ? -1 : e['$y']}});
                       }}
