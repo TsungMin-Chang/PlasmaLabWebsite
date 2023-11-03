@@ -19,7 +19,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-import { DegreeDataProp, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
+import { DegreeDataProp, UpdateDegreeDataProp, UpdatePersonDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type UpdatePeopleDialogProps = {
@@ -38,7 +38,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
 
   const [newName, setNewName] = useState(name);
   const [newPosition, setNewPosition] = useState(position);
-  const [newDegree, setNewDegree] = useState<{ [key: string]: DegreeDataProp }>(data);
+  const [newDegree, setNewDegree] = useState<{ [key: string]: UpdateDegreeDataProp }>(data);
   const sortedKeys = Object.keys(data).sort((a, b) => parseInt(a) - parseInt(b));
 
   const [edittingName, setEdittingName] = useState(false);
@@ -52,18 +52,19 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     //   return;
     // }
     
-    console.log(id);
-    console.log(!newName ? name : newName);
-    console.log(newPosition === -1 ? position : newPosition);
-    console.log(newDegree);
+    // console.log(id);
+    // console.log(!newName ? name : newName);
+    // console.log(newPosition === -1 ? position : newPosition);
+    // console.log(newDegree);
 
-    // try {
-    //   await api.updatePeopleData( {id, name, position, bs: bsUpdateInfo, ms: msUpdateInfo, phd: phdUpdateInfo} as UpdatePersonDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new member!");
-    // } finally {
-    //   handleClose();
-    // }
+    try {
+      await api.updatePeopleData( {id, name: newName, position: newPosition, bs: newDegree[1], ms: newDegree[2], phd: newDegree[3]} as UpdatePersonDataProp );
+    } catch {
+      alert("Error: Failed to update an old member!");
+    } finally {
+      handleClose();
+    }
+
   };
 
   const handleClose = () => {

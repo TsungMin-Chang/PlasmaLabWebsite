@@ -65,39 +65,39 @@ export default {
   },
   updatePeopleData: async _req => {
     try {
-      if (_req.body.hasOwnProperty('bs')) {
+      if (_req.body.bs) {
         const bs = _req.body.bs;
-        const keys = Object.keys(!bs);
-        const values = Object.values(!bs);
+        const keys = Object.keys(bs);
+        const values = Object.values(bs);
         const count = keys.length;
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
+        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
         ...keys, ...values));
-        delete(_req.body.bs);
       }
-      if (_req.body.hasOwnProperty('ms')) {
+      if (_req.body.ms) {
         const ms = _req.body.ms;
-        const keys = Object.keys(!ms);
-        const values = Object.values(!ms);
+        const keys = Object.keys(ms);
+        const values = Object.values(ms);
         const count = keys.length;
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
+        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
         ...keys, ...values));
-        delete(_req.body.ms);
       }
-      if (_req.body.hasOwnProperty('phd')) {
+      if (_req.body.phd) {
         const phd = _req.body.phd;
-        const keys = Object.keys(!phd);
-        const values = Object.values(!phd);
+        const keys = Object.keys(phd);
+        const values = Object.values(phd);
         const count = keys.length;
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
+        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
         await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
         ...keys, ...values));
-        delete(_req.body.phd);
       }
+      delete(_req.body.bs);
+      delete(_req.body.ms);
+      delete(_req.body.phd);
       const keys = Object.keys(_req.body);
       const values = Object.values(_req.body);
       const count = keys.length;
