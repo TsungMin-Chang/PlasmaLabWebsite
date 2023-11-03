@@ -69,3 +69,21 @@ app.use(serve('../mnt/dist'))
 app.use(serve('../mnt/public'))
 
 app.listen(1724);
+
+//const serverPath = '/var/run/plasma/api.sock';
+//export default (async () => {
+  //await fs.rm(serverPath, {force: true});
+  //const server = app
+    //.listen(serverPath, async () => {
+       //await fs.chmod(serverPath, 0o777);
+       //console.log(`API Server started: ${serverPath}`);
+     //});
+  //function onDestroy() {
+    //console.log('Cleaning up...');
+    //server.close();
+    //process.exit(0);
+  //}
+  //process.on('SIGINT', onDestroy);
+  //process.on('SIGTERM', onDestroy);
+  //return app; // pass to server-dev.ts
+//})();

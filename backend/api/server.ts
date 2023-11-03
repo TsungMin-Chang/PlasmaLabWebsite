@@ -34,6 +34,7 @@ export default {
   createPeopleData: async _req => {
     try {
       const {name, position, imgPath, bs, ms, phd} = _req.body;
+      console.log('create people data', name, position, imgPath, bs);
       const id = await db.query(format(`
         INSERT INTO peoples ("name", "position", "imgPath")
         VALUES (%L, %L, %L)

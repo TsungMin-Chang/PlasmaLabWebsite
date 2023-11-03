@@ -26,8 +26,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 
-import { CreatePersonDataProp } from "../../../../backend/api/generated/schemas";
-import type { DegreeDataProp } from "../PeoplePage";;
+import { CreatePersonDataProp, DegreeDataProp } from "../../../../backend/api/generated/schemas";
 import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPeopleDialogProps = {
@@ -129,7 +128,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       const response = await axios.post('/image', imageString);
       try {
         // POST request sends people data to store in db
-        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer.bs, ms: buffer.ms, phd: buffer.phd} as CreatePersonDataProp );
+        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer[1] ?? {}: DegreeDataProp, ms: buffer[2] ?? {}: DegreeDataProp, phd: buffer[3] ?? {}: DegreeDataProp} as CreatePersonDataProp );
       } catch {
         alert("Error: Failed to create a new member!");
         return;

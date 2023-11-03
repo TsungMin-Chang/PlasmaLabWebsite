@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "ts-node -r tsconfig-paths/register server.ts",
+    "serve:dev": "ts-node-dev --respawn --notify false -r tsconfig-paths/register --transpile-only --watch .,../api server-dev.ts",
     "migrate": "DATABASE_URL=\"postgres://plasma:harrypotterb09504007@localhost:5432\" ts-node -r tsconfig-paths/register --project /app node_modules/.bin/node-pg-migrate -j ts -m db/migrations",
     "codegen": "api-codegen ./api/api.yml",
     "deploy": "yarn install && yarn run codegen && yarn run deploy2",
@@ -27,6 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
+    "koa-oas3": "^3.0.0",
     "koa-static": "^5.0.0",
     "log4js": "^6.5.2",
     "multer": "^1.4.5-lts.1",
