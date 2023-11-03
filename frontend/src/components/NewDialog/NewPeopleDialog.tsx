@@ -116,12 +116,10 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
 
   const handleSave = async () => {
   
-    console.log(name);
-    console.log(position);
-    console.log(imageString.imageName);
-    console.log(buffer);
-    
-    // handleClose();
+    // console.log(name);
+    // console.log(position);
+    // console.log(imageString.imageName);
+    // console.log(buffer);
 
     try {
       // POST request sends imgage file name and image file
