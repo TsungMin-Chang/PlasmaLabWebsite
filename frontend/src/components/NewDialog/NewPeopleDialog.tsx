@@ -128,7 +128,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       const response = await axios.post('/image', imageString);
       try {
         // POST request sends people data to store in db
-        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer[1] ?? {} as DegreeDataProp, ms: buffer[2] ?? {} as DegreeDataProp, phd: buffer[3] ?? {} as DegreeDataProp} as CreatePersonDataProp );
+        await api.createPeopleData( {name, position, imgPath: response.data, bs: buffer[1], ms: buffer[2], phd: buffer[3]} as CreatePersonDataProp );
       } catch {
         alert("Error: Failed to create a new member!");
         return;
