@@ -41,6 +41,24 @@ paths:
                   $ref: "#/components/schemas/PersonDataProp"
         404:
           description: not found
+    post:
+      tags: [people]
+      summary: add new lab members
+      operationId: createPeoplesData
+      requestBody:
+        description: create new members accounts
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: 
+                $ref: "#/components/schemas/CreatePersonDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
   /people:
     post:
       tags: [people]

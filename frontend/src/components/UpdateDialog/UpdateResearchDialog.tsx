@@ -39,32 +39,17 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
     const newDescription = textfieldDescription.current?.value ?? description;
     const newReference = textfieldReference.current?.value ?? reference;
 
-    console.log(!newTitle ? title : newTitle);
-    console.log(newDescription);
-    console.log(newReference);
+    // console.log(!newTitle ? title : newTitle);
+    // console.log(newDescription);
+    // console.log(newReference);
 
-    handleClose();
-
-    // if (!title) {
-    //   alert("Title cannot be blank!");
-    //   return;
-    // }
-    // if (!description) {
-    //   alert("Description cannot be blank!");
-    //   return;
-    // }
-    // if (!reference) {
-    //   alert("Reference cannot be blank!");
-    //   return;
-    // }
-
-    // try {
-    //   await api.createResearchData( {title, description, reference, imgPath: uuidFileName} as CreateResearchDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new publication!");
-    // } finally {
-    //   handleClose();
-    // }
+    try {
+      await api.updateResearchData( {id, title: !newTitle ? title : newTitle, description: newDescription, reference: newReference} as UpdateResearchDataProp );
+    } catch {
+      alert("Error: Failed to update an old publication!");
+    } finally {
+      handleClose();
+    }
   };
 
   const handleClose = () => {

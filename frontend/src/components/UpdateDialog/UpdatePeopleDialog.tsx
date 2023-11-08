@@ -52,10 +52,10 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     //   return;
     // }
     
-    console.log(id);
-    console.log(!newName ? name : newName);
-    console.log(newPosition === -1 ? position : newPosition);
-    console.log(newDegree);
+    // console.log(id);
+    // console.log(!newName ? name : newName);
+    // console.log(newPosition === -1 ? position : newPosition);
+    // console.log(newDegree);
 
     try {
       await api.updatePeopleData( {id, name: !newName ? name : newName, position: newPosition === -1 ? position : newPosition, bs: newDegree[1], ms: newDegree[2], phd: newDegree[3]} as UpdatePersonDataProp );

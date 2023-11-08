@@ -47,7 +47,6 @@ imageRouter.post('*', bodyParser({
   } catch (error) {
     console.error('Error processing request:', error);
     ctx.status = 500; // Internal Server Error
-    // ctx.body = 'Internal Server Error';
   }
 });
 

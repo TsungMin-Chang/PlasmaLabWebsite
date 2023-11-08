@@ -33,29 +33,18 @@ export default function UpddatePublicationDialog(props: UpdatePublicationDialogP
 
   const handleSave = async () => {
 
-    const newDetail = textfieldDetail.current?.value ?? "" ;
+    const newDetail = textfieldDetail.current?.value ?? detail;
 
-    console.log(newYear === -1 ? year : newYear);
-    console.log(newDetail);
+    // console.log(newYear === -1 ? year : newYear);
+    // console.log(newDetail);
 
-    handleClose();
-
-    // if (!year) {
-    //   alert("Year cannot be blank!");
-    //   return;
-    // }
-    // if (!detail) {
-    //   alert("Detail cannot be blank!");
-    //   return;
-    // }
-
-    // try {
-    //   await api.createPublicationData( {year, detail} as CreatePublicationDataProp );
-    // } catch {
-    //   alert("Error: Failed to create a new publication!");
-    // } finally {
-    //   handleClose();
-    // }
+    try {
+      await api.updatePublicationData( {id, year: newYear === -1 ? year : newYear, detail: newDetail} as UpdatePublicationDataProp );
+    } catch {
+      alert("Error: Failed to update an old publication!");
+    } finally {
+      handleClose();
+    }
   };
 
   const handleClose = () => {

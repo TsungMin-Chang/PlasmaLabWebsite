@@ -31,6 +31,40 @@ export default {
       return [404];
     }
   },
+  createPeoplesData: async _req => {
+    try {
+      await Promise.all(_req.body.map(async (ele: CreatePersonDataProp): Promise<void> => {
+        const {name, position, imgPath, bs, ms, phd} = ele;
+        const result = await db.query(format(`
+          INSERT INTO peoples ("name", "position", "imgPath")
+          VALUES (%L, %L, %L)
+          RETURNING id
+        `, name, position, imgPath));
+        const [{id: peopleId}] = result.rows;
+        if (bs && Object.keys(bs).length === 5) {
+          await db.query(format(`
+            INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
+            VALUES (%L, %L, %L, %L, %L, %L)
+          `, peopleId, bs.degree, bs.school, bs.department, bs.yearStart, bs.yearEnd)); 
+        }
+        if (ms && Object.keys(ms).length === 5) {
+          await db.query(format(`
+            INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
+            VALUES (%L, %L, %L, %L, %L, %L)
+          `, peopleId, ms.degree, ms.school, ms.department, ms.yearStart, ms.yearEnd)); 
+        }
+        if (phd && Object.keys(phd).length === 5) {
+          await db.query(format(`
+            INSERT INTO people_degrees ("peopleId", "degree", "school", "department", "yearStart", "yearEnd")
+            VALUES (%L, %L, %L, %L, %L, %L)
+          `, peopleId, phd.degree, phd.school, phd.department, phd.yearStart, phd.yearEnd)); 
+        }
+      }))
+      return [201]; 
+    } catch {
+      return [404];
+    }
+  },
   createPeopleData: async _req => {
     try {
       const {name, position, imgPath, bs, ms, phd} = _req.body;
@@ -67,31 +101,29 @@ export default {
     console.log(_req.body);
     try {
       if (_req.body.bs) {
-        const bs = _req.body.bs;
-        const keys = Object.keys(bs);
-        const values = Object.values(bs);
-        const count = keys.length;
-        const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-        await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-        ...keys, ...values));
+        const bs: any = _req.body.bs;
+        const validKeys = Object.keys(bs).filter((key) => bs[key] !== undefined);
+        const result = validKeys.map((key) => '"' + key + '"=\'' + bs[key].toString() + "'");
+        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'1\' AND "peopleId"=\'' + _req.body.id + "'");
       }
       if (_req.body.ms) {
-        const ms = _req.body.ms;
-        const keys = Object.keys(ms);
-        const values = Object.values(ms);
-        const count = keys.length;
-        const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-        const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-        await db.query(format("UPDATE people_degrees SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-        ...keys, ...values));
+        const ms: any = _req.body.ms;
+        const validKeys = Object.keys(ms).filter((key) => ms[key] !== undefined);
+        const result = validKeys.map((key) => '"' + key + '"=\'' + ms[key].toString() + "'");
+        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'2\' AND "peopleId"=\'' + _req.body.id + "'");
       }
       if (_req.body.phd) {
         const phd: any = _req.body.phd;
-        console.log(phd);
-	const validKeys = Object.keys(phd).filter((key) => phd[key] !== undefined);
-        const result = validKeys.map((key) => '"' + key + '"=\'' + phd[key].toString() + "'");
-        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'3\' AND "peopleId"=\'' + _req.body.id + "'");
+        const temp: any = [];
+        const validKeys = Object.keys(phd).filter((key) => phd[key] !== undefined);
+        const validValues = validKeys.map((key) => phd[key]);
+        const count = validKeys.length;
+        Array.from({length: count}, (_, i) => i).map((i) => temp.push(validKeys[i], validValues[i]));
+        const temp2 = Array.from({length: count}, (_, i) => i).map((i) => '%I=%L').join(',');
+        await db.query(format(`
+          UPDATE people_degrees SET ${temp2} 
+          WHERE "degree"='3' AND "peopleId"='${_req.body.id}'
+        `, ...temp));
       }
       delete(_req.body.bs);
       delete(_req.body.ms);
