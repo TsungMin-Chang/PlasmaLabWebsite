@@ -29,17 +29,17 @@ module.exports = {
     'no-useless-rename': 'warn',
     'no-useless-computed-key': 'warn',
     'no-extra-parens': [
-      "error", "all", { 
-        "nestedBinaryExpressions": false,
-        "ignoreJSX": "all",
+      'error', 'all', {
+        'nestedBinaryExpressions': false,
+        'ignoreJSX': 'all',
       },
     ],
     'no-var': 'warn',
-    'space-infix-ops': ["error", { "int32Hint": false }],
+    'space-infix-ops': ['error', {'int32Hint': false}],
     'no-lonely-if': 'warn',
     'no-lone-blocks': 'warn',
     'no-label-var': 'warn',
-    'no-unneeded-ternary': ["error", { "defaultAssignment": true }],
-    'newline-per-chained-call': ['warn', { "ignoreChainWithDepth": 1 }],
+    'no-unneeded-ternary': ['error', {'defaultAssignment': true}],
+    'newline-per-chained-call': ['warn', {'ignoreChainWithDepth': 1}],
   },
 };

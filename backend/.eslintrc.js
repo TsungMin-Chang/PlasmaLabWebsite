@@ -1,31 +1,45 @@
 module.exports = {
   env: {
-    es2021: true,
+    browser: true,
+    es6: true,
     node: true,
   },
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: [".eslintrc.{js,cjs}"],
-      parserOptions: {
-        sourceType: "script",
-      },
-    },
+  extends: [
+    '@sup39/eslint-config-typescript',
   ],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+    GeolocationPosition: 'readonly',
   },
-  plugins: ["@typescript-eslint"],
+  parserOptions: {
+    ecmaVersion: 2022,
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+  },
+  plugins: [
+    '@typescript-eslint',
+  ],
   rules: {
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      { prefer: "type-imports", fixStyle: "separate-type-imports" },
+    'require-atomic-updates': 'off',
+    'no-useless-call': 'warn',
+    'no-useless-concat': 'warn',
+    'no-useless-escape': 'error',
+    'no-useless-return': 'warn',
+    'no-useless-rename': 'warn',
+    'no-useless-computed-key': 'warn',
+    'no-extra-parens': [
+      'error', 'all', {
+        'nestedBinaryExpressions': false,
+        'ignoreJSX': 'all',
+      },
     ],
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    'no-var': 'warn',
+    'space-infix-ops': ['error', {'int32Hint': false}],
+    'no-lonely-if': 'warn',
+    'no-lone-blocks': 'warn',
+    'no-label-var': 'warn',
+    'no-unneeded-ternary': ['error', {'defaultAssignment': true}],
+    'newline-per-chained-call': ['warn', {'ignoreChainWithDepth': 1}],
   },
 };
