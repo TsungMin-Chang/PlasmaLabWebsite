@@ -46,7 +46,7 @@ paths:
       summary: add new lab members
       operationId: createPeoplesData
       requestBody:
-        description: create new members accounts
+        description: create new members
         required: true
         content:
           application/json:
@@ -124,6 +124,24 @@ paths:
                   $ref: "#/components/schemas/ResearchDataProp"
         404:
           description: not found
+    post:
+      tags: [research]
+      summary: add new research topics
+      operationId: createResearchsData
+      requestBody:
+        description: create new research topics
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CreateResearchDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
   /research:
     post:
       tags: [research]
@@ -189,6 +207,24 @@ paths:
                   $ref: "#/components/schemas/PublicationDataProp"
         404:
           description: not found
+    post:
+      tags: [publication]
+      summary: add new publications
+      operationId: createPublicationsData
+      requestBody:
+        description: create new publications
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CreatePublicationDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
   /publication:
     post:
       tags: [publication]

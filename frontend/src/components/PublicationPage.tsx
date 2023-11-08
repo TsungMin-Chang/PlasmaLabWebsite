@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../index.css";
 import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
@@ -13,33 +13,17 @@ import { PublicationDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 export default function PublicationPage() {
-    const dummys: PublicationDataProp[] = [
-        {
-            'id': '1',
-            'year': 2022,
-            'detail': 'Lin, K.-Y., Liang, C.-S., Hsu, C.-C., Lin, S.-L., Chen, Y.-T., Huang, F.-S., Wang, S.-L., Jang, J.-S., and Lu, Y.-W., “Optoelectronic online monitoring system for hemodialysis and its data analysis.” Sensors and Actuators B: Chemical 2022, 364, 131859.'
-        },
-        {
-            'id': '2',
-            'year': 2022,
-            'detail': 'Lai, J.-Y., Hsu, C.-C., and Chen, J.-Z., “Comparison between atmospheric-pressure-plasma-jet-processed and furnace-calcined rGO-MnOx nanocomposite electrodes for gel-electrolyte supercapacitors.” Journal of Alloys and Compounds 2022, 165006.'
-        },
-        {
-            'id': '3',
-            'year': 2021,
-            'detail': 'Wang, C.-Y., Ko, T.-S., and Hsu, C.-C., “Machine Learning with Explainable Artificial Intelligence Vision for Characterization of Solution Conductivity Using Optical Emission Spectroscopy of Plasma in Aqueous Solution.” Plasma Processes and Polymers 2021, e2100096.'
-        },
-        {
-            'id': '4',
-            'year': 2021,
-            'detail': 'Wang, C.-Y., Ko, T.-S., and Hsu, C.-C., “Interpreting convolutional neural network for real-time volatile organic compounds detection and classification using optical emission spectroscopy of plasma.” Analytica Chimica Acta 2021, 1179, 338822.'
-        },
-        {
-            'id': '5',
-            'year': 2020,
-            'detail': 'Tsai, J.-H., Cheng, I. C., Hsu, C.-C., and Chen, J.-Z., “Low-Temperature (<40 °C) Atmospheric-Pressure Dielectric-Barrier-Discharge-Jet Treatment on Nickel Oxide for p–i–n Structure Perovskite Solar Cells.” ACS Omega 2020, 5 (11), 6082-6089.'
-        }
-    ]
+  
+  const [dummys, setDummys]  = useState([] as PublicationDataProp[])
+  useEffect(()=>{
+    api.getPublicationsData()
+      .on(200, data => {
+        setDummys(data)  
+      })
+      .on(404, error=>{
+         alert(error)
+      });
+  },[setDummys])
 
   const yearLabel: { [key: string]: PublicationDataProp[] } = {};
   dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);

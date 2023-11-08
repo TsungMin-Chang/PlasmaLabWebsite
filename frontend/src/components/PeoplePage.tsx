@@ -15,129 +15,17 @@ import { PersonDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 export default function PeoplePage() {
-    const dummys: PersonDataProp[] = [
-        {
-            'id': '1',
-            'position': 4,
-            'imgPath': '/people_images/checheteacher.jpeg',
-            'name': 'Cheng-Che (Jerry), Hsu',
-            'degree': 3,
-            'department': 'Chemical Engineering',
-            'school': 'UC Berkeley', 
-            'yearStart': 2002,
-            'yearEnd': 2006
-        },
-        {
-            'id': '1',
-            'position': 4,
-            'imgPath': '/people_images/checheteacher.jpeg',
-            'name': 'Cheng-Che (Jerry), Hsu',
-            'degree': 2,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 1996,
-            'yearEnd': 1998
-        },
-        {
-            'id': '1',
-            'position': 4,
-            'imgPath': '/people_images/checheteacher.jpeg',
-            'name': 'Cheng-Che (Jerry), Hsu',
-            'degree': 1,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 1992,
-            'yearEnd': 1996
-        },
-        {
-            'id': '2',
-            'position': 1,
-            'imgPath': '/people_images/sandra2.jpg',
-            'name': 'Tsung-Min (Sandra), Chang',
-            'degree': 1,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 2020,
-            'yearEnd': -1
-        },
-        {
-            'id': '8bb288ca-e303-4633-b29c-b2d081f3dae8',
-            'position': 3,
-            'imgPath': '/people_images/Min-Hsu2.jpg',
-            'name': 'Min-Hsu (Kevin), Tai',
-            'degree': 1,
-            'department': 'Chemical Engineering',
-            'school': 'National Cheng Kung University', 
-            'yearStart': 2015,
-            'yearEnd': 2019
-        },
-        {
-            'id': '8bb288ca-e303-4633-b29c-b2d081f3dae8',
-            'position': 3,
-            'imgPath': '/people_images/Min-Hsu2.jpg',
-            'name': 'Min-Hsu (Kevin), Tai',
-            'degree': 3,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 2019,
-            'yearEnd': -1
-        },
-        {
-            'id': '4',
-            'position': 2,
-            'imgPath': '/people_images/Chen,Jian-Ti.jpg',
-            'name': 'Jian-Ti, Chen',
-            'degree': 2,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 2022,
-            'yearEnd': -1
-        },
-        {
-            'id': '4',
-            'position': 2,
-            'imgPath': '/people_images/Chen,Jian-Ti.jpg',
-            'name': 'Jian-Ti, Chen',
-            'degree': 1,
-            'department': 'Chemical Engineering',
-            'school': 'National Cheng Kung University', 
-            'yearStart': 2018,
-            'yearEnd': 2022
-        },
-        {
-            'id': '5',
-            'position': 2,
-            'imgPath': '/people_images/Po-Chien,Chang.jpg',
-            'name': 'Po-Chien, Chang',
-            'degree': 2,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 2022,
-            'yearEnd': -1
-        },
-        {
-            'id': '5',
-            'position': 2,
-            'imgPath': '/people_images/Po-Chien,Chang.jpg',
-            'name': 'Po-Chien, Chang',
-            'degree': 1,
-            'department': 'Double Major in Environmental and Chemical Engineering',
-            'school': 'National Cheng Kung University', 
-            'yearStart': 2016,
-            'yearEnd': 2021
-        },
-        {
-            'id': '6',
-            'position': 0,
-            'imgPath': '/people_images/Tsung-ShunKo.jpg',
-            'name': 'Tsung-Shun, Ko',
-            'degree': 2,
-            'department': 'Chemical Engineering',
-            'school': 'National Taiwan University', 
-            'yearStart': 2019,
-            'yearEnd': 2021
-        }
-    ]
+
+  const [dummys, setDummys]  = useState([] as PersonDataProp[])
+  useEffect(()=>{
+    api.getPeoplesData()
+      .on(200, data => {
+        setDummys(data)  
+      })
+      .on(404, error=>{
+         alert(error)
+      });
+  },[setDummys])
 
   const [newPeopleDialogOpen, setNewPeopleDialogOpen] = useState(false);
 

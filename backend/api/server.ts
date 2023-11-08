@@ -17,14 +17,14 @@ export default {
           p.id AS id, 
           p.name AS name,
           p.position AS position,
-          p.imgPath AS imgPath,
+          p."imgPath" AS "imgPath",
           pd.degree AS degree,
           pd.school AS school,
           pd.department AS department,
-          pd.yearStart AS yearStart,
-          pd.yearEnd AS yearEnd,
+          pd."yearStart" AS "yearStart",
+          pd."yearEnd" AS "yearEnd"
         FROM peoples AS p
-        INNER JOIN people_degrees AS pd ON p.id=pd.peopleId
+        INNER JOIN people_degrees AS pd ON p.id=pd."peopleId"
       `));
       return [200, r.map(PersonDataProp.from)];
     } catch {
@@ -98,19 +98,33 @@ export default {
     }
   },
   updatePeopleData: async _req => {
-    console.log(_req.body);
+    // console.log(_req.body);
     try {
       if (_req.body.bs) {
         const bs: any = _req.body.bs;
+        const temp: any = [];
         const validKeys = Object.keys(bs).filter((key) => bs[key] !== undefined);
-        const result = validKeys.map((key) => '"' + key + '"=\'' + bs[key].toString() + "'");
-        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'1\' AND "peopleId"=\'' + _req.body.id + "'");
+        const validValues = validKeys.map((key) => bs[key]);
+        const count = validKeys.length;
+        Array.from({length: count}, (_, i) => i).map((i) => temp.push(validKeys[i], validValues[i]));
+        const temp2 = Array.from({length: count}, (_, i) => i).map((i) => '%I=%L').join(',');
+        await db.query(format(`
+          UPDATE people_degrees SET ${temp2} 
+          WHERE "degree"='1' AND "peopleId"='${_req.body.id}'
+        `, ...temp));
       }
       if (_req.body.ms) {
         const ms: any = _req.body.ms;
+        const temp: any = [];
         const validKeys = Object.keys(ms).filter((key) => ms[key] !== undefined);
-        const result = validKeys.map((key) => '"' + key + '"=\'' + ms[key].toString() + "'");
-        await db.query('UPDATE people_degrees SET ' + result.join(',') + ' WHERE "degree"=\'2\' AND "peopleId"=\'' + _req.body.id + "'");
+        const validValues = validKeys.map((key) => ms[key]);
+        const count = validKeys.length;
+        Array.from({length: count}, (_, i) => i).map((i) => temp.push(validKeys[i], validValues[i]));
+        const temp2 = Array.from({length: count}, (_, i) => i).map((i) => '%I=%L').join(',');
+        await db.query(format(`
+          UPDATE people_degrees SET ${temp2} 
+          WHERE "degree"='2' AND "peopleId"='${_req.body.id}'
+        `, ...temp));
       }
       if (_req.body.phd) {
         const phd: any = _req.body.phd;
@@ -125,17 +139,9 @@ export default {
           WHERE "degree"='3' AND "peopleId"='${_req.body.id}'
         `, ...temp));
       }
-      delete(_req.body.bs);
-      delete(_req.body.ms);
-      delete(_req.body.phd);
-      console.log(_req.body);
-      const keys = Object.keys(_req.body);
-      const values = Object.values(_req.body);
-      const count = keys.length;
-      const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-      const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-      await db.query(format("UPDATE peoples SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-      ...keys, ...values));
+      // console.log(_req.body);
+      await db.query(format("UPDATE peoples SET name=%L, position=%L WHERE id=%L",
+      _req.body.name, _req.body.position, _req.body.id));
       return [201];
     } catch {
       return [404];
@@ -165,6 +171,20 @@ export default {
       return [404];
     }
   },
+  createResearchsData: async _req => {
+    try {
+      await Promise.all(_req.body.map(async (ele: CreateResearchDataProp): Promise<void> => {
+        const {title, imgPath, description, reference} = ele;
+        await db.query(format(`
+          INSERT INTO researchs ("title", "imgPath", "description", "reference")
+          VALUES (%L, %L, %L, %L)
+        `, title, imgPath, description, reference));
+      }))
+      return [201]; 
+    } catch {
+      return [404];
+    }
+  },
   createResearchData: async _req => {
     try {
       const {title, imgPath, description, reference} = _req.body;
@@ -179,13 +199,9 @@ export default {
   },
   updateResearchData: async _req => {
     try {
-      const keys = Object.keys(_req.body);
-      const values = Object.values(_req.body);
-      const count = keys.length;
-      const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-      const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-      await db.query(format("UPDATE researchs SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-      ...keys, ...values));
+      const {id, title, description, reference} = _req.body; 
+      await db.query(format("UPDATE researchs SET title=%L, description=%L, reference=%L WHERE id=%L",
+      title, description, reference, id));
       return [201];
     } catch {
       return [401];
@@ -212,6 +228,20 @@ export default {
       return [404];
     }
   },
+  createPublicationsData: async _req => {
+    try {
+      await Promise.all(_req.body.map(async (ele: CreatePublicationDataProp): Promise<void> => {
+        const {year, detail} = ele;
+        await db.query(format(`
+          INSERT INTO publications ("year", "detail")
+          VALUES (%L, %L)
+        `, year, detail));
+      }));
+      return [201]; 
+    } catch {
+      return [404];
+    }
+  },
   createPublicationData: async _req => {
     try {
       const {year, detail} = _req.body;
@@ -226,13 +256,9 @@ export default {
   },
   updatePublicationData: async _req => {
     try {
-      const keys = Object.keys(_req.body);
-      const values = Object.values(_req.body);
-      const count = keys.length;
-      const L = (Array.from({length: count}, (_, i) => '%L')).join('","');
-      const I = (Array.from({length: count}, (_, i) => '%I')).join("','");
-      await db.query(format("UPDATE publications SET ( '" + I + "' ) VALUES ( \""+ L + "\" )",
-      ...keys, ...values));
+      const {id, year, detail} = _req.body; 
+      await db.query(format("UPDATE publications SET year=%L, detail=%L WHERE id=%L",
+      year, detail, id));
       return [201];
     } catch {
       return [401];

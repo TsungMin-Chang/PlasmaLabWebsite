@@ -13,37 +13,18 @@ import { ResearchDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 export default function ResearchPage() {
-    const dummys: ResearchDataProp[] = [
-        {
-            'id': '1',
-            'title': 'Analysis of Metallic Elements',
-            'imgPath': '/research_images/liquid.png',
-            'description': 'Development of plasma in solution for various applications. One promising example is metallic element analysis using plasma optical emission spectroscopy.',
-            'reference': 'Reference: C.-Y. Wang and C.-C. Hsu, Environmental Science & Technology 53 (18), 10888-10896 (2019).'
-        },
-        {
-            'id': '2',
-            'title': 'Machine Learning',
-            'imgPath': '/research_images/machinelearning.png',
-            'description': 'Machine learning using plasma spectroscopy for analysis purposes. Following shows an example using CNN for discriminant of volatile organic compounds.',
-            'reference': 'Reference: C.-Y. Wang, T.-S. Ko and C.-C. Hsu, Analytica Chimica Acta 1179, 338822 (2021).'
-        },
-        {
-            'id': '3',
-            'title': 'Portable Plasma System',
-            'imgPath': '/research_images/portable.png',
-            'description': 'Development of various portable and low cost plasma systems. Following shows a portable plasma power source that can be modulated using a mobile phone with a Bluetooth-module.',
-            'reference': 'Reference: NTU ChE Plasma Engineering Lab.'
-        },
-        {
-            'id': '4',
-            'title': 'Materials Processing',
-            'imgPath': '/research_images/materialprocessing.png',
-            'description': 'Using various plasmas sources for materials processing. One novel example is using a microplasma generation device to fabricate microfluidic paper-based analytical devices.',
-            'reference': 'Reference: P.-K. Kao and C.-C. Hsu, Anal. Chem. 86, 8757 (2014).'
-        }
-    ]
-  
+
+  const [dummys, setDummys]  = useState([] as ResearchDataProp[])
+  useEffect(()=>{
+    api.getResearchsData()
+      .on(200, data => {
+        setDummys(data)  
+      })
+      .on(404, error=>{
+         alert(error)
+      });
+  },[setDummys]) 
+
   const [newResearchDialogOpen, setNewResearchDialogOpen] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
 
