@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "../index.css";
-import ProfessorCard from '@/components/ProfessorCard';
-import PhDStudentCard from '@/components/PhDStudentCard';
-import MSStudentCard from '@/components/MSStudentCard';
-import BSStudentCard from '@/components/BSStudentCard';
-import AlumniCard from '@/components/AlumniCard';
+import PersonCard from '@/components/PersonCard';
 import NewPeopleDialog from '@/components/NewDialog/NewPeopleDialog'; 
 
 import IconButton from "@mui/material/IconButton";
@@ -66,27 +62,27 @@ export default function PeoplePage() {
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
           <h4 id="scrollspyHeading1" className="mynav2">Professor</h4>
           <div className="container">
-              <ProfessorCard data={positionLabel['4']}/>
+              <PersonCard data={positionLabel['4']}/>
           </div>
           <br/>
           <h4 id="scrollspyHeading2" className="mynav2">Ph.D. Student</h4>
           <div className="container">
-              <PhDStudentCard data={positionLabel['3']}/> 
+              <PersonCard data={positionLabel['3']}/> 
           </div>
           <br/>
           <h4 id="scrollspyHeading3" className="mynav2">M.S. Student</h4>
           <div className="container">
-              <MSStudentCard data={positionLabel['2']}/>  
+              <PersonCard data={positionLabel['2']}/>  
           </div>
           <br/>
           <h4 id="scrollspyHeading4" className="mynav2">B.S. Student</h4>
           <div className="container">
-              <BSStudentCard data={positionLabel['1']}/>
+              <PersonCard data={positionLabel['1']}/>
           </div>
           <br/>
           <h4 id="scrollspyHeading5" className="mynav2">Alumni</h4>
           <div className="container">
-              <AlumniCard data={positionLabel['0']}/>
+              <PersonCard data={positionLabel['0']}/>
           </div>
         </div>
       </main>

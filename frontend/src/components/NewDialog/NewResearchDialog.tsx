@@ -113,7 +113,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="grow"
-              placeholder="Enter a title..."
+              placeholder="Enter Title"
             />
           </ClickAwayListener>
         </FormControl>
@@ -133,7 +133,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldDescription}     
-            label="Research Description"
+            label="Enter Description"
             multiline
             rows={5}
           />
@@ -141,7 +141,7 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldReference}
-            label="Research Reference"
+            label="Enter Reference"
             multiline
             rows={3}
           />

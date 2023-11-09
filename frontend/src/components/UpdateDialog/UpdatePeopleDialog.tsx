@@ -47,15 +47,31 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
 
   const handleSave = async () => {
 
-    // if (buffer[activeStep].yearEnd && buffer[activeStep].yearEnd !== -1 && buffer[activeStep].yearEnd < buffer[activeStep].yearStart) {
-    //   alert("The year you finish should not be earlier than the year you start!");
-    //   return;
-    // }
-    
     // console.log(id);
     // console.log(!newName ? name : newName);
     // console.log(newPosition === -1 ? position : newPosition);
     // console.log(newDegree);
+
+    if (newDegree[1] && newDegree[1].yearStart && newDegree[1].yearEnd) {
+      if (newDegree[1].yearStart < newDegree[1].yearEnd) {
+        alert("Error: B.S Degree - The year you finish should not be earlier than the year you start!");
+        return;
+      }
+    }
+
+    if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd) {
+      if (newDegree[2].yearStart < newDegree[2].yearEnd) {
+        alert("Error: M.S Degree - The year you finish should not be earlier than the year you start!");
+        return; 
+      }
+    }
+
+    if (newDegree[3] && newDegree[3].yearStart && newDegree[3].yearEnd) {
+      if (newDegree[3].yearStart < newDegree[3].yearEnd) {
+        alert("Error: Ph.D Degree - The year you finish should not be earlier than the year you start!");
+        return;
+      }
+    }
 
     try {
       await api.updatePeopleData( {id, name: !newName ? name : newName, position: newPosition === -1 ? position : newPosition, bs: newDegree[1], ms: newDegree[2], phd: newDegree[3]} as UpdatePersonDataProp );
@@ -93,7 +109,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                   value={!newName ? name : newName}
                   onChange={(e) => setNewName(e.target.value ?? name)}
                   className="grow"
-                  placeholder="Enter Passport English Name..."
+                  placeholder="Enter Passport English Name"
                 />
               </ClickAwayListener>
             ) : (
@@ -134,7 +150,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                   value={!newDegree[key]?.school ? data[key].school : newDegree[key].school}
                   onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], school: e.target.value ?? data[key].school }})}
                   className="grow"
-                  placeholder="Enter School Name..."
+                  placeholder="Enter School Name"
                 />
               </ClickAwayListener>
             ) : (
@@ -157,7 +173,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                   value={!newDegree[key]?.department ? data[key].department : newDegree[key].department}
                   onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], department: e.target.value ?? data[key].department }})}
                   className="grow"
-                  placeholder="Enter Department Name..."
+                  placeholder="Enter Department Name"
                 />
               </ClickAwayListener>
             ) : (
@@ -177,7 +193,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                     <DatePicker
                       defaultValue={dayjs((data[key].yearStart).toString())}
                       views={['year']}
-                      label='Enter the year you start...'
+                      label='Enter the year you start'
                       openTo="year"
                       onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearStart: !e ? data[key].yearStart : e['$y'] }})}
                     />
@@ -192,7 +208,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                     <DatePicker
                       defaultValue={data[key].yearEnd === -1 ? null : dayjs((data[key].yearEnd).toString())}
                       views={['year']}
-                      label='Enter the year you finish... (leave blank if studying)'
+                      label='Enter the year you finish (leave blank if studying)'
                       openTo="year" 
                       onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearEnd: !e ? data[key].yearEnd : e['$y'] }})}
                     />

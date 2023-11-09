@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { DegreeDataProp } from "../../../backend/api/generated/schemas";
-import { PersonDataProp } from "../../../backend/api/generated/schemas";
+import { DegreeDataProp, PersonDataProp } from "../../../backend/api/generated/schemas";
 import UpdatePeopleDialog from "@/components/UpdateDialog/UpdatePeopleDialog";
 import "../index.css";
 
@@ -9,12 +8,14 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import api from '../../../backend/api/generated/ClientAPI';
+
 type dataProp = {
     data: PersonDataProp[];
 };
 
-export default function ProfessorCard({ data }: dataProp) {
-    
+export default function PersonCard({ data }: dataProp) {
+   
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
   const nameLabel: { [key: string]: PersonDataProp[] } = {};
   data.map((ele) => {nameLabel.hasOwnProperty(ele.name) ? nameLabel[ele.name].push({...ele}) : nameLabel[ele.name] = [{...ele}]});
@@ -24,8 +25,8 @@ export default function ProfessorCard({ data }: dataProp) {
 
   return (
     <>
-      {Object.keys(nameLabel).map((key) => (
-        <div className="row">
+      {Object.keys(nameLabel).map((key) => (   
+        <div className="row" key={key}>
           <div className="col-sm-12 col-md-6 col-lg-4 d-flex justify-content-center">
             <img src={nameLabel[key][0].imgPath} className="crop rounded-circle" alt="..."/>
           </div>
@@ -34,7 +35,7 @@ export default function ProfessorCard({ data }: dataProp) {
               <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                 <IconButton 
                   color="error"
-                  onClick={() => {}} 
+                  onClick={async () => await api.deletePeopleData({ id: nameLabel[key][0].id })}
                   style={{zIndex: 3}}
                 >
                   <DeleteIcon />

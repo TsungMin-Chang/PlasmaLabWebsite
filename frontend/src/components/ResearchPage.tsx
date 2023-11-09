@@ -51,7 +51,7 @@ export default function ResearchPage() {
         </nav>
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
           {dummys.map((dummy) => (
-            <div className="card mb-3" id={"scrollspyHeading_"+dummy.id} style={{maxWidth: '1000px'}}>
+            <div className="card mb-3" id={"scrollspyHeading_" + dummy.id} style={{maxWidth: '1000px'}}>
               <div className="row">
                 <div className="col-sm-12 col-lg-7">
                   <br />
@@ -64,7 +64,7 @@ export default function ResearchPage() {
                       <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                         <IconButton 
                           color="error"
-                          onClick={() => {}} 
+                          onClick={async () => await api.deleteResearchData({id: dummy.id})}
                           style={{zIndex: 3}}
                         >
                           <DeleteIcon />

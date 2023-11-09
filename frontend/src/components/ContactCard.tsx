@@ -33,12 +33,13 @@ export default function ContactCard({ open, onClose }: ContactCardProps) {
             </ul>
           </Tab>
           <Tab 
+            className="pplname"
             eventKey="student" 
             title="Student Lab Information" 
             style={{backgroundColor: 'rgb(230, 230, 230)'}}
           >
             <ul 
-              className="list-group list-group-flush" 
+              className="list-group list-group-flush pplname" 
               style={{stroke: 'rgb(46, 39, 31)', fontSize: '1.2rem'}}
             >
               <li className="list-group-item">LAB:    Tseng Jiang Hall (N) N503</li>

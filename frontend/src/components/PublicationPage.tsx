@@ -65,7 +65,7 @@ export default function PublicationPage() {
                     <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                       <IconButton 
                         color="error"
-                        onClick={() => {}}
+                        onClick={async () => await api.deletePublicationData({id: ele.id})}
                         style={{zIndex: 3}}
                       >
                         <DeleteIcon />

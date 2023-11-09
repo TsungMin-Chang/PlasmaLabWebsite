@@ -208,8 +208,8 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
           <>
             {activeStep === 0 && (
               <>
-                <Typography gutterBottom variant="h5" component="div">
-                  Personal Information Page
+                <Typography className="pplname" gutterBottom component="div">
+                  Personal Information
                 </Typography>
                 <FormControl sx={{ m: 1, minWidth: 510 }}>
                   <ClickAwayListener
@@ -220,7 +220,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="grow"
-                      placeholder="Enter Passport English Name..."
+                      placeholder="Enter Passport English Name"
                     />
                   </ClickAwayListener>
                 </FormControl>
@@ -264,8 +264,8 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
         ) : (
           <>
             <FormControl sx={{ m: 1, minWidth: 510 }}>
-              <Typography gutterBottom variant="h5" component="div">
-                {numberToDegree[activeStep] + " Degree Information Page (optional)"}
+              <Typography className="pplname" gutterBottom component="div">
+                {numberToDegree[activeStep] + " Degree Information"}
               </Typography>
               <ClickAwayListener
                 onClickAway={() => {}}
@@ -275,7 +275,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                   value={buffer[activeStep]?.school ?? ""}
                   onChange={(e) => setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], school: e.target.value ?? "" }})}
                   className="grow"
-                  placeholder="Enter School Name..."
+                  placeholder="Enter School Name"
                 />
               </ClickAwayListener>
             </FormControl>
@@ -287,7 +287,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                   value={buffer[activeStep]?.department ?? ""}
                   onChange={(e) => setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], department: e.target.value ?? "" }})}
                   className="grow"
-                  placeholder="Enter Department Name..."
+                  placeholder="Enter Department Name"
                 />
               </ClickAwayListener> 
             </FormControl>
@@ -301,7 +301,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                         setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearStart: !e ? -1 : e['$y']}});
                       }}
                       views={['year']}
-                      label='Enter the year you start...'
+                      label='Enter the year you start'
                       openTo="year"
                     />
                   </FormControl>
@@ -318,7 +318,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
                         setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearEnd: !e ? -1 : e['$y'] }})
                       }}
                       views={['year']}
-                      label='Enter the year you finish... (leave blank if studying)'
+                      label='Enter the year you finish (leave blank if studying)'
                       openTo="year"
                     />
                   </FormControl>

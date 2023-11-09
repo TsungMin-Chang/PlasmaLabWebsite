@@ -70,7 +70,7 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
               <FormControl sx={{ minWidth: 510 }}>
                 <DatePicker
                   views={['year']}
-                  label='Enter published year...'
+                  label='Enter Published Year'
                   openTo="year"
                   value={year === -1 ? null : dayjs(year.toString())}
                   onChange={(e: any) => setYear(!e ? -1 : e['$y'])}
@@ -84,7 +84,7 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <TextField
             inputRef={textfieldDetail}
-            label="Publication Detail"
+            label="Enter Publication Detail"
             variant="outlined"
             multiline
             rows={5}
