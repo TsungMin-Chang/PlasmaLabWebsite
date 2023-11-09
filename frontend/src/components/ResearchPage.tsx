@@ -32,12 +32,23 @@ function ResearchPage() {
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
 
   const handleDelete = async (e: React.MouseEvent) => {
-    await api.deletePublicationData({id: e.currentTarget.id});
+    await api.deleteResearchData({id: e.currentTarget.id});
     setRender(render + 1);
   }
 
   return (
     <>
+      <NewResearchDialog
+        open={newResearchDialogOpen}
+        onClose={() => setNewResearchDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
+      />
+      <UpdateResearchDialog
+        {...openUpdateDialog.data}
+        open={openUpdateDialog.state} 
+        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
+        onRender={() => setRender(render + 1)}
+      />
       <main>
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
@@ -114,17 +125,6 @@ function ResearchPage() {
           ))}
         </div>
       </main>
-      <NewResearchDialog
-        open={newResearchDialogOpen}
-        onClose={() => setNewResearchDialogOpen(false)}
-        onRender={() => setRender(render + 1)}
-      />
-      <UpdateResearchDialog
-        {...openUpdateDialog.data}
-        open={openUpdateDialog.state} 
-        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
-        onRender={() => setRender(render + 1)}
-      />
     </>
   )
 }

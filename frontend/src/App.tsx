@@ -20,18 +20,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 function App() {
-  const [detailListDisplay, setDetailListDisplay] = useState({'state':false, 'id':""});
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
-
-  // useEffect(() => {
-  //   fetchLists();
-  //   fetchCards();
-  // }, [fetchCards, fetchLists]);
-
-  const handleListClick = (listId: string) => {
-    setDetailListDisplay({'state':true, 'id':listId});
-  };
 
   const [key, setKey] = useState('home' as string | null);
 

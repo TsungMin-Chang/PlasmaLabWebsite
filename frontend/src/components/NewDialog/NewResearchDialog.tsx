@@ -32,10 +32,16 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewResear
     
     // get file name
     const fileName = e.currentTarget.value.match(/^.*\\(.*?)\..*?$/);
-    console.log(e);
-    console.log(fileName);
-    // const validImageType = ["image/jpg", "image/jpeg", "image/png"];
     if (!fileName) return;
+
+    // check file extension
+    const validImageType = ['jpg', 'jpeg', 'png'];
+    const fileExtension = fileName[0].split('.');
+    if ( !validImageType.includes(fileExtension[fileExtension.length - 1]) ) {
+      alert("Only .jpg, .jpeg, .png files are accepted!");
+      handleClose();
+      return;
+    }
     
     // get file in base64 String
     const fakeFile = e.currentTarget.files;

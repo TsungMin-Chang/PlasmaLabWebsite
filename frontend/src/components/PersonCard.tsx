@@ -25,7 +25,7 @@ export default function PersonCard({ data, onRender }: dataProp) {
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1});
 
   const handleDelete = async (e: React.MouseEvent) => {
-    await api.deletePublicationData({id: e.currentTarget.id});
+    await api.deletePeopleData({id: e.currentTarget.id});
     onRender();
   }
 

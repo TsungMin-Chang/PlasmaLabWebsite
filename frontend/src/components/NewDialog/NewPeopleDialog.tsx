@@ -52,8 +52,16 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
     
     // get file name
     const fileName = e.currentTarget.value.match(/^.*\\(.*?)\..*?$/);
-    // const validImageType = ["image/jpg", "image/jpeg", "image/png"];
     if (!fileName) return;
+
+    // check file extension
+    const validImageType = ['jpg', 'jpeg', 'png'];
+    const fileExtension = fileName[0].split('.');
+    if ( !validImageType.includes(fileExtension[fileExtension.length - 1]) ) {
+      alert("Only .jpg, .jpeg, .png files are accepted!");
+      handleClose();
+      return;
+    }
     
     // get file in base64 String
     const fakeFile = e.currentTarget.files;
@@ -211,7 +219,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
           <>
             {activeStep === 0 && (
               <>
-                <Typography className="pplname" gutterBottom component="div">
+                <Typography className="pplname" variant="h5" gutterBottom component="div">
                   Personal Information
                 </Typography>
                 <FormControl sx={{ m: 1, minWidth: 510 }}>
@@ -267,7 +275,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
         ) : (
           <>
             <FormControl sx={{ m: 1, minWidth: 510 }}>
-              <Typography className="pplname" gutterBottom component="div">
+              <Typography className="pplname" variant="h5" gutterBottom component="div">
                 {numberToDegree[activeStep] + " Degree Information"}
               </Typography>
               <ClickAwayListener
