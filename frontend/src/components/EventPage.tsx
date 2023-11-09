@@ -1,3 +1,4 @@
+import React from "react";
 import "../index.css";
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -9,7 +10,7 @@ export type EventDataProp = {
 	imgPath: string;
 };
 
-export default function EventPage() {
+function EventPage() {
     const dummys: EventDataProp[] = [
         {
             'id': '1',
@@ -89,3 +90,4 @@ export default function EventPage() {
     </>
   )
 }
+export default React.memo(EventPage);

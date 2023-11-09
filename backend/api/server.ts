@@ -151,13 +151,13 @@ export default {
     try {
       const {id} = _req.path;
       await db.query(format(`
-        DELETE FROM peoples WHERE "id"=%L
-      `, id));
-      await db.query(format(`
         DELETE FROM people_degrees WHERE "peopleId"=%L
       `, id));
+      await db.query(format(`
+        DELETE FROM peoples WHERE "id"=%L
+      `, id));
       return [204];
-    } catch {
+    } catch (error) {
       return [404];
     }
   },

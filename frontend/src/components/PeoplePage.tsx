@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 
 import "../index.css";
@@ -10,7 +11,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { PersonDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-export default function PeoplePage() {
+function PeoplePage() {
 
   const [dummys, setDummys]  = useState([] as PersonDataProp[])
   useEffect(()=>{
@@ -93,3 +94,4 @@ export default function PeoplePage() {
     </>
   )
 }
+export default React.memo(PeoplePage);

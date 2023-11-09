@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 
 import "../index.css";
@@ -12,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { PublicationDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-export default function PublicationPage() {
+function PublicationPage() {
   
   const [dummys, setDummys]  = useState([] as PublicationDataProp[])
   useEffect(()=>{
@@ -104,3 +105,5 @@ export default function PublicationPage() {
     </>
   )
 }
+
+export default React.memo(PublicationPage);

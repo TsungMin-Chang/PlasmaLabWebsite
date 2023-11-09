@@ -1,3 +1,4 @@
+import React from "react";
 import Carousel from 'react-bootstrap/Carousel';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -9,7 +10,7 @@ export type HomeDataProp = {
 	description: string;
 };
 
-export default function HomePage() {
+function HomePage() {
 
   const dummys: HomeDataProp[] = [
     {
@@ -96,3 +97,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default React.memo(HomePage);

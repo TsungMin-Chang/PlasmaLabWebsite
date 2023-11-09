@@ -9,7 +9,7 @@
     "codegen": "api-codegen ./api/api.yml",
     "deploy": "yarn install && yarn run codegen && yarn run deploy2",
     "deploy2": "yarn migrate up && yarn run serve",
-    "exec:db": "podman exec -it $plasma-psqldb psql -Uplasma",
+    "exec:db": "podman exec -it plasma-psqldb psql -Uplasma",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },

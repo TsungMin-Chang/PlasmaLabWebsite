@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 
 import "../index.css";
@@ -12,7 +13,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ResearchDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-export default function ResearchPage() {
+function ResearchPage() {
 
   const [dummys, setDummys]  = useState([] as ResearchDataProp[])
   useEffect(()=>{
@@ -117,3 +118,4 @@ export default function ResearchPage() {
     </>
   )
 }
+export default React.memo(ResearchPage);
