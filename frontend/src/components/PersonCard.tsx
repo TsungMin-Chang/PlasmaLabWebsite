@@ -12,9 +12,10 @@ import api from '../../../backend/api/generated/ClientAPI';
 
 type dataProp = {
     data: PersonDataProp[];
+    onRender: () => void;
 };
 
-export default function PersonCard({ data }: dataProp) {
+export default function PersonCard({ data, onRender }: dataProp) {
    
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
   const nameLabel: { [key: string]: PersonDataProp[] } = {};
@@ -22,6 +23,11 @@ export default function PersonCard({ data }: dataProp) {
   Object.keys(nameLabel).forEach((key) => {nameLabel[key].sort((a, b) => b.degree - a.degree)});
 
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1});
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    await api.deletePublicationData({id: e.currentTarget.id});
+    onRender();
+  }
 
   return (
     <>
@@ -35,7 +41,8 @@ export default function PersonCard({ data }: dataProp) {
               <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                 <IconButton 
                   color="error"
-                  onClick={async () => await api.deletePeopleData({ id: nameLabel[key][0].id })}
+                  onClick={handleDelete}
+                  id={nameLabel[key][0].id}
                   style={{zIndex: 3}}
                 >
                   <DeleteIcon />
@@ -70,6 +77,7 @@ export default function PersonCard({ data }: dataProp) {
         {...openUpdateDialog}
         open={openUpdateDialog.state} 
         onClose={() => setOpenUpdateDialog({'state': false, 'data': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1})}
+        onRender={onRender}
       />
     </>
   )

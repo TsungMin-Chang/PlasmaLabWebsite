@@ -32,9 +32,10 @@ import api from '../../../../backend/api/generated/ClientAPI';
 type NewPeopleDialogProps = {
   open: boolean;
   onClose: () => void;
+  onRender: () => void;
 };
 
-export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps) {
+export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDialogProps) {
 
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
   const steps = ['', '', '', '', ''];
@@ -51,6 +52,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
     
     // get file name
     const fileName = e.currentTarget.value.match(/^.*\\(.*?)\..*?$/);
+    // const validImageType = ["image/jpg", "image/jpeg", "image/png"];
     if (!fileName) return;
     
     // get file in base64 String
@@ -135,6 +137,7 @@ export default function NewPeopleDialog({ open, onClose }: NewPeopleDialogProps)
       alert("Error: Failed to save uploaded image!");
       return;
     } finally {
+      onRender();
       handleClose();
     }
 

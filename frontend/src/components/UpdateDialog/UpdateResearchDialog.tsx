@@ -23,10 +23,11 @@ type UpdateResearchDialogProps = {
   reference: string;
   open: boolean;
   onClose: () => void;
+  onRender: () => void;
 };
 
 export default function NewResearchDialog(props: UpdateResearchDialogProps) {
-  const {id, title, description, reference, open, onClose} = props;
+  const {id, title, description, reference, open, onClose, onRender} = props;
 
   const [newTitle, setNewTitle] = useState<string>(title);
   const textfieldDescription = useRef<HTMLInputElement>(null);
@@ -48,6 +49,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
     } catch {
       alert("Error: Failed to update an old publication!");
     } finally {
+      onRender();
       handleClose();
     }
   };

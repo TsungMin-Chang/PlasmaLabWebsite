@@ -20,9 +20,10 @@ import api from '../../../../backend/api/generated/ClientAPI';
 type NewPublicationDialogProps = {
     open: boolean;
     onClose: () => void;
+    onRender: () => void;
 };
 
-export default function NewPublicationDialog({ open, onClose }: NewPublicationDialogProps) {
+export default function NewPublicationDialog({ open, onClose, onRender }: NewPublicationDialogProps) {
   const [year, setYear] = useState<number>(-1);
   const textfieldDetail = useRef<HTMLInputElement>(null);
 
@@ -39,10 +40,8 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
       return;
     }
 
-    console.log(year);
-    console.log(detail);
-
-    // handleClose();
+    // console.log(year);
+    // console.log(detail);
 
     try {
       // POST request sends people data to store in db
@@ -51,9 +50,9 @@ export default function NewPublicationDialog({ open, onClose }: NewPublicationDi
       alert("Error: Failed to save uploaded image!");
       return;
     } finally {
+      onRender();
       handleClose();
     }
-    
   };
 
   const handleClose = () => {

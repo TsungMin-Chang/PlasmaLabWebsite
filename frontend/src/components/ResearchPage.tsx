@@ -15,6 +15,8 @@ import api from '../../../backend/api/generated/ClientAPI';
 
 function ResearchPage() {
 
+  const [render, setRender] = useState(0);
+
   const [dummys, setDummys]  = useState([] as ResearchDataProp[])
   useEffect(()=>{
     api.getResearchsData()
@@ -24,10 +26,15 @@ function ResearchPage() {
       .on(404, error=>{
          alert(error)
       });
-  },[setDummys]) 
+  },[render]) 
 
   const [newResearchDialogOpen, setNewResearchDialogOpen] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    await api.deletePublicationData({id: e.currentTarget.id});
+    setRender(render + 1);
+  }
 
   return (
     <>
@@ -65,7 +72,8 @@ function ResearchPage() {
                       <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                         <IconButton 
                           color="error"
-                          onClick={async () => await api.deleteResearchData({id: dummy.id})}
+                          onClick={handleDelete}
+                          id={dummy.id}
                           style={{zIndex: 3}}
                         >
                           <DeleteIcon />
@@ -109,11 +117,13 @@ function ResearchPage() {
       <NewResearchDialog
         open={newResearchDialogOpen}
         onClose={() => setNewResearchDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
       />
       <UpdateResearchDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
         onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
+        onRender={() => setRender(render + 1)}
       />
     </>
   )

@@ -14,9 +14,11 @@ import { PublicationDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 function PublicationPage() {
+
+  const [render, setRender] = useState(0);
   
   const [dummys, setDummys]  = useState([] as PublicationDataProp[])
-  useEffect(()=>{
+  useEffect(() => {
     api.getPublicationsData()
       .on(200, data => {
         setDummys(data)  
@@ -24,7 +26,7 @@ function PublicationPage() {
       .on(404, error=>{
          alert(error)
       });
-  },[setDummys])
+  },[render])
 
   const yearLabel: { [key: string]: PublicationDataProp[] } = {};
   dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
@@ -33,6 +35,11 @@ function PublicationPage() {
   
   const [newPublicationDialogOpen, setNewPublicationDialogOpen] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp});
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    await api.deletePublicationData({id: e.currentTarget.id});
+    setRender(render + 1);
+  }
 
   return (
     <>
@@ -66,7 +73,8 @@ function PublicationPage() {
                     <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                       <IconButton 
                         color="error"
-                        onClick={async () => await api.deletePublicationData({id: ele.id})}
+                        onClick={handleDelete}
+                        id={ele.id}
                         style={{zIndex: 3}}
                       >
                         <DeleteIcon />
@@ -96,11 +104,13 @@ function PublicationPage() {
       <NewPublicationDialog
         open={newPublicationDialogOpen}
         onClose={() => setNewPublicationDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
       />
       <UpdatePublicationDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
         onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp})}
+        onRender={() => setRender(render + 1)}
       />
     </>
   )

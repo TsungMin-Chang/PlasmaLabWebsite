@@ -29,11 +29,12 @@ type UpdatePeopleDialogProps = {
   data: {[key: string]: DegreeDataProp};
   open: boolean;
   onClose: () => void;
+  onRender: () => void;
 };
 
 export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   
-  const { id, name, position, data, open, onClose } = props;
+  const { id, name, position, data, open, onClose, onRender } = props;
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
 
   const [newName, setNewName] = useState(name);
@@ -78,6 +79,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     } catch {
       alert("Error: Failed to update an old member!");
     } finally {
+      onRender();
       handleClose();
     }
 

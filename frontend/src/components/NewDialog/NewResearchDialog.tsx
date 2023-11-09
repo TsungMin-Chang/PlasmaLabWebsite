@@ -18,9 +18,10 @@ import api from '../../../../backend/api/generated/ClientAPI';
 type NewResearchDialogProps = {
   open: boolean;
   onClose: () => void;
+  onRender: () => void;
 };
 
-export default function NewResearchDialog({ open, onClose }: NewResearchDialogProps) {
+export default function NewResearchDialog({ open, onClose, onRender }: NewResearchDialogProps) {
 
   const [title, setTitle] = useState<string>("");
   const [imageString, setImageString] = useState({imageName: "", image: ""});
@@ -31,6 +32,9 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
     
     // get file name
     const fileName = e.currentTarget.value.match(/^.*\\(.*?)\..*?$/);
+    console.log(e);
+    console.log(fileName);
+    // const validImageType = ["image/jpg", "image/jpeg", "image/png"];
     if (!fileName) return;
     
     // get file in base64 String
@@ -69,12 +73,10 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
       return;
     }
 
-    console.log(title);
-    console.log(imageString.imageName);
-    console.log(description);
-    console.log(reference);
-
-    // handleClose();
+    // console.log(title);
+    // console.log(imageString.imageName);
+    // console.log(description);
+    // console.log(reference);
 
     try {
       // POST request sends imgage file name and image file
@@ -90,12 +92,12 @@ export default function NewResearchDialog({ open, onClose }: NewResearchDialogPr
       alert("Error: Failed to save uploaded image!");
       return;
     } finally {
+      onRender();
       handleClose();
     }
-
   };
 
-  const handleClose = () => {
+  const handleClose = () => {  
     setTitle("");
     setImageString({imageName: "", image: ""});
     onClose();

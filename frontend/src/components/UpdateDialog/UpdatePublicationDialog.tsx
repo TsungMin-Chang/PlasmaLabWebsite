@@ -23,10 +23,11 @@ type UpdatePublicationDialogProps = {
     detail: string;
     open: boolean;
     onClose: () => void;
+    onRender: () => void;
 };
 
 export default function UpddatePublicationDialog(props: UpdatePublicationDialogProps) {
-  const { id, year, detail, open, onClose } = props;
+  const { id, year, detail, open, onClose, onRender } = props;
 
   const [newYear, setNewYear] = useState<number>(year);
   const textfieldDetail = useRef<HTMLInputElement>(null);
@@ -43,8 +44,10 @@ export default function UpddatePublicationDialog(props: UpdatePublicationDialogP
     } catch {
       alert("Error: Failed to update an old publication!");
     } finally {
+      onRender();
       handleClose();
     }
+    
   };
 
   const handleClose = () => {

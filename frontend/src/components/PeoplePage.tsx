@@ -13,6 +13,8 @@ import api from '../../../backend/api/generated/ClientAPI';
 
 function PeoplePage() {
 
+  const [render, setRender] = useState(0);
+
   const [dummys, setDummys]  = useState([] as PersonDataProp[])
   useEffect(()=>{
     api.getPeoplesData()
@@ -22,7 +24,7 @@ function PeoplePage() {
       .on(404, error=>{
          alert(error)
       });
-  },[setDummys])
+  },[render])
 
   const [newPeopleDialogOpen, setNewPeopleDialogOpen] = useState(false);
 
@@ -63,33 +65,34 @@ function PeoplePage() {
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
           <h4 id="scrollspyHeading1" className="mynav2">Professor</h4>
           <div className="container">
-              <PersonCard data={positionLabel['4']}/>
+              <PersonCard data={positionLabel['4']} onRender={() => setRender(render + 1)} />
           </div>
           <br/>
           <h4 id="scrollspyHeading2" className="mynav2">Ph.D. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['3']}/> 
+              <PersonCard data={positionLabel['3']} onRender={() => setRender(render + 1)} /> 
           </div>
           <br/>
           <h4 id="scrollspyHeading3" className="mynav2">M.S. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['2']}/>  
+              <PersonCard data={positionLabel['2']} onRender={() => setRender(render + 1)} />  
           </div>
           <br/>
           <h4 id="scrollspyHeading4" className="mynav2">B.S. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['1']}/>
+              <PersonCard data={positionLabel['1']} onRender={() => setRender(render + 1)} />
           </div>
           <br/>
           <h4 id="scrollspyHeading5" className="mynav2">Alumni</h4>
           <div className="container">
-              <PersonCard data={positionLabel['0']}/>
+              <PersonCard data={positionLabel['0']} onRender={() => setRender(render + 1)} />
           </div>
         </div>
       </main>
       <NewPeopleDialog
         open={newPeopleDialogOpen}
         onClose={() => setNewPeopleDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
       />
     </>
   )
