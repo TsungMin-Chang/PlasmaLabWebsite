@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Dialog } from '@mui/material';
@@ -12,7 +13,7 @@ type ContactCardProps = {
   onClose: () => void;
 };
 
-export default function ContactCard({ open, onClose }: ContactCardProps) {
+function ContactCard({ open, onClose }: ContactCardProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogContent className="w-[600px]">
@@ -53,3 +54,5 @@ export default function ContactCard({ open, onClose }: ContactCardProps) {
     </Dialog>
   )
 }
+
+export default React.memo(ContactCard);

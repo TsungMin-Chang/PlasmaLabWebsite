@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -14,6 +14,7 @@ import ResearchPage from "@/components/ResearchPage"
 import PublicationPage from "@/components/PublicationPage"
 import EventPage from "@/components/EventPage"
 import ContactCard from "@/components/ContactCard"
+import SignInCard from "@/components/SignInCard"
 
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -22,6 +23,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 function App() {
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
+  const [signInCardOpen, setSignInCardOpen] = useState(false);
 
   const [key, setKey] = useState('home' as string | null);
 
@@ -35,9 +37,9 @@ function App() {
               <ImportContactsIcon className="mr-2" />
               Contact Info
             </Button>
-            <Button>
+            <Button onClick={() => setSignInCardOpen(true)}>
               <AccountCircleIcon className="mr-2" />
-              Log in
+              Sign In
             </Button>
           </ButtonGroup>
         </div>
@@ -91,6 +93,10 @@ function App() {
       <ContactCard
         open={contactCardOpen}
         onClose={() => setContactCardOpen(false)}
+      />
+      <SignInCard
+        open={signInCardOpen}
+        onClose={() => setSignInCardOpen(false)}
       />
     </div>
   )

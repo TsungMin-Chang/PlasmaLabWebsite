@@ -4,6 +4,7 @@ import {PersonDataProp, CreatePersonDataProp, UpdatePersonDataProp,
   ResearchDataProp, CreateResearchDataProp, UpdateResearchDataProp,
   PublicationDataProp, CreatePublicationDataProp, UpdatePublicationDataProp} from './generated/schemas';
 import {IServerAPI} from './generated/IHandler';
+import login from './login';
 
 export type IState = {
   id: string;
@@ -274,5 +275,6 @@ export default {
     } catch {
       return [401];
     }
-  }
+  },
+  ...login
 } as IServerAPI<IState>;

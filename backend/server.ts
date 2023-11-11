@@ -7,18 +7,8 @@ import * as fs from 'fs';
 import * as base64 from 'base64-js';
 import {v4 as uuidv4} from 'uuid';
 
-const app = new Koa();
-
-// recording
-app.use(async (ctx, next) => {
-  const t0 = new Date();
-  await next();
-  const dt = + new Date() - t0.getTime();
-  const {url, method, ip} = ctx.request;
-  console.log(`${method} ${url} ${dt}ms from ${ip} at ${t0.toLocaleString()}`);
-});
-
 const imageRouter = new Router();
+
 imageRouter.post('*', bodyParser({
   formLimit: '30mb',
   jsonLimit: '30mb',
@@ -29,6 +19,11 @@ imageRouter.post('*', bodyParser({
     const rimg = image.match(/^data:image\/(.*?);base64,(.*)$/);
     // Your base64-encoded string
     const fileType = rimg?.[1] ?? '';
+    const validImageType = ['jpg', 'jpeg', 'png'];
+    if ( !validImageType.includes(fileType) ) {
+      ctx.status = 400; // Bad Request
+      return;
+    }
     const base64String = rimg?.[2] ?? '';
     const base64Data = base64.toByteArray(base64String);
     const binaryData = Buffer.from(base64Data); // Convert base64 string to byte
@@ -48,6 +43,17 @@ imageRouter.post('*', bodyParser({
     console.error('Error processing request:', error);
     ctx.status = 500; // Internal Server Error
   }
+});
+
+const app = new Koa();
+
+// recording
+app.use(async (ctx, next) => {
+  const t0 = new Date();
+  await next();
+  const dt = + new Date() - t0.getTime();
+  const {url, method, ip} = ctx.request;
+  console.log(`${method} ${url} ${dt}ms from ${ip} at ${t0.toLocaleString()}`);
 });
 
 app.use(imageRouter

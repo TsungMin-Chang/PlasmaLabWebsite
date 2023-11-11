@@ -38,17 +38,6 @@ function ResearchPage() {
 
   return (
     <>
-      <NewResearchDialog
-        open={newResearchDialogOpen}
-        onClose={() => setNewResearchDialogOpen(false)}
-        onRender={() => setRender(render + 1)}
-      />
-      <UpdateResearchDialog
-        {...openUpdateDialog.data}
-        open={openUpdateDialog.state} 
-        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
-        onRender={() => setRender(render + 1)}
-      />
       <main>
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
@@ -125,6 +114,17 @@ function ResearchPage() {
           ))}
         </div>
       </main>
+      <NewResearchDialog
+        open={newResearchDialogOpen}
+        onClose={() => setNewResearchDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
+      />
+      <UpdateResearchDialog
+        {...openUpdateDialog.data}
+        open={openUpdateDialog.state} 
+        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
+        onRender={() => setRender(render + 1)}
+      />
     </>
   )
 }
