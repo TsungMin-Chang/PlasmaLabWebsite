@@ -36,7 +36,11 @@ function SignInCard({ open, onClose }: SignInCardProps) {
       return;
     }
 
-    // console.log(username, passwd);
+    console.log(username);
+    console.log(typeof username);
+    console.log(passwd);
+    console.log(typeof passwd);
+
     try {
       api.postLogin({username, passwd});
     } catch (error) {

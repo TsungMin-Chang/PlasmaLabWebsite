@@ -13,20 +13,21 @@ export const jwtSign = (data: string|object|Buffer) => jwt.sign(data, secret);
 
 export default {
   postLogin: async (req, _res, ctx) => {
-    console.log('req',req);
-    console.log('res',_res);
-    console.log('ctx',ctx);
     const {username, passwd} = req.body;
     if (!username || !passwd) return [401];
+    console.log(username);
+    console.log(passwd);
     const {rows: [dbPasswd]} = await db.query(format(`
       SELECT passwd as "dbPasswd" FROM users
       WHERE username=%L
     `, username));
+    console.log(dbPasswd);
     if (!await bcrypt.compare(dbPasswd, passwd)) return [401];
     const token = jwtSign({role: 'editor'});
+    console.log(token);
     const tmp = new Date();
     const expire = new Date(tmp.valueOf() + 1800000);
     ctx.cookies.set(authCookieName, token, {httpOnly: false, expires: expire});
-    return [200];
+    return [201];
   }
 } as Partial<IServerAPI<IState>>;
