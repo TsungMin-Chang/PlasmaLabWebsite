@@ -6,9 +6,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { Dialog } from '@mui/material';
+
+import { LoginDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 type SignInCardProps = {
@@ -38,7 +39,7 @@ function SignInCard({ open, onClose }: SignInCardProps) {
 
     // console.log(username, passwd);
     try {
-      api.postLogin({username, passwd});
+      api.postLogin({username, passwd} as LoginDataProp);
     } catch (error) {
       alert("Fail to sign in!");
     } finally {
@@ -52,7 +53,7 @@ function SignInCard({ open, onClose }: SignInCardProps) {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -86,6 +87,7 @@ function SignInCard({ open, onClose }: SignInCardProps) {
             <Button
               onClick={handleSubmit}
               fullWidth
+              style={{backgroundColor: 'rgb(46, 39, 31)'}}
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
