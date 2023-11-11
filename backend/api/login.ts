@@ -23,7 +23,7 @@ export default {
       WHERE username=%L
     `, username));
     if (!await bcrypt.compare(dbPasswd, passwd)) return [401];
-    const token = jwtSign({role: 'edit'});
+    const token = jwtSign({role: 'editor'});
     const tmp = new Date();
     const expire = new Date(tmp.valueOf() + 1800000);
     ctx.cookies.set(authCookieName, token, {httpOnly: false, expires: expire});

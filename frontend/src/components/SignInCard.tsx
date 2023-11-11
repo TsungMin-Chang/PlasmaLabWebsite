@@ -1,10 +1,12 @@
 import { useRef } from "react";
 import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { Dialog } from '@mui/material';
 import api from '../../../backend/api/generated/ClientAPI';
@@ -34,8 +36,14 @@ function SignInCard({ open, onClose }: SignInCardProps) {
       return;
     }
 
-    console.log(username, passwd);
-    // api.postLogin({username, passwd});
+    // console.log(username, passwd);
+    try {
+      api.postLogin({username, passwd});
+    } catch (error) {
+      alert("Fail to sign in!");
+    } finally {
+      onClose();
+    }
   };
 
   return (
@@ -50,6 +58,11 @@ function SignInCard({ open, onClose }: SignInCardProps) {
             alignItems: 'center',
           }}
         >
+          <Avatar 
+            sx={{ m: 1, bgcolor: 'secondary.main' }}
+            alt="Cute Plasma"
+            src="/toy_plasma_ball.png"
+          />
           <Typography component="h1" variant="h5">
             Sign In
           </Typography>
