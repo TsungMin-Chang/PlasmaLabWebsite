@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,15 +15,25 @@ type SignInCardProps = {
 };
 
 function SignInCard({ open, onClose }: SignInCardProps) {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const username = data.get('username')?.toString();
-    const passwd = data.get('password')?.toString();
-    if (!username || !passwd) {
-      alert("You must fill in both fields!");
+
+  const textfieldUsername = useRef<HTMLInputElement>(null);
+  const textfieldPassword = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = () => {
+
+    const username = textfieldUsername.current?.value ?? "" ;
+    const passwd = textfieldPassword.current?.value ?? "" ;
+
+    if (!username) {
+      alert("Username cannot be blank!");
       return;
     }
+
+    if (!passwd) {
+      alert("Password cannot be blank!");
+      return;
+    }
+
     console.log(username, passwd);
     // api.postLogin({username, passwd});
   };
@@ -44,25 +55,23 @@ function SignInCard({ open, onClose }: SignInCardProps) {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              inputRef={textfieldUsername}
               margin="normal"
               required
               fullWidth
-              id="username"
               label="User Name"
-              name="username"
               autoFocus
             />
             <TextField
+              inputRef={textfieldPassword}
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
               type="password"
-              id="password"
             />
             <Button
-              type="submit"
+              onClick={handleSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
