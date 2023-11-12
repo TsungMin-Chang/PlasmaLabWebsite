@@ -2,7 +2,8 @@ import {db} from '../db/index'
 import {format} from 'node-pg-format'
 import {PersonDataProp, CreatePersonDataProp, UpdatePersonDataProp,
   ResearchDataProp, CreateResearchDataProp, UpdateResearchDataProp,
-  PublicationDataProp, CreatePublicationDataProp, UpdatePublicationDataProp} from './generated/schemas';
+  PublicationDataProp, CreatePublicationDataProp, UpdatePublicationDataProp,
+  EventDataProp, CreateEventDataProp} from './generated/schemas';
 import {IServerAPI} from './generated/IHandler';
 import login from './login';
 
@@ -270,6 +271,53 @@ export default {
       const {id} = _req.path;
       await db.query(format(`
         DELETE FROM publications WHERE "id"=%L
+      `, id));
+      return [204];
+    } catch {
+      return [401];
+    }
+  },
+  getEventsData: async _req => {
+    try {
+      const {rows: r} = await db.query(format(`
+        SELECT * FROM events
+      `));
+      return [200, r.map(EventDataProp.from)];
+    } catch {
+      return [404];
+    }
+  },
+  createEventsData: async _req => {
+    try {
+      await Promise.all(_req.body.map(async (ele: CreateEventDataProp): Promise<void> => {
+        const {year, imgPath} = ele;
+        await db.query(format(`
+          INSERT INTO events ("year", "imgPath")
+          VALUES (%L, %L)
+        `, year, imgPath));
+      }))
+      return [201]; 
+    } catch {
+      return [404];
+    }
+  },
+  createEventData: async _req => {
+    try {
+      const {year, imgPath} = _req.body;
+      await db.query(format(`
+        INSERT INTO events ("year", "imgPath")
+        VALUES (%L, %L)
+      `, year, imgPath));
+      return [201];
+    } catch {
+      return [401];
+    }
+  },
+  deleteEventData: async _req => {
+    try {
+      const {id} = _req.path;
+      await db.query(format(`
+        DELETE FROM events WHERE "id"=%L
       `, id));
       return [204];
     } catch {

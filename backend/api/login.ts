@@ -13,9 +13,6 @@ export const jwtSign = (data: string|object|Buffer) => jwt.sign(data, secret);
 
 export default {
   postLogin: async (req, _res, ctx) => {
-    console.log('req',req);
-    console.log('res',_res);
-    console.log('ctx',ctx);
     const {username, passwd} = req.body;
     if (!username || !passwd) return [401];
     const {rows: [dbPasswd]} = await db.query(format(`

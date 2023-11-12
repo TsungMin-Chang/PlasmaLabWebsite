@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -59,13 +58,8 @@ function SignInCard({ open, onClose }: SignInCardProps) {
             alignItems: 'center',
           }}
         >
-          <Avatar 
-            sx={{ m: 1, bgcolor: 'secondary.main' }}
-            alt="Cute Plasma"
-            src="/toy_plasma_ball.png"
-          />
           <Typography component="h1" variant="h5">
-            Sign In
+            SIGN IN
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField

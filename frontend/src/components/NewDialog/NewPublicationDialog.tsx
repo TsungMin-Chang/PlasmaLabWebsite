@@ -31,7 +31,7 @@ export default function NewPublicationDialog({ open, onClose, onRender }: NewPub
 
     const detail = textfieldDetail.current?.value ?? "" ;
 
-    if (!year) {
+    if (!year || year === -1) {
       alert("Year cannot be blank!");
       return;
     }

@@ -25,6 +25,8 @@ tags:
   description: "research page info"
 - name: "publication"
   description: "publication page info"
+- name: "event"
+  description: "event page info"
 
 paths:
   /login:
@@ -293,11 +295,84 @@ paths:
           description: "Deleted successfully"
         401:
           description: bad
+  /events:
+    get:
+      tags: [event]
+      summary: get all event data
+      operationId: getEventsData
+      responses:
+        200:
+          description: success
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventDataProp"
+        404:
+          description: not found
+    post:
+      tags: [event]
+      summary: add new event topics
+      operationId: createEventsData
+      requestBody:
+        description: create new events
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CreateEventDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
+  /event:
+    post:
+      tags: [event]
+      summary: add a new event
+      operationId: createEventData
+      requestBody:
+        description: create a new event
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEventDataProp"
+      responses:
+        201:
+          description: create successfully
+        401:
+          description: BAD
+  /event/{id}:
+    delete:
+      tags: [event]
+      summary: delete an old event
+      operationId: deleteEventData
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "Deleted successfully"
+        401:
+          description: bad
 security:
 - bearerAuth: []
 
 components:
   schemas:
+    LoginDataProp:
+      type: object
+      required: [username, passwd]
+      properties:
+        username: {type: string}
+        passwd: {type: string}
     PersonDataProp:
       type: object
       required: [id, name, position, imgPath, degree, school, department, yearStart, yearEnd]
@@ -400,10 +475,17 @@ components:
         id: {type: string}
         year: {type: number, format: int64}
         detail: {type: string} 
-    LoginDataProp:
+    EventDataProp:
       type: object
-      required: [username, passwd]
+      required: [id, year, imgPath]
       properties:
-        username: {type: string}
-        passwd: {type: string}
-        
+        id: {type: string}
+        year: {type: number, format: int64}
+        imgPath: {type: string}
+    CreateEventDataProp:
+      type: object
+      required: [year, imgPath]
+      properties:
+        year: {type: number, format: int64}
+        imgPath: {type: string}
+    
