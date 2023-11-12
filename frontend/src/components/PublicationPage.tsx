@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import Cookies from 'js-cookie';
 
 import "../index.css";
 import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
@@ -15,8 +16,9 @@ import api from '../../../backend/api/generated/ClientAPI';
 
 function PublicationPage() {
 
+  console.log('1st', Cookies.get('plasma-token'));
+
   const [render, setRender] = useState(0);
-  
   const [dummys, setDummys]  = useState([] as PublicationDataProp[])
   useEffect(() => {
     api.getPublicationsData()

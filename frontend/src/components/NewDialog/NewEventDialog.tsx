@@ -103,7 +103,7 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewEventD
               <FormControl sx={{ minWidth: 510 }}>
                 <DatePicker
                   views={['year']}
-                  label='Enter Published Year'
+                  label='Enter Year'
                   openTo="year"
                   value={year === -1 ? null : dayjs(year.toString())}
                   onChange={(e: any) => setYear(!e ? -1 : e['$y'])}
@@ -116,7 +116,7 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewEventD
       <DialogContent className="w-[600px]">
         <FormControl sx={{ m: 1, minWidth: 510 }}>
           <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Upload an illustration of your research</Form.Label>
+            <Form.Label>Upload an image of the event</Form.Label>
             <Form.Control
               type="file"
               required

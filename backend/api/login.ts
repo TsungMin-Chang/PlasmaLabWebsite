@@ -19,9 +19,8 @@ export default {
       SELECT passwd as "dbPasswd" FROM users
       WHERE username=%L
     `, username));
-    if (!await bcrypt.compare(dbPasswd, passwd)) return [401];
+    if (!await bcrypt.compare(passwd, dbPasswd)) return [401];
     const token = jwtSign({role: 'editor'});
-    console.log(token);
     const tmp = new Date();
     const expire = new Date(tmp.valueOf() + 1800000);
     ctx.cookies.set(authCookieName, token, {httpOnly: false, expires: expire});

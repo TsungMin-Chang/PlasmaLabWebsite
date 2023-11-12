@@ -36,13 +36,10 @@ function SignInCard({ open, onClose }: SignInCardProps) {
       return;
     }
 
-    console.log(username);
-    console.log(typeof username);
-    console.log(passwd);
-    console.log(typeof passwd);
-
     try {
-      api.postLogin({username, passwd} as LoginDataProp);
+      api.postLogin({username, passwd} as LoginDataProp)
+        .on(201, () => {})
+        .on(401, () => alert("Fail to sign in!")); 
     } catch (error) {
       alert("Fail to sign in!");
     } finally {
