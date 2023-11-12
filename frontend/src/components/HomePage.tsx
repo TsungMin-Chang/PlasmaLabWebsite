@@ -45,8 +45,8 @@ function HomePage() {
       title: 'plasma3',
     },
     {
-      img: '/new_home_images/grey_circle_array-transformed.jpeg',
-      title: 'plasma1',
+      img: '/new_home_images/old_blue_wording_scroll.png',
+      title: 'plasma4',
     },
     {
       img: '/new_home_images/purple_circle_array.jpg',

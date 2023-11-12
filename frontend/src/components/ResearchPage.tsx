@@ -14,7 +14,7 @@ import { ResearchDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 function ResearchPage({ edit }: { edit: boolean }) {
-
+  
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as ResearchDataProp[])
   useEffect(()=>{

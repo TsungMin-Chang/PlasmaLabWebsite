@@ -66,16 +66,16 @@ function App() {
             <HomePage />
           </Tab>
           <Tab eventKey="people" title="PEOPLE">
-            <PeoplePage edit />
+            <PeoplePage edit={edit} />
           </Tab>
           <Tab eventKey="research" title="RESEARCH">
-            <ResearchPage edit />
+            <ResearchPage edit={edit} />
           </Tab>
           <Tab eventKey="publication" title="PUBLICATION">
-            <PublicationPage edit />
+            <PublicationPage edit={edit} />
           </Tab>
           <Tab eventKey="event" title="EVENT">
-            <EventPage edit />
+            <EventPage edit={edit} />
           </Tab>
         </Tabs>
         <br/>
