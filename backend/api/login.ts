@@ -15,13 +15,10 @@ export default {
   postLogin: async (req, _res, ctx) => {
     const {username, passwd} = req.body;
     if (!username || !passwd) return [401];
-    console.log(username);
-    console.log(passwd);
-    const {rows: [dbPasswd]} = await db.query(format(`
+    const {rows: [{dbPasswd}]} = await db.query(format(`
       SELECT passwd as "dbPasswd" FROM users
       WHERE username=%L
     `, username));
-    console.log(dbPasswd);
     if (!await bcrypt.compare(dbPasswd, passwd)) return [401];
     const token = jwtSign({role: 'editor'});
     console.log(token);
