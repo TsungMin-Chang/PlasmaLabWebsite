@@ -38,15 +38,15 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
   pgm.createTable('researchs', {
     id: 'uuidNN',
     title: 'textNN',
-	imgPath: 'textNN',
-	description: 'textNN',
-	reference: 'textNN',
+    imgPath: 'textNN',
+    description: 'textNN',
+    reference: 'textNN',
   });
 
   pgm.createTable('publications', {
     id: 'uuidNN',
-	year: 'int2NN',
-	detail: 'textNN',
+    year: 'int2NN',
+    detail: 'textNN',
   });  
 }
 

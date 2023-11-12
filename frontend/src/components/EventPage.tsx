@@ -1,48 +1,41 @@
 import React from "react";
+import { useEffect, useState } from "react";
+
 import "../index.css";
+import NewEventDialog from '@/components/NewDialog/NewEventDialog'; 
+
 import IconButton from "@mui/material/IconButton";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export type EventDataProp = {
-  id: string;
-  year: number;
-	imgPath: string;
-};
+import { EventDataProp } from "../../../backend/api/generated/schemas";
+import api from '../../../backend/api/generated/ClientAPI';
 
 function EventPage() {
-    const dummys: EventDataProp[] = [
-        {
-            'id': '1',
-            'year': 2022,
-            'imgPath': '/events_images/2022school_of_engineering_award.jpg',
-        },
-        {
-            'id': '2',
-            'year': 2022,
-            'imgPath': '/events_images/2022groupdinner.jpg',
-        },
-        {
-            'id': '3',
-            'year': 2020,
-            'imgPath': '/events_images/2020group1.jpg',
-        },
-        {
-            'id': '4',
-            'year': 2020,
-            'imgPath': '/events_images/2020group2.jpg',
-        },
-        {
-            'id': '5',
-            'year': 2019,
-            'imgPath': '/events_images/2019group.jpg',
-        }
-    ]
+
+  const [newEventDialogOpen, setNewEventDialogOpen] = useState(false);
+
+  const [render, setRender] = useState(0);
+  const [dummys, setDummys]  = useState([] as EventDataProp[])
+  useEffect(()=>{
+    api.getEventsData()
+      .on(200, data => {
+        setDummys(data)  
+      })
+      .on(404, error=>{
+         alert(error)
+      });
+  },[render])
 
   const yearLabel: { [key: string]: EventDataProp[] } = {};
   dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
   // Get the keys and sort them
   const sortedKeys = Object.keys(yearLabel).sort((a, b) => parseInt(b) - parseInt(a));
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    await api.deleteEventData({id: e.currentTarget.id});
+    setRender(render + 1);
+  }
 
   return (
     <>
@@ -51,7 +44,7 @@ function EventPage() {
           <strong>EVENT</strong>
           <IconButton 
             color="success" 
-            onClick={() => {}} 
+            onClick={() => setNewEventDialogOpen(true)} 
           >
             <AddCircleIcon />
           </IconButton>
@@ -74,7 +67,8 @@ function EventPage() {
                   <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                     <IconButton 
                       color="error"
-                      onClick={() => {}}
+                      onClick={handleDelete}
+                      id={ele.id}
                       style={{zIndex: 3}}
                     >
                       <DeleteIcon />
@@ -87,7 +81,13 @@ function EventPage() {
           </>
         ))}
       </div>
+      <NewEventDialog
+        open={newEventDialogOpen}
+        onClose={() => setNewEventDialogOpen(false)}
+        onRender={() => setRender(render + 1)}
+      />
     </>
   )
 }
+
 export default React.memo(EventPage);
