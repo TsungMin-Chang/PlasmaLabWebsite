@@ -11,7 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { EventDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-function EventPage() {
+function EventPage({ edit }: { edit: boolean }) {
 
   const [newEventDialogOpen, setNewEventDialogOpen] = useState(false);
 
@@ -42,12 +42,14 @@ function EventPage() {
       <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
         <p className="navbar-brand">
           <strong>EVENT</strong>
-          <IconButton 
-            color="success" 
-            onClick={() => setNewEventDialogOpen(true)} 
-          >
-            <AddCircleIcon />
-          </IconButton>
+          {edit && (
+            <IconButton 
+              color="success" 
+              onClick={() => setNewEventDialogOpen(true)} 
+            >
+              <AddCircleIcon />
+            </IconButton>
+          )}
         </p>
         <ul className="nav nav-pills">
           {sortedKeys.map((key) => (
@@ -65,14 +67,16 @@ function EventPage() {
               {yearLabel[key].map((ele) => (
                 <figure className="figure" key={ele.id}>
                   <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                    <IconButton 
-                      color="error"
-                      onClick={handleDelete}
-                      id={ele.id}
-                      style={{zIndex: 3}}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    { edit && (
+                      <IconButton 
+                        color="error"
+                        onClick={handleDelete}
+                        id={ele.id}
+                        style={{zIndex: 3}}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
                   </div>
                   <img src={ele.imgPath} className="figure-img img-fluid rounded" alt="..." style={{position: 'relative'}} />
                 </figure>

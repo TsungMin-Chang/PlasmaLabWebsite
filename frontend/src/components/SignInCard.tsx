@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -14,9 +13,10 @@ import api from '../../../backend/api/generated/ClientAPI';
 type SignInCardProps = {
   open: boolean;
   onClose: () => void;
+  onEdit: () => void;
 };
 
-function SignInCard({ open, onClose }: SignInCardProps) {
+function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
 
   const textfieldUsername = useRef<HTMLInputElement>(null);
   const textfieldPassword = useRef<HTMLInputElement>(null);
@@ -38,7 +38,7 @@ function SignInCard({ open, onClose }: SignInCardProps) {
 
     try {
       api.postLogin({username, passwd} as LoginDataProp)
-        .on(201, () => {})
+        .on(201, () => onEdit())
         .on(401, () => alert("Fail to sign in!")); 
     } catch (error) {
       alert("Fail to sign in!");
@@ -95,4 +95,4 @@ function SignInCard({ open, onClose }: SignInCardProps) {
   );
 }
 
-export default React.memo(SignInCard);
+export default SignInCard;

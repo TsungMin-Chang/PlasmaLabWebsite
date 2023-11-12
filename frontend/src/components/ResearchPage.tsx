@@ -13,10 +13,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ResearchDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-function ResearchPage() {
+function ResearchPage({ edit }: { edit: boolean }) {
 
   const [render, setRender] = useState(0);
-
   const [dummys, setDummys]  = useState([] as ResearchDataProp[])
   useEffect(()=>{
     api.getResearchsData()
@@ -42,12 +41,14 @@ function ResearchPage() {
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
             <strong>RESEARCH</strong>
-            <IconButton 
-                color="success" 
-                onClick={() => {setNewResearchDialogOpen(true)}} 
-            >
-                <AddCircleIcon />
-            </IconButton>
+            {edit && (
+              <IconButton 
+                  color="success" 
+                  onClick={() => {setNewResearchDialogOpen(true)}} 
+              >
+                  <AddCircleIcon />
+              </IconButton>
+            )}
           </p>
           <ul className="nav nav-pills">
             {dummys.map((dummy) => (
@@ -69,25 +70,29 @@ function ResearchPage() {
                 <div className="col-sm-12 col-lg-5">
                   <div key={dummy.id}>
                     <div className="card-body">
-                      <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                        <IconButton 
-                          color="error"
-                          onClick={handleDelete}
-                          id={dummy.id}
-                          style={{zIndex: 3}}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </div>
-                      <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                        <IconButton 
-                          color="success" 
-                          onClick={() => setOpenUpdateDialog({'state': true, 'data': dummy})}
-                          style={{zIndex: 3}}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </div>
+                      {edit && (
+                        <>
+                          <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                            <IconButton 
+                              color="error"
+                              onClick={handleDelete}
+                              id={dummy.id}
+                              style={{zIndex: 3}}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                          <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                            <IconButton 
+                              color="success" 
+                              onClick={() => setOpenUpdateDialog({'state': true, 'data': dummy})}
+                              style={{zIndex: 3}}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </div>
+                        </>
+                      )}
                       <div className="pplname" style={{position: 'relative'}}>
                         {dummy.title}
                       </div>

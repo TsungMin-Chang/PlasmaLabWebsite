@@ -11,10 +11,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { PersonDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-function PeoplePage() {
+function PeoplePage({ edit }: { edit: boolean }) {
 
   const [render, setRender] = useState(0);
-
   const [dummys, setDummys]  = useState([] as PersonDataProp[])
   useEffect(()=>{
     api.getPeoplesData()
@@ -37,12 +36,14 @@ function PeoplePage() {
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
             <strong>PEOPLE</strong>
-            <IconButton 
-              color="success" 
-              onClick={() => {setNewPeopleDialogOpen(true)}} 
-            >
-              <AddCircleIcon />
-            </IconButton>
+            {edit && (
+              <IconButton 
+                color="success" 
+                onClick={() => {setNewPeopleDialogOpen(true)}} 
+              >
+                <AddCircleIcon />
+              </IconButton>
+            )}
           </p>
           <ul className="nav nav-pills">
             <li className="nav-item">
@@ -65,27 +66,27 @@ function PeoplePage() {
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
           <h4 id="scrollspyHeading_professor" className="mynav2">Professor</h4>
           <div className="container">
-              <PersonCard data={positionLabel['4']} onRender={() => setRender(render + 1)} />
+              <PersonCard data={positionLabel['4']} onRender={() => setRender(render + 1)} edit />
           </div>
           <br/>
           <h4 id="scrollspyHeading_phd" className="mynav2">Ph.D. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['3']} onRender={() => setRender(render + 1)} /> 
+              <PersonCard data={positionLabel['3']} onRender={() => setRender(render + 1) } edit /> 
           </div>
           <br/>
           <h4 id="scrollspyHeading_ms" className="mynav2">M.S. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['2']} onRender={() => setRender(render + 1)} />  
+              <PersonCard data={positionLabel['2']} onRender={() => setRender(render + 1) } edit />  
           </div>
           <br/>
           <h4 id="scrollspyHeading_bs" className="mynav2">B.S. Student</h4>
           <div className="container">
-              <PersonCard data={positionLabel['1']} onRender={() => setRender(render + 1)} />
+              <PersonCard data={positionLabel['1']} onRender={() => setRender(render + 1) } edit />
           </div>
           <br/>
           <h4 id="scrollspyHeading_alumni" className="mynav2">Alumni</h4>
           <div className="container">
-              <PersonCard data={positionLabel['0']} onRender={() => setRender(render + 1)} />
+              <PersonCard data={positionLabel['0']} onRender={() => setRender(render + 1) } edit />
           </div>
         </div>
       </main>

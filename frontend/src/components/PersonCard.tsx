@@ -13,9 +13,10 @@ import api from '../../../backend/api/generated/ClientAPI';
 type dataProp = {
     data: PersonDataProp[];
     onRender: () => void;
+    edit: boolean
 };
 
-export default function PersonCard({ data, onRender }: dataProp) {
+export default function PersonCard({ data, onRender, edit }: dataProp) {
    
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
   const nameLabel: { [key: string]: PersonDataProp[] } = {};
@@ -38,29 +39,33 @@ export default function PersonCard({ data, onRender }: dataProp) {
           </div>
           <div className="col-sm-12 col-md-6 col-lg-8 ptext my-auto">
             <div key={key}>
-              <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                <IconButton 
-                  color="error"
-                  onClick={handleDelete}
-                  id={nameLabel[key][0].id}
-                  style={{zIndex: 3}}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </div>
-              <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                <IconButton 
-                  color="success" 
-                  onClick={() => {
-                    const degreeLabel: { [key: string]: DegreeDataProp } = {};
-                    nameLabel[key].map((ele) => degreeLabel[ele.degree] = {degree: ele.degree, school: ele.school, department: ele.department, yearStart: ele.yearStart, yearEnd: ele.yearEnd});
-                    setOpenUpdateDialog({'state': true, 'data': degreeLabel, 'id': nameLabel[key][0].id, 'name': nameLabel[key][0].name, 'position': nameLabel[key][0].position });
-                  }}
-                  style={{zIndex: 2}}
-                >
-                  <EditIcon />
-                </IconButton>
-              </div>
+              {edit && (
+                <>
+                  <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                    <IconButton 
+                      color="error"
+                      onClick={handleDelete}
+                      id={nameLabel[key][0].id}
+                      style={{zIndex: 3}}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </div>
+                  <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                    <IconButton 
+                      color="success" 
+                      onClick={() => {
+                        const degreeLabel: { [key: string]: DegreeDataProp } = {};
+                        nameLabel[key].map((ele) => degreeLabel[ele.degree] = {degree: ele.degree, school: ele.school, department: ele.department, yearStart: ele.yearStart, yearEnd: ele.yearEnd});
+                        setOpenUpdateDialog({'state': true, 'data': degreeLabel, 'id': nameLabel[key][0].id, 'name': nameLabel[key][0].name, 'position': nameLabel[key][0].position });
+                      }}
+                      style={{zIndex: 2}}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </div>
+                </>
+              )}
               <div className="pplname" style={{position: 'relative'}}>
                 {nameLabel[key][0].name}
               </div>

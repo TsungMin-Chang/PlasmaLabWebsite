@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Cookies from 'js-cookie';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -21,10 +22,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 function App() {
+  
+  const [edit, setEdit] = useState(Cookies.get('plasma-token') !== undefined);
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
   const [signInCardOpen, setSignInCardOpen] = useState(false);
-
   const [key, setKey] = useState('home' as string | null);
 
   return (
@@ -64,16 +66,16 @@ function App() {
             <HomePage />
           </Tab>
           <Tab eventKey="people" title="PEOPLE">
-            <PeoplePage />
+            <PeoplePage edit />
           </Tab>
           <Tab eventKey="research" title="RESEARCH">
-            <ResearchPage />
+            <ResearchPage edit />
           </Tab>
           <Tab eventKey="publication" title="PUBLICATION">
-            <PublicationPage />
+            <PublicationPage edit />
           </Tab>
           <Tab eventKey="event" title="EVENT">
-            <EventPage />
+            <EventPage edit />
           </Tab>
         </Tabs>
         <br/>
@@ -97,6 +99,7 @@ function App() {
       <SignInCard
         open={signInCardOpen}
         onClose={() => setSignInCardOpen(false)}
+        onEdit={() => setEdit(true)}
       />
     </div>
   )

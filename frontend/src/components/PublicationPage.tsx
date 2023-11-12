@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Cookies from 'js-cookie';
 
 import "../index.css";
 import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
@@ -14,9 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { PublicationDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
-function PublicationPage() {
-
-  console.log('1st', Cookies.get('plasma-token'));
+function PublicationPage({ edit }: { edit: boolean }) {
 
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as PublicationDataProp[])
@@ -48,12 +45,14 @@ function PublicationPage() {
       <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
         <p className="navbar-brand">
           <strong>PUBLICATION</strong>
-          <IconButton 
-            color="success" 
-            onClick={() => {setNewPublicationDialogOpen(true)}} 
-          >
-            <AddCircleIcon />
-          </IconButton>
+          {edit && (
+            <IconButton 
+              color="success" 
+              onClick={() => {setNewPublicationDialogOpen(true)}} 
+            >
+              <AddCircleIcon />
+            </IconButton>
+          )}
         </p>
         <ul className="nav nav-pills">
           {sortedKeys.map((key) => (
@@ -72,26 +71,30 @@ function PublicationPage() {
                 const colorClass = index % 2 === 0 ? "publication-wording list-group-item" : "publication-wording list-group-item list-group-item-secondary";
                 return (
                   <li className={colorClass} key={ele.id}>
-                    <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                      <IconButton 
-                        color="error"
-                        onClick={handleDelete}
-                        id={ele.id}
-                        style={{zIndex: 3}}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </div>
-                    <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                      <IconButton 
-                        id={ele.id}
-                        color="success" 
-                        onClick={() => setOpenUpdateDialog({'state': true, 'data': ele})}
-                        style={{zIndex: 2}}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </div>
+                    {edit && (
+                      <>
+                        <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                          <IconButton 
+                            color="error"
+                            onClick={handleDelete}
+                            id={ele.id}
+                            style={{zIndex: 3}}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </div>
+                        <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
+                          <IconButton 
+                            id={ele.id}
+                            color="success" 
+                            onClick={() => setOpenUpdateDialog({'state': true, 'data': ele})}
+                            style={{zIndex: 2}}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </div>
+                      </>
+                    )}
                     <div style={{position: 'relative'}}>
                       {ele.detail}
                     </div>
