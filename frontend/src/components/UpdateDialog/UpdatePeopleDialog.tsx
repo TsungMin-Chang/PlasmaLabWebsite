@@ -51,25 +51,27 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     // console.log(id);
     // console.log(!newName ? name : newName);
     // console.log(newPosition === -1 ? position : newPosition);
-    // console.log(newDegree);
 
-    if (newDegree[1] && newDegree[1].yearStart && newDegree[1].yearEnd) {
-      if (newDegree[1].yearStart < newDegree[1].yearEnd) {
+    if (newDegree[1] && newDegree[1].yearStart && newDegree[1].yearEnd && newDegree[1].yearEnd !== -1) {
+      if (newDegree[1].yearStart > newDegree[1].yearEnd) {
         alert("Error: B.S Degree - The year you finish should not be earlier than the year you start!");
+        setNewDegree({...newDegree, ['1']: {...newDegree[1], yearStart: data[1].yearStart} });
         return;
       }
     }
 
-    if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd) {
-      if (newDegree[2].yearStart < newDegree[2].yearEnd) {
+    if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd && newDegree[3].yearEnd !== -1) {
+      if (newDegree[2].yearStart > newDegree[2].yearEnd) {
         alert("Error: M.S Degree - The year you finish should not be earlier than the year you start!");
+        setNewDegree({...newDegree, ['2']: {...newDegree[2], yearStart: data[2].yearStart} });
         return; 
       }
     }
 
-    if (newDegree[3] && newDegree[3].yearStart && newDegree[3].yearEnd) {
-      if (newDegree[3].yearStart < newDegree[3].yearEnd) {
+    if (newDegree[3] && newDegree[3].yearStart && newDegree[3].yearEnd && newDegree[3].yearEnd !== -1) {
+      if (newDegree[3].yearStart > newDegree[3].yearEnd) {
         alert("Error: Ph.D Degree - The year you finish should not be earlier than the year you start!");
+        setNewDegree({...newDegree, ['3']: {...newDegree[3], yearStart: data[3].yearStart} });
         return;
       }
     }
@@ -118,7 +120,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               <button
                 onClick={() => setEdittingName(true)}
                 className="w-full rounded-md p-2 hover:bg-white/10"
-                style={{background: 'transparent', borderRightColor: 'transparent'}}
+                style={{background: 'whitesmoke', borderColor: 'transparent'}}
               >
                 <Typography className="text-start">{!newName ? name : newName}</Typography>
               </button>
@@ -159,7 +161,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               <button
                 onClick={() => setEdittingSchool(true)}
                 className="w-full rounded-md p-2 hover:bg-white/10"
-                style={{background: 'transparent', borderRightColor: 'transparent'}}
+                style={{background: 'whitesmoke', borderColor: 'transparent'}}
               >
                 <Typography className="text-start">{!newDegree[key]?.school ? data[key].school : newDegree[key].school}</Typography>
               </button>
@@ -182,7 +184,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               <button
                 onClick={() => setEdittingDepartment(true)}
                 className="w-full rounded-md p-2 hover:bg-white/10"
-                style={{background: 'transparent', borderRightColor: 'transparent', borderLeftColor: 'transparent', borderTopColor: 'transparent'}}
+                style={{background: 'whitesmoke', borderColor: 'transparent', borderLeftColor: 'transparent', borderTopColor: 'transparent'}}
               >
                 <Typography className="text-start">{!newDegree[key]?.department ? data[key].department : newDegree[key].department}</Typography>
               </button>

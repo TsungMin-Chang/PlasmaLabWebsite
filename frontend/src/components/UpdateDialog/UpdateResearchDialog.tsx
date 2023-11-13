@@ -79,7 +79,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           <button
             onClick={() => setEdittingTitle(true)}
             className="w-full rounded-md p-2 hover:bg-white/10"
-            style={{background: 'transparent', borderRightColor: 'transparent'}}
+            style={{background: 'whitesmoke', borderColor: 'transparent'}}
           >
             <Typography className="text-start">{!newTitle ? title : newTitle}</Typography>
           </button>

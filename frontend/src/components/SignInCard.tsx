@@ -57,8 +57,8 @@ function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
-            SIGN IN
+          <Typography component="h1" variant="h5" className="labeltext">
+            Sign In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField

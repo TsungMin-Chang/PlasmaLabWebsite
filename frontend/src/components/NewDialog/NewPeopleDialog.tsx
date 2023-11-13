@@ -219,7 +219,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
           <>
             {activeStep === 0 && (
               <>
-                <Typography className="pplname" variant="h5" gutterBottom component="div">
+                <Typography component="h1" variant="h5" className="labeltext">
                   Personal Information
                 </Typography>
                 <FormControl sx={{ m: 1, minWidth: 510 }}>
@@ -275,7 +275,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
         ) : (
           <>
             <FormControl sx={{ m: 1, minWidth: 510 }}>
-              <Typography className="pplname" variant="h5" gutterBottom component="div">
+              <Typography component="h1" variant="h5" className="labeltext">
                 {numberToDegree[activeStep] + " Degree Information"}
               </Typography>
               <ClickAwayListener
