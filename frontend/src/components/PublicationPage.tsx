@@ -114,7 +114,7 @@ function PublicationPage({ edit }: { edit: boolean }) {
       <UpdatePublicationDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
-        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp})}
+        onClose={() => setOpenUpdateDialog({state: false, data: {id: "", year: -1, detail: ""} as PublicationDataProp})}
         onRender={() => setRender(render + 1)}
       />
     </>

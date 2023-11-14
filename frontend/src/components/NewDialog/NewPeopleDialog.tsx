@@ -37,7 +37,7 @@ type NewPeopleDialogProps = {
 
 export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDialogProps) {
 
-  const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
+  const numberToDegree: { [key: string]: string } = {'0': 'Alumni', '1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.', '4': 'Professor'};
   const steps = ['', '', '', '', ''];
 
   const [name, setName] = useState<string | null >(null);
@@ -47,6 +47,8 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
+
+  const vaildKeys = Object.keys(buffer).filter((key) => Object.keys(buffer[key]).includes('degree'));
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     
@@ -136,7 +138,14 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
       const response = await axios.post('/image', imageString);
       try {
         // POST request sends people data to store in db
-        await api.createPeopleData( {name, position, imgPath: response.data.uuid, bs: buffer[1], ms: buffer[2], phd: buffer[3]} as CreatePersonDataProp );
+        await api.createPeopleData({
+          name, 
+          position, 
+          imgPath: response.data.uuid, 
+          bs: Object.keys(buffer[1]).includes('degree') ? buffer[1] : undefined, 
+          ms: Object.keys(buffer[2]).includes('degree') ? buffer[2] : undefined,  
+          phd: Object.keys(buffer[3]).includes('degree') ? buffer[3] : undefined, 
+        } as CreatePersonDataProp );
       } catch {
         alert("Error: Failed to create a new member!");
         return;
@@ -266,9 +275,20 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
             {activeStep === steps.length - 1 && (
               <FormControl sx={{ m: 1, minWidth: 510 }}>
                 <Alert severity="info">
-                  <AlertTitle>Submission</AlertTitle>
-                  Your information will be sent out — <strong>Are you sure?</strong>
+                  <AlertTitle>Are you sure to submit?</AlertTitle>
                 </Alert>
+                <div className="flex gap-4">
+                  <div className="pplname">
+                    {numberToDegree[position!.toString()]} {name}
+                  </div>
+                  {
+                    vaildKeys.map((key, index) => (
+                      <li key={index}>
+                        {numberToDegree[key]}, {buffer[key].department}, {buffer[key].school}, {buffer[key].yearStart}-{buffer[key].yearEnd === -1 ? null : buffer[key].yearEnd}
+                      </li>
+                    ))
+                  }
+                </div>
               </FormControl>
             )}
           </>
@@ -312,7 +332,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
                         setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearStart: !e ? -1 : e['$y']}});
                       }}
                       views={['year']}
-                      label='Enter the year you start'
+                      label='Enter your starting year'
                       openTo="year"
                     />
                   </FormControl>
@@ -329,7 +349,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
                         setBuffer({...buffer, [activeStep]: { ...buffer[activeStep], yearEnd: !e ? -1 : e['$y'] }})
                       }}
                       views={['year']}
-                      label='Enter the year you finish (leave blank if studying)'
+                      label='Enter your finishing year (leave blank if studying)'
                       openTo="year"
                     />
                   </FormControl>

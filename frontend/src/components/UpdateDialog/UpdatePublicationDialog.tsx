@@ -51,7 +51,6 @@ export default function UpddatePublicationDialog(props: UpdatePublicationDialogP
   };
 
   const handleClose = () => {
-    setNewYear(year);
     onClose();
   }
 

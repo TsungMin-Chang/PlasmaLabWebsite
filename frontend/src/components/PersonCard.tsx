@@ -23,7 +23,7 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
   data.map((ele) => {nameLabel.hasOwnProperty(ele.name) ? nameLabel[ele.name].push({...ele}) : nameLabel[ele.name] = [{...ele}]});
   Object.keys(nameLabel).forEach((key) => {nameLabel[key].sort((a, b) => b.degree - a.degree)});
 
-  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1});
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'degree': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1}});
 
   const handleDelete = async (e: React.MouseEvent) => {
     await api.deletePeopleData({id: e.currentTarget.id});
@@ -57,7 +57,7 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
                       onClick={() => {
                         const degreeLabel: { [key: string]: DegreeDataProp } = {};
                         nameLabel[key].map((ele) => degreeLabel[ele.degree] = {degree: ele.degree, school: ele.school, department: ele.department, yearStart: ele.yearStart, yearEnd: ele.yearEnd});
-                        setOpenUpdateDialog({'state': true, 'data': degreeLabel, 'id': nameLabel[key][0].id, 'name': nameLabel[key][0].name, 'position': nameLabel[key][0].position });
+                        setOpenUpdateDialog({'state': true, 'data': {'degree': degreeLabel, 'id': nameLabel[key][0].id, 'name': nameLabel[key][0].name, 'position': nameLabel[key][0].position} });
                       }}
                       style={{zIndex: 2}}
                     >
@@ -79,9 +79,9 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
         </div>
       ))}
       <UpdatePeopleDialog
-        {...openUpdateDialog}
+        {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
-        onClose={() => setOpenUpdateDialog({'state': false, 'data': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1})}
+        onClose={() => setOpenUpdateDialog({state: false, data: {degree: {} as { [key: string]: DegreeDataProp }, id: "", name: "", position: -1} })}
         onRender={onRender}
       />
     </>

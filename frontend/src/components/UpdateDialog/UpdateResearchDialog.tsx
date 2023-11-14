@@ -55,7 +55,6 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
   };
 
   const handleClose = () => {
-    setNewTitle("");
     onClose();
   }
 

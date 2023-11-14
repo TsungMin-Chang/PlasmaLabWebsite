@@ -127,7 +127,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
       <UpdateResearchDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
-        onClose={() => setOpenUpdateDialog({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp})}
+        onClose={() => setOpenUpdateDialog({state: false, data: {id: "", title: "", description: "", reference: ""} as ResearchDataProp})}
         onRender={() => setRender(render + 1)}
       />
     </>

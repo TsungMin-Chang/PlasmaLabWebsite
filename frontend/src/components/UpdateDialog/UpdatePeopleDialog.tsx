@@ -26,7 +26,7 @@ type UpdatePeopleDialogProps = {
   id: string;
   name: string;
   position: number;
-  data: {[key: string]: DegreeDataProp};
+  degree: {[key: string]: DegreeDataProp};
   open: boolean;
   onClose: () => void;
   onRender: () => void;
@@ -34,13 +34,13 @@ type UpdatePeopleDialogProps = {
 
 export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   
-  const { id, name, position, data, open, onClose, onRender } = props;
+  const { id, name, position, degree, open, onClose, onRender } = props;
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
 
   const [newName, setNewName] = useState(name);
   const [newPosition, setNewPosition] = useState(position);
-  const [newDegree, setNewDegree] = useState<{ [key: string]: UpdateDegreeDataProp }>(data);
-  const sortedKeys = Object.keys(data).sort((a, b) => parseInt(a) - parseInt(b));
+  const [newDegree, setNewDegree] = useState<{ [key: string]: UpdateDegreeDataProp }>(degree);
+  const sortedKeys = Object.keys(degree).sort((a, b) => parseInt(a) - parseInt(b));
 
   const [edittingName, setEdittingName] = useState(false);
   const [edittingSchool, setEdittingSchool] = useState(false);
@@ -55,7 +55,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     if (newDegree[1] && newDegree[1].yearStart && newDegree[1].yearEnd && newDegree[1].yearEnd !== -1) {
       if (newDegree[1].yearStart > newDegree[1].yearEnd) {
         alert("Error: B.S Degree - The year you finish should not be earlier than the year you start!");
-        setNewDegree({...newDegree, ['1']: {...newDegree[1], yearStart: data[1].yearStart} });
+        setNewDegree({...newDegree, ['1']: {...newDegree[1], yearStart: degree[1].yearStart, yearEnd: degree[1].yearEnd} });
         return;
       }
     }
@@ -63,7 +63,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd && newDegree[3].yearEnd !== -1) {
       if (newDegree[2].yearStart > newDegree[2].yearEnd) {
         alert("Error: M.S Degree - The year you finish should not be earlier than the year you start!");
-        setNewDegree({...newDegree, ['2']: {...newDegree[2], yearStart: data[2].yearStart} });
+        setNewDegree({...newDegree, ['2']: {...newDegree[2], yearStart: degree[2].yearStart, yearEnd: degree[2].yearEnd} });
         return; 
       }
     }
@@ -71,7 +71,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
     if (newDegree[3] && newDegree[3].yearStart && newDegree[3].yearEnd && newDegree[3].yearEnd !== -1) {
       if (newDegree[3].yearStart > newDegree[3].yearEnd) {
         alert("Error: Ph.D Degree - The year you finish should not be earlier than the year you start!");
-        setNewDegree({...newDegree, ['3']: {...newDegree[3], yearStart: data[3].yearStart} });
+        setNewDegree({...newDegree, ['3']: {...newDegree[3], yearStart: degree[3].yearStart, yearEnd: degree[3].yearEnd} });
         return;
       }
     }
@@ -88,9 +88,6 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   };
 
   const handleClose = () => {
-    setNewName(name);
-    setNewPosition(position);
-    setNewDegree(data);
     onClose();
   }
 
@@ -151,8 +148,8 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               >
                 <Input
                   autoFocus
-                  value={!newDegree[key]?.school ? data[key].school : newDegree[key].school}
-                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], school: e.target.value ?? data[key].school }})}
+                  value={!newDegree[key]?.school ? degree[key].school : newDegree[key].school}
+                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], school: e.target.value ?? degree[key].school }})}
                   className="grow"
                   placeholder="Enter School Name"
                 />
@@ -163,7 +160,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 className="w-full rounded-md p-2 hover:bg-white/10"
                 style={{background: 'whitesmoke', borderColor: 'transparent'}}
               >
-                <Typography className="text-start">{!newDegree[key]?.school ? data[key].school : newDegree[key].school}</Typography>
+                <Typography className="text-start">{!newDegree[key]?.school ? degree[key].school : newDegree[key].school}</Typography>
               </button>
             )}
             </FormControl>
@@ -174,8 +171,8 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
               >
                 <Input
                   autoFocus
-                  value={!newDegree[key]?.department ? data[key].department : newDegree[key].department}
-                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], department: e.target.value ?? data[key].department }})}
+                  value={!newDegree[key]?.department ? degree[key].department : newDegree[key].department}
+                  onChange={(e) => setNewDegree({...newDegree, [key]: { ...newDegree[key], department: e.target.value ?? degree[key].department }})}
                   className="grow"
                   placeholder="Enter Department Name"
                 />
@@ -186,7 +183,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 className="w-full rounded-md p-2 hover:bg-white/10"
                 style={{background: 'whitesmoke', borderColor: 'transparent', borderLeftColor: 'transparent', borderTopColor: 'transparent'}}
               >
-                <Typography className="text-start">{!newDegree[key]?.department ? data[key].department : newDegree[key].department}</Typography>
+                <Typography className="text-start">{!newDegree[key]?.department ? degree[key].department : newDegree[key].department}</Typography>
               </button>
             )}
             </FormControl>
@@ -195,11 +192,11 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 <DemoContainer components={['DatePicker']}>
                   <FormControl sx={{ minWidth: 510 }}>
                     <DatePicker
-                      defaultValue={dayjs((data[key].yearStart).toString())}
+                      defaultValue={dayjs((degree[key].yearStart).toString())}
                       views={['year']}
                       label='Enter the year you start'
                       openTo="year"
-                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearStart: !e ? data[key].yearStart : e['$y'] }})}
+                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearStart: !e ? degree[key].yearStart : e['$y'] }})}
                     />
                   </FormControl>
                 </DemoContainer>
@@ -210,11 +207,11 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
                 <DemoContainer components={['DatePicker']}>
                   <FormControl sx={{ minWidth: 510 }}>
                     <DatePicker
-                      defaultValue={data[key].yearEnd === -1 ? null : dayjs((data[key].yearEnd).toString())}
+                      defaultValue={degree[key].yearEnd === -1 ? null : dayjs((degree[key].yearEnd).toString())}
                       views={['year']}
                       label='Enter the year you finish (leave blank if studying)'
                       openTo="year" 
-                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearEnd: !e ? data[key].yearEnd : e['$y'] }})}
+                      onChange={(e: any) => setNewDegree({...newDegree, [key]: { ...newDegree[key], yearEnd: !e ? degree[key].yearEnd : e['$y'] }})}
                     />
                   </FormControl>
                 </DemoContainer>
