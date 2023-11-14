@@ -42,15 +42,15 @@ function HomePage() {
     },
     {
       img: '/new_home_images/grey_wording_scroll.jpg',
-      title: 'plasma3',
-    },
-    {
-      img: '/new_home_images/old_blue_wording_scroll.png',
       title: 'plasma4',
     },
     {
+      img: '/new_home_images/old_blue_wording_scroll.png',
+      title: 'plasma5',
+    },
+    {
       img: '/new_home_images/purple_circle_array.jpg',
-      title: 'plasma2',
+      title: 'plasma6',
     },
   ];
 

@@ -60,7 +60,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
       }
     }
 
-    if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd && newDegree[3].yearEnd !== -1) {
+    if (newDegree[2] && newDegree[2].yearStart && newDegree[2].yearEnd && newDegree[2].yearEnd !== -1) {
       if (newDegree[2].yearStart > newDegree[2].yearEnd) {
         alert("Error: M.S Degree - The year you finish should not be earlier than the year you start!");
         setNewDegree({...newDegree, ['2']: {...newDegree[2], yearStart: degree[2].yearStart, yearEnd: degree[2].yearEnd} });
