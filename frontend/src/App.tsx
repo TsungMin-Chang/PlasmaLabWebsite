@@ -29,6 +29,11 @@ function App() {
   const [signInCardOpen, setSignInCardOpen] = useState(false);
   const [key, setKey] = useState('home' as string | null);
 
+  const handleSignOut = () => {
+    Cookies.remove('plasma-token');
+    setEdit(false);
+  }
+
   return (
     <div className="grid place-items-center">
       <br/>
@@ -39,9 +44,9 @@ function App() {
               <ImportContactsIcon className="mr-2" />
               Contact Info
             </Button>
-            <Button onClick={() => setSignInCardOpen(true)}>
+            <Button onClick={() => edit ? handleSignOut : setSignInCardOpen(true)}>
               <AccountCircleIcon className="mr-2" />
-              Sign In
+              Sign {edit ? "Out" : "In"}
             </Button>
           </ButtonGroup>
         </div>
