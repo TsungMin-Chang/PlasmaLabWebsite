@@ -142,9 +142,9 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
           name, 
           position, 
           imgPath: response.data.uuid, 
-          bs: Object.keys(buffer[1]).includes('degree') ? buffer[1] : undefined, 
-          ms: Object.keys(buffer[2]).includes('degree') ? buffer[2] : undefined,  
-          phd: Object.keys(buffer[3]).includes('degree') ? buffer[3] : undefined, 
+          bs: buffer[1] && Object.keys(buffer[1]).includes('degree') ? buffer[1] : undefined, 
+          ms: buffer[2] && Object.keys(buffer[2]).includes('degree') ? buffer[2] : undefined,  
+          phd: buffer[3] && Object.keys(buffer[3]).includes('degree') ? buffer[3] : undefined, 
         } as CreatePersonDataProp );
       } catch {
         alert("Error: Failed to create a new member!");
