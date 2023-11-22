@@ -8,7 +8,7 @@ podman network create plasma-web \
 podman pod create \
   --name plasma-pod \
   --network plasma-web \
-  -p 192.168.0.26:1724:1724
+  -p 192.168.0.109:1724:1724
 
 ## db
 podman volume create plasma-psqldb

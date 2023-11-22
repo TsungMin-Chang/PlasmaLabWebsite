@@ -41,12 +41,10 @@ function App() {
         <div style={{textAlign: 'right'}}>
           <ButtonGroup variant="text" aria-label="text button group">
             <Button onClick={() => setContactCardOpen(true)}>
-              <ImportContactsIcon className="mr-2" />
-              Contact Info
+              <ImportContactsIcon className="mr-2" />{" "}Contact Information
             </Button>
-            <Button onClick={() => edit ? handleSignOut : setSignInCardOpen(true)}>
-              <AccountCircleIcon className="mr-2" />
-              Sign {edit ? "Out" : "In"}
+            <Button onClick={edit ? handleSignOut : () => setSignInCardOpen(true)}>
+              <AccountCircleIcon className="mr-2" />{" "}Sign {edit ? "Out" : "In"}
             </Button>
           </ButtonGroup>
         </div>
