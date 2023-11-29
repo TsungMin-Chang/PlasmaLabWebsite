@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -19,6 +20,7 @@ function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
 
   const textfieldUsername = useRef<HTMLInputElement>(null);
   const textfieldPassword = useRef<HTMLInputElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSubmit = () => {
 
@@ -32,6 +34,11 @@ function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
 
     if (!passwd) {
       alert("Password cannot be blank!");
+      return;
+    }
+    
+    if (username === "visitor" && passwd === "visiting") {
+      setSearchParams({visitor: "welcome"});
       return;
     }
 

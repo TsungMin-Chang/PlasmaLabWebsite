@@ -70,7 +70,7 @@ function HomePage() {
           </Carousel.Item>
         ))}
       </Carousel>
-      <ImageList sx={{ width: 'full', height: 740 }} variant="woven" cols={3} gap={8}>
+      <ImageList sx={{ width: 'full', height: 800 }} variant="woven" cols={3} gap={8}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
             <img
@@ -82,18 +82,6 @@ function HomePage() {
           </ImageListItem>
         ))}
       </ImageList>
-      {/* <ImageList sx={{ width: 'full', height: 540 }} cols={3} rowHeight={180} >
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <img
-            srcSet={item.img}
-            src={item.img}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-      </ImageList> */}
     </>
   );
 }

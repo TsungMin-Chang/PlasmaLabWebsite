@@ -60,7 +60,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
         </nav>
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" className="scrollspy-example bg-light p-3 rounded-2">
           {dummys.map((dummy) => (
-            <div className="card mb-3" id={"scrollspyHeading_" + dummy.id} style={{maxWidth: '1000px'}}>
+            <div className="card mb-3" id={"scrollspyHeading_" + dummy.id} style={{maxWidth: '100%'}}>
               <div className="row">
                 <div className="col-sm-12 col-lg-7">
                   <br />
