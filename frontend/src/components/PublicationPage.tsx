@@ -48,7 +48,7 @@ function PublicationPage({ edit }: { edit: boolean }) {
       <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
         <p className="navbar-brand">
           <strong>PUBLICATION</strong>
-          {edit && (
+          {(edit || !!visit) && (
             <IconButton 
               color="success" 
               onClick={() => {setNewPublicationDialogOpen(true)}} 
@@ -74,7 +74,7 @@ function PublicationPage({ edit }: { edit: boolean }) {
                 const colorClass = index % 2 === 0 ? "publication-wording list-group-item" : "publication-wording list-group-item list-group-item-secondary";
                 return (
                   <li className={colorClass} key={ele.id}>
-                    {edit && (
+                    {(edit || !!visit) && (
                       <>
                         <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                           <IconButton 

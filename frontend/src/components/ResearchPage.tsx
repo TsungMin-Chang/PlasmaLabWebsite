@@ -44,7 +44,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
             <strong>RESEARCH</strong>
-            {edit && (
+            {(edit || !!visit) && (
               <IconButton 
                   color="success" 
                   onClick={() => {setNewResearchDialogOpen(true)}} 
@@ -73,7 +73,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
                 <div className="col-sm-12 col-lg-5">
                   <div key={dummy.id}>
                     <div className="card-body">
-                      {edit && (
+                      {(edit || !!visit) && (
                         <>
                           <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                             <IconButton 

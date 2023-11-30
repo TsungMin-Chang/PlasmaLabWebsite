@@ -110,7 +110,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           />
         </FormControl>
         <DialogActions>
-          <Button onClick={!visit ? handleSave : handleClose}>save</Button>
+          <Button onClick={!visit ? handleSave : () => {}}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>

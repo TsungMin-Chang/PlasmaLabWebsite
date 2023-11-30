@@ -45,7 +45,7 @@ function EventPage({ edit }: { edit: boolean }) {
       <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
         <p className="navbar-brand">
           <strong>EVENT</strong>
-          {edit && (
+          {(edit || !!visit) && (
             <IconButton 
               color="success" 
               onClick={() => setNewEventDialogOpen(true)} 
@@ -70,7 +70,7 @@ function EventPage({ edit }: { edit: boolean }) {
               {yearLabel[key].map((ele) => (
                 <figure className="figure" key={ele.id}>
                   <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
-                    { edit && (
+                    { (edit || !!visit) && (
                       <IconButton 
                         color="error"
                         onClick={!visit ? handleDelete : () => {}}

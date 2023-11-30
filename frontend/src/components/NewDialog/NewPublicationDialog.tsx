@@ -94,7 +94,7 @@ export default function NewPublicationDialog({ open, onClose, onRender }: NewPub
           />
         </FormControl>
         <DialogActions>
-          <Button onClick={!visit ? handleSave : handleClose}>save</Button>
+          <Button onClick={!visit ? handleSave : () => {}}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>
