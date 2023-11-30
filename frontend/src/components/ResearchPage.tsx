@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import "../index.css";
 import NewResearchDialog from '@/components/NewDialog/NewResearchDialog'; 
@@ -14,6 +15,11 @@ import { ResearchDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 function ResearchPage({ edit }: { edit: boolean }) {
+
+  const [newResearchDialogOpen, setNewResearchDialogOpen] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
   
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as ResearchDataProp[])
@@ -26,9 +32,6 @@ function ResearchPage({ edit }: { edit: boolean }) {
          alert(error)
       });
   },[render]) 
-
-  const [newResearchDialogOpen, setNewResearchDialogOpen] = useState(false);
-  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", 'title': "", 'description': "", 'reference': ""} as ResearchDataProp});
 
   const handleDelete = async (e: React.MouseEvent) => {
     await api.deleteResearchData({id: e.currentTarget.id});
@@ -75,7 +78,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
                           <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                             <IconButton 
                               color="error"
-                              onClick={handleDelete}
+                              onClick={!visit ? handleDelete : () => {}}
                               id={dummy.id}
                               style={{zIndex: 3}}
                             >

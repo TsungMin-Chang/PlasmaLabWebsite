@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import FormControl from '@mui/material/FormControl';
 import Button from "@mui/material/Button";
@@ -26,6 +27,8 @@ type NewPublicationDialogProps = {
 export default function NewPublicationDialog({ open, onClose, onRender }: NewPublicationDialogProps) {
   const [year, setYear] = useState<number>(-1);
   const textfieldDetail = useRef<HTMLInputElement>(null);
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
 
   const handleSave = async () => {
 
@@ -91,7 +94,7 @@ export default function NewPublicationDialog({ open, onClose, onRender }: NewPub
           />
         </FormControl>
         <DialogActions>
-          <Button onClick={handleSave}>save</Button>
+          <Button onClick={!visit ? handleSave : handleClose}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>

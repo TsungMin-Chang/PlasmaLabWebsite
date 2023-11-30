@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import "../index.css";
 import NewEventDialog from '@/components/NewDialog/NewEventDialog'; 
@@ -14,6 +15,8 @@ import api from '../../../backend/api/generated/ClientAPI';
 function EventPage({ edit }: { edit: boolean }) {
 
   const [newEventDialogOpen, setNewEventDialogOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
 
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as EventDataProp[])
@@ -70,7 +73,7 @@ function EventPage({ edit }: { edit: boolean }) {
                     { edit && (
                       <IconButton 
                         color="error"
-                        onClick={handleDelete}
+                        onClick={!visit ? handleDelete : () => {}}
                         id={ele.id}
                         style={{zIndex: 3}}
                       >

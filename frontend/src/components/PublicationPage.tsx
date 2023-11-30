@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import "../index.css";
 import NewPublicationDialog from '@/components/NewDialog/NewPublicationDialog'; 
@@ -14,6 +15,11 @@ import { PublicationDataProp } from "../../../backend/api/generated/schemas";
 import api from '../../../backend/api/generated/ClientAPI';
 
 function PublicationPage({ edit }: { edit: boolean }) {
+
+  const [newPublicationDialogOpen, setNewPublicationDialogOpen] = useState(false);
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp});
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
 
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as PublicationDataProp[])
@@ -31,9 +37,6 @@ function PublicationPage({ edit }: { edit: boolean }) {
   dummys.map((ele) => yearLabel.hasOwnProperty(ele.year) ? yearLabel[ele.year].push({...ele}) : yearLabel[ele.year]=[{...ele}]);
   // Get the keys and sort them
   const sortedKeys = Object.keys(yearLabel).sort((a, b) => parseInt(b) - parseInt(a));
-  
-  const [newPublicationDialogOpen, setNewPublicationDialogOpen] = useState(false);
-  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'id': "", year: -1, detail: ""} as PublicationDataProp});
 
   const handleDelete = async (e: React.MouseEvent) => {
     await api.deletePublicationData({id: e.currentTarget.id});
@@ -76,7 +79,7 @@ function PublicationPage({ edit }: { edit: boolean }) {
                         <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                           <IconButton 
                             color="error"
-                            onClick={handleDelete}
+                            onClick={!visit ? handleDelete : () => {}}
                             id={ele.id}
                             style={{zIndex: 3}}
                           >

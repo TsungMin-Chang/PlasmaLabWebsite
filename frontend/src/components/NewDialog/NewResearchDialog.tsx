@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import axios from 'axios';
+import { useSearchParams } from "react-router-dom";
 
 import Form from 'react-bootstrap/Form';
 import FormControl from '@mui/material/FormControl';
@@ -27,6 +28,8 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewResear
   const [imageString, setImageString] = useState({imageName: "", image: ""});
   const textfieldDescription = useRef<HTMLInputElement>(null);
   const textfieldReference = useRef<HTMLInputElement>(null);
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     
@@ -155,7 +158,7 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewResear
           />
         </FormControl>
         <DialogActions>
-          <Button onClick={handleSave}>save</Button>
+          <Button onClick={!visit ? handleSave : handleClose}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>
