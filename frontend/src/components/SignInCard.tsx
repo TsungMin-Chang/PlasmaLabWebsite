@@ -38,7 +38,8 @@ function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
     }
     
     if (username === "visitor" && passwd === "visiting") {
-      setSearchParams({visitor: "welcome!"});
+      setSearchParams({visitor: "welcome"});
+      onClose();
       return;
     }
 
