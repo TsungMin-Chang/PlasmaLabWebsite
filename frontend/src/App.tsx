@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Cookies from 'js-cookie';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -99,11 +100,20 @@ function App() {
         open={contactCardOpen}
         onClose={() => setContactCardOpen(false)}
       />
-      <SignInCard
-        open={signInCardOpen}
-        onClose={() => setSignInCardOpen(false)}
-        onEdit={() => setEdit(true)}
-      />
+      <BrowserRouter>
+        <Routes>
+          <Route 
+            path={'/'} 
+            element={
+              <SignInCard 
+                open={signInCardOpen}
+                onClose={() => setSignInCardOpen(false)}
+                onEdit={() => setEdit(true)}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

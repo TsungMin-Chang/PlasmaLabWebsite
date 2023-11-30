@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -38,7 +38,7 @@ function SignInCard({ open, onClose, onEdit }: SignInCardProps) {
     }
     
     if (username === "visitor" && passwd === "visiting") {
-      setSearchParams({visitor: "welcome"});
+      setSearchParams({visitor: "welcome!"});
       return;
     }
 
