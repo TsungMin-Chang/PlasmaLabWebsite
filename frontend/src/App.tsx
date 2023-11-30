@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cookies from 'js-cookie';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -25,14 +26,20 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 function App() {
   
   const [edit, setEdit] = useState(Cookies.get('plasma-token') !== undefined);
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
   const [signInCardOpen, setSignInCardOpen] = useState(false);
   const [key, setKey] = useState('home' as string | null);
 
   const handleSignOut = () => {
-    Cookies.remove('plasma-token');
-    setEdit(false);
+    if (edit) {
+      Cookies.remove('plasma-token');
+      setEdit(false);
+    } else if (!!visit) {
+      searchParams.delete('visitor');
+    }
   }
 
   return (
@@ -47,10 +54,10 @@ function App() {
                 <div style={{textAlign: 'right'}}>
                   <ButtonGroup variant="text" aria-label="text button group">
                     <Button onClick={() => setContactCardOpen(true)}>
-                      <ImportContactsIcon className="mr-2" />{" "}Contact Information
+                      <ImportContactsIcon className="mr-2" />Contact Information
                     </Button>
-                    <Button onClick={edit ? handleSignOut : () => setSignInCardOpen(true)}>
-                      <AccountCircleIcon className="mr-2" />{" "}Sign {edit ? "Out" : "In"}
+                    <Button onClick={(edit || !!visit) ? handleSignOut : () => setSignInCardOpen(true)}>
+                      <AccountCircleIcon className="mr-2" />Sign {(edit || !!visit) ? "Out" : "In"}
                     </Button>
                   </ButtonGroup>
                 </div>

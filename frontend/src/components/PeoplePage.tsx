@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import "../index.css";
 import PersonCard from '@/components/PersonCard';
@@ -13,6 +14,10 @@ import api from '../../../backend/api/generated/ClientAPI';
 
 function PeoplePage({ edit }: { edit: boolean }) {
 
+  const [newPeopleDialogOpen, setNewPeopleDialogOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
+
   const [render, setRender] = useState(0);
   const [dummys, setDummys]  = useState([] as PersonDataProp[])
   useEffect(()=>{
@@ -25,8 +30,6 @@ function PeoplePage({ edit }: { edit: boolean }) {
       });
   },[render])
 
-  const [newPeopleDialogOpen, setNewPeopleDialogOpen] = useState(false);
-
   const positionLabel: { [key: string]: PersonDataProp[] } = {'4':[], '3':[], '2':[], '1':[], '0':[]};
   dummys.map((dummy) => {positionLabel[dummy.position.toString()].push(dummy)});
 
@@ -36,7 +39,7 @@ function PeoplePage({ edit }: { edit: boolean }) {
         <nav id="navbar-example2 " className="navbar bg-light px-3 mb-3">
           <p className="navbar-brand">
             <strong>PEOPLE</strong>
-            {edit && (
+            {(edit || !!visit) && (
               <IconButton 
                 color="success" 
                 onClick={() => {setNewPeopleDialogOpen(true)}} 

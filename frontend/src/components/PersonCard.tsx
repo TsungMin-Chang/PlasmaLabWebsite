@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { DegreeDataProp, PersonDataProp } from "../../../backend/api/generated/schemas";
 import UpdatePeopleDialog from "@/components/UpdateDialog/UpdatePeopleDialog";
@@ -17,13 +18,15 @@ type dataProp = {
 };
 
 export default function PersonCard({ data, onRender, edit }: dataProp) {
+
+  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'degree': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1}});
+  const [searchParams] = useSearchParams();
+  const visit = searchParams.get('visitor') || '';
    
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
   const nameLabel: { [key: string]: PersonDataProp[] } = {};
   data.map((ele) => {nameLabel.hasOwnProperty(ele.name) ? nameLabel[ele.name].push({...ele}) : nameLabel[ele.name] = [{...ele}]});
   Object.keys(nameLabel).forEach((key) => {nameLabel[key].sort((a, b) => b.degree - a.degree)});
-
-  const [openUpdateDialog, setOpenUpdateDialog] = useState({'state': false, 'data': {'degree': {} as { [key: string]: DegreeDataProp }, 'id': "", 'name': "", 'position': -1}});
 
   const handleDelete = async (e: React.MouseEvent) => {
     await api.deletePeopleData({id: e.currentTarget.id});
@@ -39,12 +42,12 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
           </div>
           <div className="col-sm-12 col-md-6 col-lg-8 ptext my-auto">
             <div key={key}>
-              {edit && (
+              {(edit || !!visit) && (
                 <>
                   <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                     <IconButton 
                       color="error"
-                      onClick={handleDelete}
+                      onClick={!visit ? handleDelete : () => {}}
                       id={nameLabel[key][0].id}
                       style={{zIndex: 3}}
                     >
