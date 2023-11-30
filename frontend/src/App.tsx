@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Cookies from 'js-cookie';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { useSearchParams } from "react-router-dom";
 
 import Container from 'react-bootstrap/Container';
@@ -42,86 +41,77 @@ function App() {
     }
   }
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route 
-          path={'/'} 
-          element={
-            <div className="grid place-items-center">
-              <br/>
-              <Container style={{ width: '70%' }}>
-                <div style={{textAlign: 'right'}}>
-                  <ButtonGroup variant="text" aria-label="text button group">
-                    <Button onClick={() => setContactCardOpen(true)}>
-                      <ImportContactsIcon className="mr-2" />Contact Information
-                    </Button>
-                    <Button onClick={(edit || !!visit) ? handleSignOut : () => setSignInCardOpen(true)}>
-                      <AccountCircleIcon className="mr-2" />Sign {(edit || !!visit) ? "Out" : "In"}
-                    </Button>
-                  </ButtonGroup>
+  return ( 
+    <div className="grid place-items-center">
+      <br/>
+      <Container style={{ width: '70%' }}>
+        <div style={{textAlign: 'right'}}>
+          <ButtonGroup variant="text" aria-label="text button group">
+            <Button onClick={() => setContactCardOpen(true)}>
+              <ImportContactsIcon className="mr-2" />Contact Information
+            </Button>
+            <Button onClick={(edit || !!visit) ? handleSignOut : () => setSignInCardOpen(true)}>
+              <AccountCircleIcon className="mr-2" />Sign {(edit || !!visit) ? "Out" : "In"}
+            </Button>
+          </ButtonGroup>
+        </div>
+        <Row>
+          <Col xs={1} md={3} xl={4}>
+            <h1 id="topTitle">
+              <strong>plasma engineering laboratory</strong>
+            </h1>
+          </Col>
+        </Row>
+        <br/>
+        <hr/>
+        <br/>
+        <Tabs
+          id="justify-tab-example"
+          activeKey={key ? key : 'home'}
+          onSelect={(k) => setKey(k)}
+          className="mb-3 mynav"
+          justify
+        >
+          <Tab eventKey="home" title="HOME">
+            <HomePage />
+          </Tab>
+          <Tab eventKey="people" title="PEOPLE">
+            <PeoplePage edit={edit} />
+          </Tab>
+          <Tab eventKey="research" title="RESEARCH">
+            <ResearchPage edit={edit} />
+          </Tab>
+          <Tab eventKey="publication" title="PUBLICATION">
+            <PublicationPage edit={edit} />
+          </Tab>
+          <Tab eventKey="event" title="EVENT">
+            <EventPage edit={edit} />
+          </Tab>
+        </Tabs>
+        <br/>
+        <footer>
+          <div className="p-4">
+            <div className="container">
+              <div className="row">
+                <div className="col-12 d-flex align-items-center justify-content-center">
+                  <img src="./ntuche_images/NTUCHElogo1.png" alt="..."/>
                 </div>
-                <Row>
-                  <Col xs={1} md={3} xl={4}>
-                    <h1 id="topTitle">
-                      <strong>plasma engineering laboratory</strong>
-                    </h1>
-                  </Col>
-                </Row>
-                <br/>
-                <hr/>
-                <br/>
-                <Tabs
-                  id="justify-tab-example"
-                  activeKey={key ? key : 'home'}
-                  onSelect={(k) => setKey(k)}
-                  className="mb-3 mynav"
-                  justify
-                >
-                  <Tab eventKey="home" title="HOME">
-                    <HomePage />
-                  </Tab>
-                  <Tab eventKey="people" title="PEOPLE">
-                    <PeoplePage edit={edit} />
-                  </Tab>
-                  <Tab eventKey="research" title="RESEARCH">
-                    <ResearchPage edit={edit} />
-                  </Tab>
-                  <Tab eventKey="publication" title="PUBLICATION">
-                    <PublicationPage edit={edit} />
-                  </Tab>
-                  <Tab eventKey="event" title="EVENT">
-                    <EventPage edit={edit} />
-                  </Tab>
-                </Tabs>
-                <br/>
-                <footer>
-                  <div className="p-4">
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-12 d-flex align-items-center justify-content-center">
-                          <img src="./ntuche_images/NTUCHElogo1.png" alt="..."/>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </footer>
-                <br/>
-              </Container>
-              <ContactCard
-                open={contactCardOpen}
-                onClose={() => setContactCardOpen(false)}
-              />
-              <SignInCard 
-                open={signInCardOpen}
-                onClose={() => setSignInCardOpen(false)}
-                onEdit={() => setEdit(true)}
-              />
-            </div>  
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+              </div>
+            </div>
+          </div>
+        </footer>
+        <br/>
+      </Container>
+      <ContactCard
+        open={contactCardOpen}
+        onClose={() => setContactCardOpen(false)}
+      />
+      <SignInCard 
+        open={signInCardOpen}
+        onClose={() => setSignInCardOpen(false)}
+        onEdit={() => setEdit(true)}
+      />
+    </div>  
   )
 }
 
