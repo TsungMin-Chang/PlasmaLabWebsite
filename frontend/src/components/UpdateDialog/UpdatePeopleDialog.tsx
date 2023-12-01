@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -29,16 +28,14 @@ type UpdatePeopleDialogProps = {
   position: number;
   degree: {[key: string]: DegreeDataProp};
   open: boolean;
+  edit: boolean;
   onClose: () => void;
   onRender: () => void;
 };
 
 export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
   
-  const [searchParams] = useSearchParams();
-  const visit = searchParams.get('visitor') || '';
-
-  const { id, name, position, degree, open, onClose, onRender } = props;
+  const { id, name, position, degree, open, edit, onClose, onRender } = props;
   const numberToDegree: { [key: string]: string } = {'1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.'};
 
   const [newName, setNewName] = useState(name);
@@ -225,7 +222,7 @@ export default function UpdatePeopleDialog(props: UpdatePeopleDialogProps) {
           ))}
           </Tabs>
         <DialogActions>
-          <Button onClick={!visit ? handleSave : () => {}}>save</Button>
+          <Button onClick={edit ? handleSave : () => {}}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>

@@ -47,7 +47,7 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
                   <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                     <IconButton 
                       color="error"
-                      onClick={!visit ? handleDelete : () => {}}
+                      onClick={edit ? handleDelete : () => {}}
                       id={nameLabel[key][0].id}
                       style={{zIndex: 3}}
                     >
@@ -84,6 +84,7 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
       <UpdatePeopleDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
+        edit
         onClose={() => setOpenUpdateDialog({state: false, data: {degree: {} as { [key: string]: DegreeDataProp }, id: "", name: "", position: -1} })}
         onRender={onRender}
       />

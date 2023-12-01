@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
 import * as React from 'react';
-import { useSearchParams } from "react-router-dom";
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -32,14 +31,12 @@ import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewPeopleDialogProps = {
   open: boolean;
+  edit: boolean;
   onClose: () => void;
   onRender: () => void;
 };
 
-export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDialogProps) {
-
-  const [searchParams] = useSearchParams();
-  const visit = searchParams.get('visitor') || '';
+export default function NewPeopleDialog({ open, edit, onClose, onRender }: NewPeopleDialogProps) {
 
   const numberToDegree: { [key: string]: string } = {'0': 'Alumni', '1': 'B.S.', '2': 'M.S.', '3': 'Ph.D.', '4': 'Professor'};
   const steps = ['', '', '', '', ''];
@@ -390,7 +387,7 @@ export default function NewPeopleDialog({ open, onClose, onRender }: NewPeopleDi
             </Button>
           )}
           {activeStep === steps.length - 1 && (
-            <Button onClick={!visit ? handleSave : () => {}}>
+            <Button onClick={edit ? handleSave : () => {}}>
               Submit
             </Button>
           )}
