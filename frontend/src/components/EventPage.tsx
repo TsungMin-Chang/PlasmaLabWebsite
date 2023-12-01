@@ -73,7 +73,7 @@ function EventPage({ edit }: { edit: boolean }) {
                     { (edit || !!visit) && (
                       <IconButton 
                         color="error"
-                        onClick={!visit ? handleDelete : () => {}}
+                        onClick={edit ? handleDelete : () => {}}
                         id={ele.id}
                         style={{zIndex: 3}}
                       >
@@ -90,6 +90,7 @@ function EventPage({ edit }: { edit: boolean }) {
       </div>
       <NewEventDialog
         open={newEventDialogOpen}
+        edit
         onClose={() => setNewEventDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />

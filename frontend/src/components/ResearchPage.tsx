@@ -78,7 +78,7 @@ function ResearchPage({ edit }: { edit: boolean }) {
                           <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                             <IconButton 
                               color="error"
-                              onClick={!visit ? handleDelete : () => {}}
+                              onClick={edit ? handleDelete : () => {}}
                               id={dummy.id}
                               style={{zIndex: 3}}
                             >
@@ -124,12 +124,14 @@ function ResearchPage({ edit }: { edit: boolean }) {
       </main>
       <NewResearchDialog
         open={newResearchDialogOpen}
+        edit
         onClose={() => setNewResearchDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />
       <UpdateResearchDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
+        edit
         onClose={() => setOpenUpdateDialog({state: false, data: {id: "", title: "", description: "", reference: ""} as ResearchDataProp})}
         onRender={() => setRender(render + 1)}
       />

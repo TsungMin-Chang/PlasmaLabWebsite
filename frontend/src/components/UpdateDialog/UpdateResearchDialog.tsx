@@ -1,6 +1,4 @@
 import { useState, useRef } from "react";
-import axios from 'axios';
-import { useSearchParams } from "react-router-dom";
 
 import FormControl from '@mui/material/FormControl';
 import Button from "@mui/material/Button";
@@ -22,18 +20,17 @@ type UpdateResearchDialogProps = {
   description: string;
   reference: string;
   open: boolean;
+  edit: boolean;
   onClose: () => void;
   onRender: () => void;
 };
 
 export default function NewResearchDialog(props: UpdateResearchDialogProps) {
-  const {id, title, description, reference, open, onClose, onRender} = props;
+  const {id, title, description, reference, open, edit, onClose, onRender} = props;
 
   const [newTitle, setNewTitle] = useState<string>(title);
   const textfieldDescription = useRef<HTMLInputElement>(null);
   const textfieldReference = useRef<HTMLInputElement>(null);
-  const [searchParams] = useSearchParams();
-  const visit = searchParams.get('visitor') || '';
 
   const [edittingTitle, setEdittingTitle] = useState(false);
 
@@ -110,7 +107,7 @@ export default function NewResearchDialog(props: UpdateResearchDialogProps) {
           />
         </FormControl>
         <DialogActions>
-          <Button onClick={!visit ? handleSave : () => {}}>save</Button>
+          <Button onClick={edit ? handleSave : () => {}}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>

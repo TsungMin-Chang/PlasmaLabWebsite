@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import axios from 'axios';
 
 import Form from 'react-bootstrap/Form';
@@ -21,16 +20,15 @@ import api from '../../../../backend/api/generated/ClientAPI';
 
 type NewEventDialogProps = {
   open: boolean;
+  edit: boolean;
   onClose: () => void;
   onRender: () => void;
 };
 
-export default function NewResearchDialog({ open, onClose, onRender }: NewEventDialogProps) {
+export default function NewResearchDialog({ open, edit, onClose, onRender }: NewEventDialogProps) {
 
   const [year, setYear] = useState<number>(-1);
   const [imageString, setImageString] = useState({imageName: "", image: ""});
-  const [searchParams] = useSearchParams();
-  const visit = searchParams.get('visitor') || '';
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     
@@ -129,7 +127,7 @@ export default function NewResearchDialog({ open, onClose, onRender }: NewEventD
           </Form.Group>
         </FormControl>
         <DialogActions>
-          <Button onClick={!visit ? handleSave : () => {}}>save</Button>
+          <Button onClick={edit ? handleSave : () => {}}>save</Button>
           <Button onClick={handleClose}>close</Button>
         </DialogActions>
       </DialogContent>

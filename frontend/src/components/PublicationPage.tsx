@@ -79,7 +79,7 @@ function PublicationPage({ edit }: { edit: boolean }) {
                         <div style={{float: 'right', position: 'initial', right: '0px', top: '0px'}}>
                           <IconButton 
                             color="error"
-                            onClick={!visit ? handleDelete : () => {}}
+                            onClick={edit ? handleDelete : () => {}}
                             id={ele.id}
                             style={{zIndex: 3}}
                           >
@@ -111,12 +111,14 @@ function PublicationPage({ edit }: { edit: boolean }) {
       </div>
       <NewPublicationDialog
         open={newPublicationDialogOpen}
+        edit
         onClose={() => setNewPublicationDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />
       <UpdatePublicationDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
+        edit
         onClose={() => setOpenUpdateDialog({state: false, data: {id: "", year: -1, detail: ""} as PublicationDataProp})}
         onRender={() => setRender(render + 1)}
       />
