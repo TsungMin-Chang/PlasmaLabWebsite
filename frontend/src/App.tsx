@@ -25,7 +25,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 function App() {
   
   const [edit, setEdit] = useState(Cookies.get('plasma-token') !== undefined);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const visit = searchParams.get('visitor') || '';
 
   const [contactCardOpen, setContactCardOpen] = useState(false);
@@ -38,6 +38,7 @@ function App() {
       setEdit(false);
     } else if (!!visit) {
       searchParams.delete('visitor');
+      setSearchParams(searchParams);
     }
   }
 
