@@ -90,7 +90,7 @@ function EventPage({ edit }: { edit: boolean }) {
       </div>
       <NewEventDialog
         open={newEventDialogOpen}
-        edit
+        edit={edit ?? false}
         onClose={() => setNewEventDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />

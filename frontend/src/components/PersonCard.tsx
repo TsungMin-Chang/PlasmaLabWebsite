@@ -84,7 +84,7 @@ export default function PersonCard({ data, onRender, edit }: dataProp) {
       <UpdatePeopleDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
-        edit
+        edit={edit ?? false}
         onClose={() => setOpenUpdateDialog({state: false, data: {degree: {} as { [key: string]: DegreeDataProp }, id: "", name: "", position: -1} })}
         onRender={onRender}
       />

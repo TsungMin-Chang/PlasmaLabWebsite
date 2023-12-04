@@ -95,7 +95,7 @@ function PeoplePage({ edit }: { edit: boolean }) {
       </main>
       <NewPeopleDialog
         open={newPeopleDialogOpen}
-        edit
+        edit={edit ?? false}
         onClose={() => setNewPeopleDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />

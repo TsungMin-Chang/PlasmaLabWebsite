@@ -111,14 +111,14 @@ function PublicationPage({ edit }: { edit: boolean }) {
       </div>
       <NewPublicationDialog
         open={newPublicationDialogOpen}
-        edit
+        edit={edit ?? false}
         onClose={() => setNewPublicationDialogOpen(false)}
         onRender={() => setRender(render + 1)}
       />
       <UpdatePublicationDialog
         {...openUpdateDialog.data}
         open={openUpdateDialog.state} 
-        edit
+        edit={edit ?? false}
         onClose={() => setOpenUpdateDialog({state: false, data: {id: "", year: -1, detail: ""} as PublicationDataProp})}
         onRender={() => setRender(render + 1)}
       />
